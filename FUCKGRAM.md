@@ -12,7 +12,7 @@ Creator: **@scamchrome** (Telegram).
 
 ## Build
 Locally: JDK 17, Android SDK 36, build-tools 36.0.0, NDK 27.2.12479018, CMake 3.22.1, then
-`./gradlew :TMessagesProj_App:assembleAfatRelease`
+`./gradlew :TMessagesProj_App:assembleAfatRelease` (clone with `git clone --recursive`, the native code lives in submodules)
 
 Or push this repo to GitHub and run the "Build fuckgram APK" workflow (Actions tab); the APK is attached as an artifact.
 
