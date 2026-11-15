@@ -2,21 +2,60 @@ name: Build fuckgram APK
 
 on:
   workflow_dispatch:
+    inputs:
+      abis:
+        description: "ABIs to build (comma separated). arm64-v8a is enough for modern phones"
+        default: "arm64-v8a"
   push:
     branches: [ main, master ]
 
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FG_ABIS: ${{ github.event.inputs.abis || 'arm64-v8a' }}
+
 jobs:
+  # Fast gate (~10 min): Java + resources must compile before we burn an hour on native code.
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Android SDK components
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
+            "platforms;android-36" "build-tools;36.0.0" \
+            "ndk;27.2.12479018" "cmake;3.22.1"
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Compile Java and resources
+        run: |
+          ./gradlew :TMessagesProj:compileReleaseJavaWithJavac \
+            -PfgAbis="$FG_ABIS" --no-daemon --max-workers=2 \
+            -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=1g"
+
   build:
+    needs: check
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
-      - name: Free Disk Space
+      - name: Free disk space and add swap
         run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf "/usr/local/share/boost"
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-          df -h
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost "$AGENT_TOOLSDIRECTORY"
+          sudo fallocate -l 8G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile
+          df -h / | tail -1; free -g | head -3
 
       - uses: actions/checkout@v4
         with:
@@ -34,23 +73,30 @@ jobs:
             "platforms;android-36" "build-tools;36.0.0" \
             "ndk;27.2.12479018" "cmake;3.22.1"
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v4
 
-      - name: Cache Native C++ (.cxx)
-        uses: actions/cache@v4
+      # ccache makes every build after the first one fast: unchanged C++ files are not recompiled
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
         with:
-          path: |
-            TMessagesProj/.cxx
-            TMessagesProj_App/.cxx
-          key: cxx-build-${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt', '**/build.gradle*') }}
-          restore-keys: |
-            cxx-build-${{ runner.os }}-
+          key: ccache-${{ env.FG_ABIS }}
+          max-size: 2G
 
-      - name: Build universal release APK
+      - name: Build release APK
         env:
-          GRADLE_OPTS: "-Xmx4096m -Dfile.encoding=UTF-8"
-        run: ./gradlew :TMessagesProj_App:assembleAfatRelease --no-daemon --max-workers=2
+          CMAKE_C_COMPILER_LAUNCHER: ccache
+          CMAKE_CXX_COMPILER_LAUNCHER: ccache
+          CCACHE_COMPILERCHECK: "string:ndk-27.2.12479018"
+          CCACHE_BASEDIR: ${{ github.workspace }}
+          CCACHE_NOHASHDIR: "true"
+        run: |
+          ./gradlew :TMessagesProj_App:assembleAfatRelease \
+            -PfgAbis="$FG_ABIS" --no-daemon --max-workers=2 \
+            -Dorg.gradle.jvmargs="-Xmx5g -XX:MaxMetaspaceSize=1g"
+
+      - name: ccache stats
+        if: always()
+        run: ccache -s || true
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

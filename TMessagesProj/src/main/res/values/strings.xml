@@ -11685,4 +11685,20 @@
     <string name="FuckgramCreator">Creator</string>
     <string name="FuckgramBasedOn">Based on the open-source Telegram for Android (GPLv2). Not affiliated with Telegram.</string>
     <string name="FuckgramSettingsValue">by @scamchrome</string>
+    <string name="FuckgramSettings">fuckgram settings</string>
+    <string name="FuckgramGhostHeader">GHOST MODE</string>
+    <string name="FuckgramGhostNoRead">Do not send read receipts</string>
+    <string name="FuckgramGhostNoTyping">Do not send typing status</string>
+    <string name="FuckgramGhostOffline">Always appear offline</string>
+    <string name="FuckgramGhostInfo">Chats you open stay unread for the other side. Sending a message still marks the chat as read for them. Unread counters can come back after a restart.</string>
+    <string name="FuckgramMessagesHeader">MESSAGES</string>
+    <string name="FuckgramKeepDeleted">Keep deleted messages</string>
+    <string name="FuckgramKeepDeletedInfo">Messages that the other side deletes stay on this device. Works for new deletions after you turn it on. Edit history is not saved yet.</string>
+    <string name="FuckgramPackHeader">SETTINGS PACK</string>
+    <string name="FuckgramExport">Copy settings pack</string>
+    <string name="FuckgramImport">Apply pack from clipboard</string>
+    <string name="FuckgramExported">Pack copied to clipboard</string>
+    <string name="FuckgramImported">Pack applied</string>
+    <string name="FuckgramImportFailed">Clipboard does not contain a fuckgram pack</string>
+    <string name="FuckgramPackInfo">Send the copied text to a friend in any chat; they paste it here to get the same settings. Telegram themes are shared as usual.</string>
 </resources>

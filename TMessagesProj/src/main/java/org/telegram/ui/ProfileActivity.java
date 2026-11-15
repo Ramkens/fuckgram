@@ -4536,7 +4536,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             } else if (position == policyRow) {
                 Browser.openUrl(getParentActivity(), LocaleController.getString(R.string.PrivacyPolicyUrl));
             } else if (position == fuckgramRow) {
-                presentFragment(new FuckgramAboutActivity());
+                presentFragment(new FuckgramSettingsActivity());
             } else if (position == sendLogsRow) {
                 sendLogs(getParentActivity(), false);
             } else if (position == sendLastLogsRow) {
@@ -14032,7 +14032,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     } else if (position == policyRow) {
                         textCell.setTextAndIcon(LocaleController.getString(R.string.PrivacyPolicy), R.drawable.msg2_policy, true);
                     } else if (position == fuckgramRow) {
-                        textCell.setTextAndValueAndIcon(LocaleController.getString(R.string.FuckgramAbout), LocaleController.getString(R.string.FuckgramSettingsValue), R.drawable.msg2_help, false);
+                        textCell.setTextAndValueAndIcon(LocaleController.getString(R.string.FuckgramSettings), LocaleController.getString(R.string.FuckgramSettingsValue), R.drawable.msg2_help, false);
                     } else if (position == sendLogsRow) {
                         textCell.setText(LocaleController.getString(R.string.DebugSendLogs), true);
                     } else if (position == sendLastLogsRow) {

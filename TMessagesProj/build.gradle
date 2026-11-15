@@ -1,6 +1,9 @@
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
 apply plugin: 'com.android.library'
+
+// fuckgram: build native code only for the ABIs we ship (default arm64-v8a); override with -PfgAbis=arm64-v8a,armeabi-v7a
+def fgAbis = (project.findProperty('fgAbis') ?: 'arm64-v8a').toString().split(',').collect { it.trim() }
 apply plugin: 'org.telegram.build-plugin'
 apply plugin: 'idea'
 
@@ -149,6 +152,10 @@ android {
         targetSdkVersion 36
 
         vectorDrawables.generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi']
+
+        ndk {
+            abiFilters.addAll(fgAbis)
+        }
 
         multiDexEnabled true
 

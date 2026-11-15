@@ -269,4 +269,20 @@
     <string name="FuckgramCreator">Создатель</string>
     <string name="FuckgramBasedOn">Основан на открытом исходном коде Telegram для Android (GPLv2). Не связан с Telegram.</string>
     <string name="FuckgramSettingsValue">от @scamchrome</string>
+    <string name="FuckgramSettings">Настройки fuckgram</string>
+    <string name="FuckgramGhostHeader">РЕЖИМ ПРИЗРАКА</string>
+    <string name="FuckgramGhostNoRead">Не отправлять «прочитано»</string>
+    <string name="FuckgramGhostNoTyping">Не отправлять «печатает…»</string>
+    <string name="FuckgramGhostOffline">Всегда быть не в сети</string>
+    <string name="FuckgramGhostInfo">Открытые чаты остаются непрочитанными для собеседника. Если ты отправишь сообщение, чат всё равно отметится прочитанным. После перезапуска счётчики непрочитанных могут вернуться.</string>
+    <string name="FuckgramMessagesHeader">СООБЩЕНИЯ</string>
+    <string name="FuckgramKeepDeleted">Сохранять удалённые сообщения</string>
+    <string name="FuckgramKeepDeletedInfo">Сообщения, которые удалил собеседник, остаются на этом устройстве. Работает для новых удалений после включения. История правок пока не сохраняется.</string>
+    <string name="FuckgramPackHeader">ПАКЕТ НАСТРОЕК</string>
+    <string name="FuckgramExport">Скопировать пакет настроек</string>
+    <string name="FuckgramImport">Применить пакет из буфера</string>
+    <string name="FuckgramExported">Пакет скопирован в буфер</string>
+    <string name="FuckgramImported">Пакет применён</string>
+    <string name="FuckgramImportFailed">В буфере нет пакета fuckgram</string>
+    <string name="FuckgramPackInfo">Отправь скопированный текст другу в любой чат, он вставит его здесь и получит такие же настройки. Темы Telegram передаются как обычно.</string>
 </resources>
