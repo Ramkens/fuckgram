@@ -147,6 +147,7 @@ import org.telegram.messenger.DocumentObject;
 import org.telegram.messenger.Emoji;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
+import org.telegram.messenger.FuckgramConfig;
 import org.telegram.messenger.FlagSecureReason;
 import org.telegram.messenger.ImageLoader;
 import org.telegram.messenger.ImageLocation;
@@ -11787,6 +11788,10 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 } else if (user.verified) {
                     nameTextView.setRightDrawable2(getVerifiedCrossfadeDrawable());
                     nameTextViewRightDrawable2ContentDescription = LocaleController.getString(R.string.AccDescrVerified);
+                } else if (user.self && FuckgramConfig.isShowBadge()) {
+                    // fuckgram: local badge next to our own name
+                    nameTextView.setRightDrawable2(FuckgramBadge.create(getContext()));
+                    nameTextViewRightDrawable2ContentDescription = "fuckgram";
                 } else {
                     nameTextView.setRightDrawable2(null);
                     nameTextViewRightDrawable2ContentDescription = null;

@@ -62,6 +62,10 @@ public class FuckgramSettingsActivity extends BaseFragment {
         addSwitch(context, FuckgramConfig.KEEP_DELETED, LocaleController.getString(R.string.FuckgramKeepDeleted), false);
         addInfo(context, LocaleController.getString(R.string.FuckgramKeepDeletedInfo));
 
+        addHeader(context, LocaleController.getString(R.string.FuckgramProfileHeader));
+        addSwitch(context, FuckgramConfig.SHOW_BADGE, LocaleController.getString(R.string.FuckgramShowBadge), false);
+        addInfo(context, LocaleController.getString(R.string.FuckgramShowBadgeInfo));
+
         addHeader(context, LocaleController.getString(R.string.FuckgramPackHeader));
         addButton(context, LocaleController.getString(R.string.FuckgramExport), true, v -> exportPack(context));
         addButton(context, LocaleController.getString(R.string.FuckgramImport), false, v -> importPack(context));

@@ -14,8 +14,9 @@ public class FuckgramConfig {
     public static final String GHOST_NO_TYPING = "ghost_no_typing";
     public static final String GHOST_OFFLINE = "ghost_offline";
     public static final String KEEP_DELETED = "keep_deleted";
+    public static final String SHOW_BADGE = "show_badge";
 
-    public static final String[] ALL_KEYS = {GHOST_NO_READ, GHOST_NO_TYPING, GHOST_OFFLINE, KEEP_DELETED};
+    public static final String[] ALL_KEYS = {GHOST_NO_READ, GHOST_NO_TYPING, GHOST_OFFLINE, KEEP_DELETED, SHOW_BADGE};
 
     private static SharedPreferences prefs() {
         return ApplicationLoader.applicationContext.getSharedPreferences("fuckgram_config", Context.MODE_PRIVATE);
@@ -23,7 +24,7 @@ public class FuckgramConfig {
 
     public static boolean get(String key) {
         try {
-            return prefs().getBoolean(key, false);
+            return prefs().getBoolean(key, SHOW_BADGE.equals(key)); // the badge is on by default
         } catch (Throwable e) {
             return false;
         }
@@ -46,6 +47,10 @@ public class FuckgramConfig {
 
     public static boolean isGhostOffline() {
         return get(GHOST_OFFLINE);
+    }
+
+    public static boolean isShowBadge() {
+        return get(SHOW_BADGE);
     }
 
     public static boolean isKeepDeleted() {

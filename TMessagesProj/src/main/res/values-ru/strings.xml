@@ -285,4 +285,7 @@
     <string name="FuckgramImported">Пакет применён</string>
     <string name="FuckgramImportFailed">В буфере нет пакета fuckgram</string>
     <string name="FuckgramPackInfo">Отправь скопированный текст другу в любой чат, он вставит его здесь и получит такие же настройки. Темы Telegram передаются как обычно.</string>
+    <string name="FuckgramProfileHeader">ПРОФИЛЬ</string>
+    <string name="FuckgramShowBadge">Значок fuckgram у моего ника</string>
+    <string name="FuckgramShowBadgeInfo">Виден только в твоём приложении, другие люди его не видят.</string>
 </resources>

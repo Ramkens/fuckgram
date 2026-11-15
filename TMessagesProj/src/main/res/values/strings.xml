@@ -11701,4 +11701,7 @@
     <string name="FuckgramImported">Pack applied</string>
     <string name="FuckgramImportFailed">Clipboard does not contain a fuckgram pack</string>
     <string name="FuckgramPackInfo">Send the copied text to a friend in any chat; they paste it here to get the same settings. Telegram themes are shared as usual.</string>
+    <string name="FuckgramProfileHeader">PROFILE</string>
+    <string name="FuckgramShowBadge">fuckgram badge next to my name</string>
+    <string name="FuckgramShowBadgeInfo">Shown only in your own app, other people do not see it.</string>
 </resources>
