@@ -296,6 +296,13 @@ public class ApplicationLoader extends Application {
 
         super.onCreate();
 
+        // fuckgram: the crash screen runs in its own process and must not start the client
+        if (FuckgramCrashHandler.isCrashProcess()) {
+            return;
+        }
+        FuckgramCrashHandler.install(this);
+        FuckgramCrashHandler.reportPreviousNativeCrash(this);
+
         // The widget engine's isolated process has no files, network or accounts: none of the client starts there.
         if (org.telegram.utils.twidget.WidgetEngineService.isEngineProcess()) {
             return;

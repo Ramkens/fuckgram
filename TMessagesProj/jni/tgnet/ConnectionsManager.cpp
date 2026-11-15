@@ -137,24 +137,31 @@ ConnectionsManager::~ConnectionsManager() {
     pthread_mutex_destroy(&mutex);
 }
 
+// fuckgram: one instance per account for all MAX_ACCOUNT_COUNT accounts (upstream had cases 0..4 only)
+#define FG_INSTANCE(n) case n: { static ConnectionsManager instance##n(n); return instance##n; }
+
 ConnectionsManager& ConnectionsManager::getInstance(int32_t instanceNum) {
     switch (instanceNum) {
-        case 0:
-            static ConnectionsManager instance0(0);
-            return instance0;
-        case 1:
-            static ConnectionsManager instance1(1);
-            return instance1;
-        case 2:
-            static ConnectionsManager instance2(2);
-            return instance2;
-        case 3:
-            static ConnectionsManager instance3(3);
-            return instance3;
-        case 4:
-        default:
-            static ConnectionsManager instance4(4);
-            return instance4;
+        FG_INSTANCE(0)
+        FG_INSTANCE(1)
+        FG_INSTANCE(2)
+        FG_INSTANCE(3)
+        FG_INSTANCE(4)
+        FG_INSTANCE(5)
+        FG_INSTANCE(6)
+        FG_INSTANCE(7)
+        FG_INSTANCE(8)
+        FG_INSTANCE(9)
+        FG_INSTANCE(10)
+        FG_INSTANCE(11)
+        FG_INSTANCE(12)
+        FG_INSTANCE(13)
+        FG_INSTANCE(14)
+        case 15:
+        default: {
+            static ConnectionsManager instance15(15);
+            return instance15;
+        }
     }
 }
 

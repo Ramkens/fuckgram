@@ -717,6 +717,13 @@
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
             android:value="org.telegram.messenger.chromecast.ChromecastOptionsProvider" />
 
+    
+        <activity
+            android:name="org.telegram.ui.FuckgramCrashActivity"
+            android:process=":fgcrash"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Material.NoActionBar" />
     </application>
 
 </manifest>
