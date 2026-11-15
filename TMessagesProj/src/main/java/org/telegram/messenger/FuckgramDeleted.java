@@ -2,7 +2,7 @@ package org.telegram.messenger;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.LongSparseArray;
+import androidx.collection.LongSparseArray;
 
 import java.util.ArrayList;
 import java.util.HashSet;

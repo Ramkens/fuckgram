@@ -142,6 +142,9 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
       - uses: actions/download-artifact@v4
         with:
           name: fuckgram-apk
@@ -150,9 +153,25 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          NAME="fuckgram-${FG_ABIS//,/-}.apk"
+          VERSION="$(tr -d '[:space:]' < VERSION)"
+          NAME="fuckgram-${VERSION}.apk"
           cp apk/app.apk "$NAME"
-          gh release create "build-${{ github.run_number }}" "$NAME" \
+          # release notes = the section of CHANGELOG.md for this version
+          awk -v v="## $VERSION" '$0==v{f=1;next} /^## /{f=0} f' CHANGELOG.md > notes.md
+          {
+            echo "## fuckgram $VERSION"
+            echo
+            cat notes.md
+            echo
+            echo "---"
+            echo "**Install:** download \`$NAME\` below, allow installing unknown apps, open it. It runs next to the official Telegram."
+            echo
+            echo "Unofficial client based on Telegram for Android 13.2.2 (GPLv2). Creator: @scamchrome. Source: this repository at tag \`v$VERSION\`."
+          } > body.md
+          # one release per version and no old builds lying around
+          for old in $(gh release list --repo "$GITHUB_REPOSITORY" --limit 100 --json tagName --jq '.[].tagName'); do
+            gh release delete "$old" --repo "$GITHUB_REPOSITORY" --yes --cleanup-tag || true
+          done
+          gh release create "v$VERSION" "$NAME" \
             --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
-            --title "fuckgram build ${{ github.run_number }}" \
-            --notes "Unofficial Telegram for Android mod client (based on Telegram 13.2.2, GPLv2). Creator: @scamchrome. Source: this repository at tag build-${{ github.run_number }}. Install the APK next to the official Telegram, it uses a different package id."
+            --title "fuckgram $VERSION" --notes-file body.md --latest
