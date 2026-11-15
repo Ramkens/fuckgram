@@ -21124,6 +21124,7 @@ public class MessagesController extends BaseController implements NotificationCe
         LongSparseArray<ArrayList<Integer>> markContentAsReadMessagesFinal = markContentAsReadMessages;
         SparseIntArray markAsReadEncryptedFinal = markAsReadEncrypted;
         if (FuckgramConfig.isKeepDeleted()) { // fuckgram: keep messages deleted by the other side
+            FuckgramDeleted.mark(currentAccount, deletedMessages);
             deletedMessages = null;
         }
         LongSparseArray<ArrayList<Integer>> deletedMessagesFinal = deletedMessages;

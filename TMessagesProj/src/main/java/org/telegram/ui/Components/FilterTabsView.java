@@ -780,9 +780,9 @@ public class FilterTabsView extends FrameLayout {
         }
     }
 
-    public final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-    private final TextPaint textCounterPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-    private final Paint deletePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    public final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+    private final TextPaint textCounterPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+    private final Paint deletePaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private final Paint counterPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private ColorFilter emojiColorFilter = new PorterDuffColorFilter(0, PorterDuff.Mode.SRC_IN);
 

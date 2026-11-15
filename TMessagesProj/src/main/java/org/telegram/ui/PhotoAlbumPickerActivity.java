@@ -116,7 +116,7 @@ public class PhotoAlbumPickerActivity extends BaseFragment implements Notificati
     private SizeNotifierFrameLayout sizeNotifierFrameLayout;
     private View selectedCountView;
     private View shadow;
-    private TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private RectF rect = new RectF();
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 

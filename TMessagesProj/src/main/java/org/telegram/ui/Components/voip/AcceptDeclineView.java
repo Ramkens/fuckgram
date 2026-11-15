@@ -113,7 +113,7 @@ public class AcceptDeclineView extends View {
         declineDrawable.setBounds(0, 0, buttonWidth, buttonWidth);
         acceptDrawable.setBounds(0, 0, buttonWidth, buttonWidth);
 
-        TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         textPaint.setTextSize(dp(11));
         textPaint.setColor(Color.WHITE);
 

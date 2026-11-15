@@ -865,8 +865,8 @@ public class StoryCaptionView extends NestedScrollView implements ItemOptions.Sc
         private final PorterDuffColorFilter emojiColorFilter;
 
         boolean shouldCollapse;
-        TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        TextPaint showMorePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+        TextPaint showMorePaint = org.telegram.messenger.FuckgramFonts.textPaint();
         private final Paint xRefPaint = new Paint();
         private final Paint xRefGradinetPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 

@@ -1114,7 +1114,7 @@ public class FlickerLoadingView extends View implements Theme.Colorable {
 
     private float memberRequestButtonWidth;
     public void setMemberRequestButton(boolean isChannel) {
-        TextPaint paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        TextPaint paint = org.telegram.messenger.FuckgramFonts.textPaint();
         paint.setTypeface(AndroidUtilities.bold());
         paint.setTextSize(dp(14));
         memberRequestButtonWidth = dp(17 + 17) + paint.measureText(isChannel ? LocaleController.getString(R.string.AddToChannel) : LocaleController.getString(R.string.AddToGroup));

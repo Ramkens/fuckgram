@@ -91,7 +91,7 @@ public class StoryContainsEmojiButton extends View implements Theme.Colorable {
         ThemeBind.selectorBackground(this, Theme.createRadSelectorDrawable(Theme.getColor(Theme.key_listSelector, resourcesProvider), 0, 8), null, ThemeBind.of(Theme.key_listSelector), resourcesProvider);
         setClickable(true);
 
-        textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         textPaint.setTextSize(dp(13));
         textPaint.setColor(Theme.getColor(Theme.key_actionBarDefaultSubmenuItem, resourcesProvider));
         colorFilter = new PorterDuffColorFilter(Theme.getColor(Theme.key_actionBarDefaultSubmenuItem, resourcesProvider), PorterDuff.Mode.SRC_IN);

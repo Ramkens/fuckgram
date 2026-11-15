@@ -47,7 +47,7 @@ public class TooManyCommunitiesHintCell extends FrameLayout {
         messageTextView.setGravity(Gravity.CENTER);
         addView(messageTextView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.TOP | Gravity.LEFT, 36, 110, 36, 0));
 
-        TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         textPaint.setColor(Color.WHITE);
         textPaint.setTextSize(AndroidUtilities.dp(12));
         textPaint.setTypeface(AndroidUtilities.bold());

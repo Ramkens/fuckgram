@@ -795,7 +795,7 @@ public class ArticleViewer extends IArticleViewer implements NotificationCenter.
 
             setWillNotDraw(false);
 
-            textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             textPaint.setTextSize(dp(16));
 
             sizeBar = new SeekBarView(context, getResourcesProvider());
@@ -2614,7 +2614,7 @@ public class ArticleViewer extends IArticleViewer implements NotificationCenter.
     public static final int TEXT_FLAG_SUP         = 1 << 8;
     public static final int TEXT_FLAG_WEBPAGE_URL = 1 << 9;
 
-    private static final TextPaint audioTimePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private static final TextPaint audioTimePaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private static final Resources resources = new Resources(false);
 
     @Override
@@ -2701,7 +2701,7 @@ public class ArticleViewer extends IArticleViewer implements NotificationCenter.
 
         public void updatePaintFonts(int selectedFont) {
             ApplicationLoader.applicationContext.getSharedPreferences("articles", Activity.MODE_PRIVATE).edit().putInt("font_type", selectedFont).commit();
-            Typeface typefaceNormal = selectedFont == 0 ? Typeface.DEFAULT : Typeface.SERIF;
+            Typeface typefaceNormal = selectedFont == 0 ? org.telegram.messenger.AndroidUtilities.regular() : Typeface.SERIF;
             Typeface typefaceItalic = selectedFont == 0 ? AndroidUtilities.getTypeface("fonts/ritalic.ttf") : Typeface.create("serif", Typeface.ITALIC);
             Typeface typefaceBold = selectedFont == 0 ? AndroidUtilities.bold() : Typeface.create("serif", Typeface.BOLD);
             Typeface typefaceBoldItalic = selectedFont == 0 ? AndroidUtilities.getTypeface("fonts/rmediumitalic.ttf") : Typeface.create("serif", Typeface.BOLD_ITALIC);
@@ -3377,7 +3377,7 @@ public class ArticleViewer extends IArticleViewer implements NotificationCenter.
         }
         if (currentMap == null) {
             if (resources.errorTextPaint == null) {
-                resources.errorTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                resources.errorTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                 resources.errorTextPaint.setColor(0xffff0000);
             }
             resources.errorTextPaint.setTextSize(dp(14));
@@ -3386,7 +3386,7 @@ public class ArticleViewer extends IArticleViewer implements NotificationCenter.
         mapKey |= flags;
         TextPaint paint = currentMap.get(mapKey);
         if (paint == null) {
-            paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            paint = org.telegram.messenger.FuckgramFonts.textPaint();
             if ((flags & TEXT_FLAG_MONO) != 0) {
                 paint.setTypeface(AndroidUtilities.getTypeface("fonts/rmono.ttf"));
             } else {
@@ -3482,14 +3482,14 @@ public class ArticleViewer extends IArticleViewer implements NotificationCenter.
             TL_iv.pageBlockEmbedPost pageBlockEmbedPost = (TL_iv.pageBlockEmbedPost) parentBlock;
             if (pageBlockEmbedPost.author == plainText) {
                 if (embedPostAuthorPaint == null) {
-                    embedPostAuthorPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                    embedPostAuthorPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                     embedPostAuthorPaint.setColor(parent.getTextColor());
                 }
                 embedPostAuthorPaint.setTextSize(dp(15) + additionalSize);
                 paint = embedPostAuthorPaint;
             } else {
                 if (embedPostDatePaint == null) {
-                    embedPostDatePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                    embedPostDatePaint = org.telegram.messenger.FuckgramFonts.textPaint();
                     embedPostDatePaint.setColor(parent.getGrayTextColor());
                 }
                 embedPostDatePaint.setTextSize(dp(14) + additionalSize);
@@ -3497,10 +3497,10 @@ public class ArticleViewer extends IArticleViewer implements NotificationCenter.
             }
         } else if (parentBlock instanceof TL_iv.pageBlockChannel) {
             if (channelNamePaint == null) {
-                channelNamePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                channelNamePaint = org.telegram.messenger.FuckgramFonts.textPaint();
                 channelNamePaint.setTypeface(AndroidUtilities.bold());
 
-                channelNamePhotoPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                channelNamePhotoPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                 channelNamePhotoPaint.setTypeface(AndroidUtilities.bold());
             }
             channelNamePaint.setColor(parent.getTextColor());
@@ -3514,7 +3514,7 @@ public class ArticleViewer extends IArticleViewer implements NotificationCenter.
             TL_pageBlockRelatedArticlesChild pageBlockRelatedArticlesChild = (TL_pageBlockRelatedArticlesChild) parentBlock;
             if (plainText == pageBlockRelatedArticlesChild.parent.articles.get(pageBlockRelatedArticlesChild.num).title) {
                 if (relatedArticleHeaderPaint == null) {
-                    relatedArticleHeaderPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                    relatedArticleHeaderPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                     relatedArticleHeaderPaint.setTypeface(AndroidUtilities.bold());
                 }
                 relatedArticleHeaderPaint.setColor(parent.getTextColor());
@@ -3522,7 +3522,7 @@ public class ArticleViewer extends IArticleViewer implements NotificationCenter.
                 paint = relatedArticleHeaderPaint;
             } else {
                 if (relatedArticleTextPaint == null) {
-                    relatedArticleTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                    relatedArticleTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                 }
                 relatedArticleTextPaint.setColor(parent.getGrayTextColor());
                 relatedArticleTextPaint.setTextSize(dp(14) + additionalSize);
@@ -3530,11 +3530,11 @@ public class ArticleViewer extends IArticleViewer implements NotificationCenter.
             }
         } else if (isListItemBlock(parentBlock) && plainText != null) {
             if (listTextPointerPaint == null) {
-                listTextPointerPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                listTextPointerPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                 listTextPointerPaint.setColor(parent.getTextColor());
             }
             if (listTextNumPaint == null) {
-                listTextNumPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                listTextNumPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                 listTextNumPaint.setColor(parent.getTextColor());
             }
             listTextPointerPaint.setTextSize(dp(19) + additionalSize);
@@ -4912,7 +4912,7 @@ public class ArticleViewer extends IArticleViewer implements NotificationCenter.
                         fontCells[a] = new FontCell(parentActivity);
                         switch (a) {
                             case 0:
-                                fontCells[a].setTextAndTypeface(LocaleController.getString(R.string.Default), Typeface.DEFAULT);
+                                fontCells[a].setTextAndTypeface(LocaleController.getString(R.string.Default), org.telegram.messenger.AndroidUtilities.regular());
                                 break;
                             case 1:
                                 fontCells[a].setTextAndTypeface("Serif", Typeface.SERIF);

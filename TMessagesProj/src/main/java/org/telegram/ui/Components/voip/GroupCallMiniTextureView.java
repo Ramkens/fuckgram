@@ -181,12 +181,12 @@ public class GroupCallMiniTextureView extends FrameLayout implements GroupCallSt
 
         castingScreenDrawable = parentContainer.getContext().getResources().getDrawable(R.drawable.screencast_big).mutate();
 
-        TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         textPaint.setTypeface(AndroidUtilities.bold());
         textPaint.setTextSize(dp(13));
         textPaint.setColor(Color.WHITE);
 
-        TextPaint textPaint2 = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        TextPaint textPaint2 = org.telegram.messenger.FuckgramFonts.textPaint();
         textPaint2.setTypeface(AndroidUtilities.bold());
         textPaint2.setTextSize(dp(15));
         textPaint2.setColor(Color.WHITE);

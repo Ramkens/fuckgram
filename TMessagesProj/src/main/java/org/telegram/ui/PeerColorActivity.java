@@ -536,7 +536,7 @@ public class PeerColorActivity extends BaseFragment implements NotificationCente
                                         selectedTab = tabs.size();
                                     }
                                     index2gift.put(tabs.size(), starGift);
-                                    final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                                    final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                                     textPaint.setTextSize(dp(14));
                                     final SpannableStringBuilder sb = new SpannableStringBuilder("x ");
                                     final AnimatedEmojiSpan span = new AnimatedEmojiSpan(starGift.getDocument(), textPaint.getFontMetricsInt());

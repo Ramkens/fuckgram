@@ -77,7 +77,7 @@ public class ReactionsLayoutInBubble {
     private static final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private static final Paint tagPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private static final Paint cutTagPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private static final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private static final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
 
     public static void initPaints(Theme.ResourcesProvider resourcesProvider) {
         paint.setColor(Theme.getColor(Theme.key_chat_inLoader, resourcesProvider));

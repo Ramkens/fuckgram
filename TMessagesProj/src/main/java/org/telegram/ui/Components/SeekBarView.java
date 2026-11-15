@@ -645,7 +645,7 @@ public class SeekBarView extends FrameLayout implements Theme.Colorable {
         }
 
         if (timestampLabelPaint == null) {
-            timestampLabelPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            timestampLabelPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             timestampLabelPaint.setTextSize(AndroidUtilities.dp(12));
             timestampLabelPaint.setColor(0xffffffff);
         }
@@ -878,7 +878,7 @@ public class SeekBarView extends FrameLayout implements Theme.Colorable {
 
     private StaticLayout makeStaticLayout(CharSequence text, int width) {
         if (timestampLabelPaint == null) {
-            timestampLabelPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            timestampLabelPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             timestampLabelPaint.setTextSize(AndroidUtilities.dp(12));
         }
         timestampLabelPaint.setColor(getThemedColor(Theme.key_player_time));

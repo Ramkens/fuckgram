@@ -605,7 +605,7 @@ public class FloatingDebugView extends FrameLayout implements NotificationCenter
 
             setWillNotDraw(false);
 
-            textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             textPaint.setTextSize(AndroidUtilities.dp(16));
 
             seekBar = new SeekBarView(context);

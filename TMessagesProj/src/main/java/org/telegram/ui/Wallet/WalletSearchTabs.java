@@ -36,7 +36,7 @@ class WalletSearchTabs extends FrameLayout {
     private final Utilities.Callback<Boolean> onOpen;
     private final Utilities.Callback<Float> onProgress;
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private final RectF rect = new RectF();
     private ValueAnimator animator;
     private float progress;

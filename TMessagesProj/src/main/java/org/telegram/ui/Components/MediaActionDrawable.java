@@ -38,7 +38,7 @@ public class MediaActionDrawable extends Drawable {
     public static final int ICON_CANCEL_FILL = 14;
     public static final int ICON_UPDATE = 15;
 
-    private TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     public Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint backPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     public Paint paint2 = new Paint(Paint.ANTI_ALIAS_FLAG);

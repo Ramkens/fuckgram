@@ -91,8 +91,8 @@ public class TextPriceCell extends FrameLayout {
             setTag(Theme.key_windowBackgroundWhiteGrayText2);
             ThemeBind.textColor(textView, Theme.key_windowBackgroundWhiteGrayText2);
             ThemeBind.textColor(valueTextView, Theme.key_windowBackgroundWhiteGrayText2);
-            textView.setTypeface(Typeface.DEFAULT);
-            valueTextView.setTypeface(Typeface.DEFAULT);
+            textView.setTypeface(org.telegram.messenger.AndroidUtilities.regular());
+            valueTextView.setTypeface(org.telegram.messenger.AndroidUtilities.regular());
         }
         requestLayout();
     }

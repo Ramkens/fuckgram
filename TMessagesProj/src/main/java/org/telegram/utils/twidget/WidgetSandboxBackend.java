@@ -486,7 +486,7 @@ final class WidgetSandboxBackend implements WidgetSandboxPainter.Resources, Widg
                     break;
                 default:
                     base = Typeface.create(name, Typeface.NORMAL);
-                    if (base == Typeface.DEFAULT) continue;
+                    if (base == org.telegram.messenger.AndroidUtilities.regular()) continue;
             }
             break;
         }

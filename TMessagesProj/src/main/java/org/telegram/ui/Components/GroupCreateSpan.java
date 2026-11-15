@@ -49,7 +49,7 @@ public class GroupCreateSpan extends View implements Theme.Colorable {
     private long uid;
     private String key;
     public boolean isFlag;
-    private static TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private static TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private static Paint backPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Drawable deleteDrawable;
     private RectF rect = new RectF();

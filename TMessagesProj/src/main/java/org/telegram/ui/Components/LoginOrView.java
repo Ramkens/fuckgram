@@ -15,7 +15,7 @@ import org.telegram.ui.ActionBar.Theme;
 public class LoginOrView extends View implements Theme.Colorable {
     private final static int LINE_SIZE_DP = 64;
 
-    private TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private Paint linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private String string;
     private Rect textBounds = new Rect();

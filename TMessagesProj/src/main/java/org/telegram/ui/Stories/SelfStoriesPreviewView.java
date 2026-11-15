@@ -405,7 +405,7 @@ public abstract class SelfStoriesPreviewView extends View {
         ImageReceiver receiver = new ImageReceiver(SelfStoriesPreviewView.this);
         int position;
         StaticLayout layout;
-        TextPaint paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        TextPaint paint = org.telegram.messenger.FuckgramFonts.textPaint();
         SelfStoryViewsView.StoryItemInternal storyItem;
 
         public ImageHolder() {

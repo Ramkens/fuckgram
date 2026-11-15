@@ -965,7 +965,7 @@ public class TopicsSidePanel extends FrameLayout implements NotificationCenter.N
         }
     }
 
-    private final TextPaint tagCountPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint tagCountPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     {
         tagCountPaint.setTextSize(dp(13));
         tagCountPaint.setTypeface(AndroidUtilities.bold());
@@ -1269,10 +1269,10 @@ public class TopicsSidePanel extends FrameLayout implements NotificationCenter.N
         return preview;
     }
 
-    private final TextPaint titlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-    private final TextPaint timePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-    private final TextPaint previewPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-    private final TextPaint counterPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint titlePaint = org.telegram.messenger.FuckgramFonts.textPaint();
+    private final TextPaint timePaint = org.telegram.messenger.FuckgramFonts.textPaint();
+    private final TextPaint previewPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+    private final TextPaint counterPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     {
         titlePaint.setTextSize(dp(16));
         titlePaint.setTypeface(AndroidUtilities.bold());

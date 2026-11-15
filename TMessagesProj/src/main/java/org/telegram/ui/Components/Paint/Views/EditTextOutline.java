@@ -24,7 +24,7 @@ import org.telegram.ui.Components.EditTextBoldCursor;
 public class EditTextOutline extends EditTextBoldCursor {
 
     private Canvas mCanvas = new Canvas();
-    private TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Bitmap mCache;
     private boolean mUpdateCachedBitmap;

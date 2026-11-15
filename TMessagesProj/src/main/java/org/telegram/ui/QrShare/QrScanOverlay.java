@@ -123,10 +123,10 @@ public final class QrScanOverlay extends FrameLayout {
     private final RimPainter rim = new RimPainter();
     private final Drawable scanIcon, flashIcon, galleryIcon;
     private final BackDrawable closeIcon = new BackDrawable(true);
-    private final TextPaint titlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint titlePaint = org.telegram.messenger.FuckgramFonts.textPaint();
     /** The label of a pill button ("Scan QR"): its icon on the left, the label after it; null for a round button. */
     private @Nullable String buttonLabel;
-    private final TextPaint buttonLabelPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint buttonLabelPaint = org.telegram.messenger.FuckgramFonts.textPaint();
 
     /** The button is a pill with an icon and this label (as the QR screen draws it), not a round icon button. */
     public void setButtonLabel(@Nullable String label) {

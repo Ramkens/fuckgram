@@ -5643,7 +5643,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             codeField.setPadding(padding, padding, padding, padding);
             codeField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             codeField.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            codeField.setTypeface(Typeface.DEFAULT);
+            codeField.setTypeface(org.telegram.messenger.AndroidUtilities.regular());
             codeField.setGravity(LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT);
             codeField.setOnFocusChangeListener((v, hasFocus) -> outlineCodeField.animateSelection(hasFocus ? 1f : 0f));
             outlineCodeField.attachEditText(codeField);
@@ -7679,7 +7679,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                     codeField[a].setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     codeField[a].setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
-                codeField[a].setTypeface(Typeface.DEFAULT);
+                codeField[a].setTypeface(org.telegram.messenger.AndroidUtilities.regular());
                 codeField[a].setGravity(LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT);
 
                 EditText field = codeField[a];
@@ -9326,7 +9326,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
             codeField.setEllipsizeByGradient(true);
             codeField.setInputType(InputType.TYPE_CLASS_TEXT);
 
-            codeField.setTypeface(Typeface.DEFAULT);
+            codeField.setTypeface(org.telegram.messenger.AndroidUtilities.regular());
             codeField.setGravity(LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT);
 
             codeField.setOnFocusChangeListener((v, hasFocus) -> outlineField.animateSelection(hasFocus ? 1f : 0f));

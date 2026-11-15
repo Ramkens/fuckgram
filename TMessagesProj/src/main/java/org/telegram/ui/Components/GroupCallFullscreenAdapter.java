@@ -169,7 +169,7 @@ public class GroupCallFullscreenAdapter extends RecyclerListView.SelectionAdapte
         String name;
         int nameWidth;
 
-        TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
 
         RLottieImageView muteButton;
 

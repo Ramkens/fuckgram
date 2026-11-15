@@ -1056,7 +1056,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
     private FrameLayout writeButtonContainer;
     private ChatActivityEnterView.SendButton writeButton;
     private View selectedCountView;
-    private TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private RectF rect = new RectF();
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private AnimatorSet commentsAnimator;

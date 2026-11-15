@@ -208,7 +208,7 @@ public class BoostDialogs {
         LinearLayout container = new LinearLayout(context) {
 
             boolean ignoreLayout = false;
-            final TextPaint paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            final TextPaint paint = org.telegram.messenger.FuckgramFonts.textPaint();
 
             {
                 setWillNotDraw(false);

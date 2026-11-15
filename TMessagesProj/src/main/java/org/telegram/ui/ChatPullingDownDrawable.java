@@ -54,8 +54,8 @@ public class ChatPullingDownDrawable implements NotificationCenter.NotificationC
     float circleRadius;
 
     Paint arrowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-    TextPaint textPaint2 = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+    TextPaint textPaint2 = org.telegram.messenger.FuckgramFonts.textPaint();
     private Paint xRefPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     Path path = new Path();
 

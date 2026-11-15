@@ -1227,7 +1227,7 @@ public class SharedPhotoVideoCell2 extends FrameLayout {
     }
 
     public static class SharedResources {
-        TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         private Paint backgroundPaint = new Paint();
         Drawable playDrawable;
         Drawable viewDrawable;

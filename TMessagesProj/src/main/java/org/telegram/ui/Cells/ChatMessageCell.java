@@ -3927,9 +3927,9 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
             return;
         }
         if (compactHeaderBoldPaint == null) {
-            compactHeaderBoldPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            compactHeaderBoldPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             compactHeaderBoldPaint.setTypeface(AndroidUtilities.bold());
-            compactHeaderTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            compactHeaderTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         }
         compactHeaderBoldPaint.setTextSize(Theme.chat_replyNamePaint.getTextSize());
         compactHeaderTextPaint.setTextSize(Theme.chat_replyTextPaint.getTextSize());
@@ -15678,6 +15678,10 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
             currentTimeString = TextUtils.concat("⭐️", AndroidUtilities.formatWholeNumber((int) starsPrice, 0), "  ", currentTimeString);
             currentTimeString = StarsIntroActivity.replaceStars(currentTimeString, 0.8f, null, 0, dp(-.33f), 0.94f);
         }
+        CharSequence fgPrefix = org.telegram.messenger.FuckgramMarks.timePrefix(currentAccount, currentMessageObject);
+        if (fgPrefix != null) {
+            currentTimeString = TextUtils.concat(fgPrefix, " ", currentTimeString);
+        }
         if (currentMessageObject.messageOwner != null && currentMessageObject.messageOwner.schedule_repeat_period != 0) {
             final int period = currentMessageObject.messageOwner.schedule_repeat_period;
             if (period == 365 * 86400) {
@@ -16113,7 +16117,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                 stringBuilder.append(getString(R.string.GuestBotFor));
                 stringBuilder.append(" ");
                 stringBuilder.append(DialogObject.getShortName(DialogObject.getPeerDialogId(messageObject.messageOwner.guestchat_via_from)));
-                stringBuilder.setSpan(new TypefaceSpan(Typeface.DEFAULT, 0), start, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                stringBuilder.setSpan(new TypefaceSpan(org.telegram.messenger.AndroidUtilities.regular(), 0), start, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 stringBuilder.setSpan(new ForegroundColorSpanThemable(colorKey), 0, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 nameStringFinal = stringBuilder;
@@ -16133,7 +16137,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                 if (currentNameString.length() > 0) {
                     SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
                     stringBuilder.append(nameStringFinal).append(" ").append(viaBotString).append(" ").append(viaUsername);
-                    stringBuilder.setSpan(viaSpan1 = new TypefaceSpan(Typeface.DEFAULT, 0, color), nameStringFinal.length() + 1, nameStringFinal.length() + 1 + viaBotString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    stringBuilder.setSpan(viaSpan1 = new TypefaceSpan(org.telegram.messenger.AndroidUtilities.regular(), 0, color), nameStringFinal.length() + 1, nameStringFinal.length() + 1 + viaBotString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     if (currentNameStatus != null) {
                         viaNameWidth += dp(4 + 20 + 4);
                         stringBuilder.setSpan(new DialogCell.FixedWidthSpan(dp(4 + 20 + 4)), nameStringFinal.length(), nameStringFinal.length() + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -16144,7 +16148,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                     viaOnly = true;
                     SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
                     stringBuilder.append(viaBotString).append(" ").append(viaUsername);
-                    stringBuilder.setSpan(viaSpan1 = new TypefaceSpan(Typeface.DEFAULT, 0, color), 0, viaBotString.length() + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    stringBuilder.setSpan(viaSpan1 = new TypefaceSpan(org.telegram.messenger.AndroidUtilities.regular(), 0, color), 0, viaBotString.length() + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     stringBuilder.setSpan(viaSpan2 = new TypefaceSpan(AndroidUtilities.bold(), 0, color), 1 + viaBotString.length(), stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     nameStringFinal = stringBuilder;
                 }
@@ -20494,9 +20498,9 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
             compactCommentRow = new CompactHeaderRow(false);
         }
         if (compactHeaderBoldPaint == null) {
-            compactHeaderBoldPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            compactHeaderBoldPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             compactHeaderBoldPaint.setTypeface(AndroidUtilities.bold());
-            compactHeaderTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            compactHeaderTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         }
         compactHeaderTextPaint.setTextSize(Theme.chat_replyTextPaint.getTextSize());
         final int count = getRepliesCount();

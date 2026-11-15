@@ -60,7 +60,7 @@ public class LetterDrawable extends Drawable {
         this.resourcesProvider = resourcesProvider;
         if (style == STYLE_DEFAULT) {
             if (namePaint == null) {
-                namePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                namePaint = org.telegram.messenger.FuckgramFonts.textPaint();
             }
             namePaint.setTextSize(dp(28));
             paint.setColor(Theme.getColor(Theme.key_sharedMedia_linkPlaceholder, resourcesProvider));
@@ -68,19 +68,19 @@ public class LetterDrawable extends Drawable {
             textPaint = namePaint;
         } else if (style == STYLE_TOPIC_DRAWABLE) {
             if (namePaintTopic == null) {
-                namePaintTopic = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                namePaintTopic = org.telegram.messenger.FuckgramFonts.textPaint();
             }
             namePaintTopic.setColor(Color.WHITE);
             namePaintTopic.setTextSize(dp(13));
-            namePaintTopic.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            namePaintTopic.setTypeface(Typeface.create(org.telegram.messenger.AndroidUtilities.regular(), Typeface.BOLD));
             textPaint = namePaintTopic;
         } else {
             if (namePaintSmallTopic == null) {
-                namePaintSmallTopic = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                namePaintSmallTopic = org.telegram.messenger.FuckgramFonts.textPaint();
             }
             namePaintSmallTopic.setColor(Color.WHITE);
             namePaintSmallTopic.setTextSize(Theme.chat_topicTextPaint.getTextSize() * .75f);
-            namePaintSmallTopic.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            namePaintSmallTopic.setTypeface(Typeface.create(org.telegram.messenger.AndroidUtilities.regular(), Typeface.BOLD));
             textPaint = namePaintSmallTopic;
         }
     }

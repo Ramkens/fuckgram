@@ -3,6 +3,7 @@ package org.telegram.ui;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -13,9 +14,12 @@ import android.widget.Toast;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.FuckgramConfig;
-import org.telegram.messenger.LocaleController;
+import org.telegram.messenger.FuckgramCrypto;
+import org.telegram.messenger.FuckgramText;
+import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.ActionBar;
+import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.TextCell;
@@ -23,17 +27,32 @@ import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Components.LayoutHelper;
 
 /**
- * fuckgram: settings screen (ghost mode, keep deleted messages, settings pack export / import, about).
+ * fuckgram: settings. The first screen is a menu of categories, every category is its own screen.
  */
 public class FuckgramSettingsActivity extends BaseFragment {
 
+    public static final int MENU = 0, PRIVACY = 1, MESSAGES = 2, LOOK = 3, PROFILE = 4, PACKS = 5;
+
+    private final int category;
     private LinearLayout list;
+
+    public FuckgramSettingsActivity() {
+        this(MENU);
+    }
+
+    public FuckgramSettingsActivity(int category) {
+        this.category = category;
+    }
+
+    private static String t(String en, String ru) {
+        return FuckgramText.t(en, ru);
+    }
 
     @Override
     public View createView(Context context) {
         actionBar.setBackButtonImage(R.drawable.ic_ab_back);
         actionBar.setAllowOverlayTitle(true);
-        actionBar.setTitle(LocaleController.getString(R.string.FuckgramSettings));
+        actionBar.setTitle(titleOf(category));
         actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
             @Override
             public void onItemClick(int id) {
@@ -51,30 +70,136 @@ public class FuckgramSettingsActivity extends BaseFragment {
         list = new LinearLayout(context);
         list.setOrientation(LinearLayout.VERTICAL);
         scrollView.addView(list, new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.WRAP_CONTENT));
-
-        addHeader(context, LocaleController.getString(R.string.FuckgramGhostHeader));
-        addSwitch(context, FuckgramConfig.GHOST_NO_READ, LocaleController.getString(R.string.FuckgramGhostNoRead), true);
-        addSwitch(context, FuckgramConfig.GHOST_NO_TYPING, LocaleController.getString(R.string.FuckgramGhostNoTyping), true);
-        addSwitch(context, FuckgramConfig.GHOST_OFFLINE, LocaleController.getString(R.string.FuckgramGhostOffline), false);
-        addInfo(context, LocaleController.getString(R.string.FuckgramGhostInfo));
-
-        addHeader(context, LocaleController.getString(R.string.FuckgramMessagesHeader));
-        addSwitch(context, FuckgramConfig.KEEP_DELETED, LocaleController.getString(R.string.FuckgramKeepDeleted), false);
-        addInfo(context, LocaleController.getString(R.string.FuckgramKeepDeletedInfo));
-
-        addHeader(context, LocaleController.getString(R.string.FuckgramProfileHeader));
-        addSwitch(context, FuckgramConfig.SHOW_BADGE, LocaleController.getString(R.string.FuckgramShowBadge), false);
-        addInfo(context, LocaleController.getString(R.string.FuckgramShowBadgeInfo));
-
-        addHeader(context, LocaleController.getString(R.string.FuckgramPackHeader));
-        addButton(context, LocaleController.getString(R.string.FuckgramExport), true, v -> exportPack(context));
-        addButton(context, LocaleController.getString(R.string.FuckgramImport), false, v -> importPack(context));
-        addInfo(context, LocaleController.getString(R.string.FuckgramPackInfo));
-
-        addButton(context, LocaleController.getString(R.string.FuckgramAbout), false, v -> presentFragment(new FuckgramAboutActivity()));
-        addInfo(context, "");
-
+        build(context);
         return fragmentView;
+    }
+
+    private static String titleOf(int c) {
+        switch (c) {
+            case PRIVACY: return t("Privacy & ghost mode", "Приватность и призрак");
+            case MESSAGES: return t("Messages & encryption", "Сообщения и шифрование");
+            case LOOK: return t("Appearance & animations", "Оформление и анимации");
+            case PROFILE: return t("Badge", "Значок fuckgram");
+            case PACKS: return t("Settings packs", "Пакеты настроек");
+            default: return t("fuckgram settings", "Настройки fuckgram");
+        }
+    }
+
+    private void build(Context context) {
+        list.removeAllViews();
+        switch (category) {
+            case PRIVACY:
+                addHeader(context, t("Ghost mode", "Режим призрака"));
+                addSwitch(context, FuckgramConfig.GHOST_NO_READ, t("Don't send read receipts", "Не отмечать сообщения прочитанными"), true);
+                addSwitch(context, FuckgramConfig.GHOST_NO_TYPING, t("Don't show «typing…»", "Не показывать «печатает…»"), true);
+                addSwitch(context, FuckgramConfig.GHOST_OFFLINE, t("Always appear offline", "Всегда быть «не в сети»"), false);
+                addInfo(context, t("Messages stay unread for the sender until you turn this off. Works on this device.",
+                        "Собеседник не увидит, что вы прочитали сообщение, пока вы это не выключите. Работает на этом устройстве."));
+                break;
+            case MESSAGES:
+                addHeader(context, t("Deleted messages", "Удалённые сообщения"));
+                addSwitch(context, FuckgramConfig.KEEP_DELETED, t("Keep messages deleted by others", "Сохранять сообщения, удалённые собеседником"), false);
+                addInfo(context, t("A deleted message stays in the chat with a «deleted» mark next to the time (it appears after the chat is reopened).",
+                        "Удалённое сообщение остаётся в чате с пометкой «удалено» у времени (видна после повторного открытия чата)."));
+                addHeader(context, t("fg encryption", "fg-шифрование"));
+                addSwitch(context, FuckgramConfig.ENC_ENABLED, t("Enable fg encryption", "Включить fg-шифрование"), true);
+                addValue(context, t("Default passphrase", "Общий пароль"), FuckgramCrypto.getDefaultPassphrase() == null ? t("built-in key", "встроенный ключ") : "••••", false, v -> askDefaultPassphrase(context));
+                addInfo(context, t("Long-press the send button → «Send fg-encrypted». fuckgram users see normal text with a small mark, everyone else sees a pile of symbols. Without a passphrase a built-in key is used (not secret, because the app is open source). For real protection set a passphrase in the same menu for a chat, and give it to your friend outside Telegram.",
+                        "Зажмите кнопку отправки → «Отправить fg-шифром». Пользователи fuckgram увидят обычный текст с маленькой меткой, остальные — набор символов. Без пароля используется встроенный ключ (он не секретный, ведь приложение с открытым кодом). Для настоящей защиты задайте пароль чата в том же меню и передайте его другу вне Telegram."));
+                break;
+            case LOOK:
+                addHeader(context, t("Theme", "Тема"));
+                addValue(context, t("Theme", "Тема"), FuckgramConfig.getInt(FuckgramConfig.THEME_MODE) == 0 ? t("Black", "Чёрная") : t("White", "Белая"), false,
+                        v -> pick(context, t("Theme", "Тема"), new String[]{t("Black", "Чёрная"), t("White", "Белая")}, FuckgramConfig.THEME_MODE, 0, () -> applyTheme()));
+                addHeader(context, t("Live chat background", "Живой фон чата"));
+                addValue(context, t("Mode", "Режим"), liveName(FuckgramConfig.getInt(FuckgramConfig.LIVE_BG)), true,
+                        v -> pick(context, t("Live background", "Живой фон"), new String[]{t("Off", "Выключен"), t("Gradient", "Градиент"), t("Gradient + particles", "Градиент + частицы")}, FuckgramConfig.LIVE_BG, 0, null));
+                addValue(context, t("Speed", "Скорость"), level(FuckgramConfig.getInt(FuckgramConfig.LIVE_BG_SPEED)), true,
+                        v -> pick(context, t("Speed", "Скорость"), levels(), FuckgramConfig.LIVE_BG_SPEED, 1, null));
+                addValue(context, t("Particles", "Частицы"), level(FuckgramConfig.getInt(FuckgramConfig.LIVE_BG_DENSITY)), true,
+                        v -> pick(context, t("Particles", "Частицы"), levels(), FuckgramConfig.LIVE_BG_DENSITY, 1, null));
+                addSwitch(context, FuckgramConfig.LIVE_BG_BATTERY, t("Pause in power saving mode", "Останавливать в режиме экономии"), false);
+                addInfo(context, t("The animation is capped at 30 FPS and stops when the chat is not on screen.",
+                        "Анимация ограничена 30 кадрами и останавливается, когда чат не на экране."));
+                addHeader(context, t("Screen transitions", "Переходы между экранами"));
+                addValue(context, t("Style", "Стиль"), transitionName(FuckgramConfig.getInt(FuckgramConfig.TRANSITION)), true,
+                        v -> pick(context, t("Transition", "Переход"), new String[]{t("Default", "Стандартный"), t("Fade", "Затухание"), t("Zoom", "Масштаб"), t("Slide up", "Снизу вверх")}, FuckgramConfig.TRANSITION, 0, null));
+                addValue(context, t("Duration", "Длительность"), level(FuckgramConfig.getInt(FuckgramConfig.TRANSITION_SPEED)), false,
+                        v -> pick(context, t("Duration", "Длительность"), new String[]{t("Fast", "Быстро"), t("Normal", "Нормально"), t("Slow", "Медленно")}, FuckgramConfig.TRANSITION_SPEED, 1, null));
+                break;
+            case PROFILE:
+                addHeader(context, t("Badge", "Значок"));
+                addSwitch(context, FuckgramConfig.SHOW_BADGE, t("Show fuckgram badges", "Показывать значки fuckgram"), false);
+                addInfo(context, t("Shows the fuckgram badge next to your name and next to the names of other fuckgram users (in profiles). This switch only changes what YOU see: other fuckgram users still see your badge. To let clients recognise each other, fuckgram adds invisible characters at the end of your last name.",
+                        "Показывает значок fuckgram у вашего имени и у имён других пользователей fuckgram (в профилях). Переключатель меняет только то, что видите ВЫ: другие пользователи fuckgram по-прежнему видят ваш значок. Чтобы клиенты узнавали друг друга, fuckgram добавляет в конец фамилии невидимые символы."));
+                break;
+            case PACKS:
+                addHeader(context, t("Settings pack", "Пакет настроек"));
+                addButton(context, t("Share pack", "Отправить пакет другу"), true, v -> sharePack(context));
+                addButton(context, t("Copy pack", "Скопировать пакет"), true, v -> exportPack(context));
+                addButton(context, t("Import pack from clipboard", "Импорт пакета из буфера"), false, v -> importPack(context));
+                addInfo(context, t("A pack contains all fuckgram settings (theme, animations, ghost mode…) as text. Passphrases are never included. Your friend copies the text and taps «Import».",
+                        "Пакет содержит все настройки fuckgram (тема, анимации, призрак…) в виде текста. Пароли в пакет не попадают. Друг копирует текст и нажимает «Импорт»."));
+                break;
+            default:
+                addHeader(context, "fuckgram");
+                addButton(context, t("Privacy & ghost mode", "Приватность и призрак"), true, v -> presentFragment(new FuckgramSettingsActivity(PRIVACY)));
+                addButton(context, t("Messages & encryption", "Сообщения и шифрование"), true, v -> presentFragment(new FuckgramSettingsActivity(MESSAGES)));
+                addButton(context, t("Appearance & animations", "Оформление и анимации"), true, v -> presentFragment(new FuckgramSettingsActivity(LOOK)));
+                addButton(context, t("Badge", "Значок fuckgram"), true, v -> presentFragment(new FuckgramSettingsActivity(PROFILE)));
+                addButton(context, t("Settings packs", "Пакеты настроек"), true, v -> presentFragment(new FuckgramSettingsActivity(PACKS)));
+                addButton(context, t("About fuckgram", "О fuckgram"), false, v -> presentFragment(new FuckgramAboutActivity()));
+                addInfo(context, "");
+        }
+    }
+
+    private String[] levels() {
+        return new String[]{t("Low", "Мало / медленно"), t("Medium", "Средне"), t("High", "Много / быстро")};
+    }
+
+    private static String level(int v) {
+        return v <= 1 ? t("Low", "Мало") : v == 2 ? t("Medium", "Средне") : t("High", "Много");
+    }
+
+    private static String liveName(int v) {
+        return v == 0 ? t("Off", "Выключен") : v == 1 ? t("Gradient", "Градиент") : t("Gradient + particles", "Градиент + частицы");
+    }
+
+    private static String transitionName(int v) {
+        switch (v) {
+            case 1: return t("Fade", "Затухание");
+            case 2: return t("Zoom", "Масштаб");
+            case 3: return t("Slide up", "Снизу вверх");
+            default: return t("Default", "Стандартный");
+        }
+    }
+
+    /** Applies the black / white theme chosen in the settings. */
+    public static void applyTheme() {
+        Theme.ThemeInfo info = Theme.getTheme(FuckgramConfig.getInt(FuckgramConfig.THEME_MODE) == 0 ? "Night" : "Day");
+        if (info != null) {
+            NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.needSetDayNightTheme, info, false, null, -1);
+        }
+    }
+
+    private void pick(Context context, String title, String[] items, String key, int firstValue, Runnable after) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);
+        builder.setItems(items, (d, which) -> {
+            FuckgramConfig.setInt(key, which + firstValue);
+            if (after != null) {
+                after.run();
+            }
+            if (fragmentView != null) {
+                build(context);
+            }
+        });
+        builder.setNegativeButton(t("Cancel", "Отмена"), null);
+        showDialog(builder.create());
+    }
+
+    private void askDefaultPassphrase(Context context) {
+        FuckgramEncryptionUi.showDefaultPassphraseDialog(context, () -> build(context));
     }
 
     private void addHeader(Context context, String text) {
@@ -93,7 +218,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
         info.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
         info.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText3));
         info.setGravity(Gravity.LEFT);
-        info.setPadding(AndroidUtilities.dp(21), AndroidUtilities.dp(8), AndroidUtilities.dp(21), AndroidUtilities.dp(8));
+        info.setPadding(AndroidUtilities.dp(21), AndroidUtilities.dp(8), AndroidUtilities.dp(21), AndroidUtilities.dp(16));
         list.addView(info, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
     }
 
@@ -109,12 +234,31 @@ public class FuckgramSettingsActivity extends BaseFragment {
         list.addView(cell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
     }
 
+    private void addValue(Context context, String title, String value, boolean divider, View.OnClickListener listener) {
+        TextCell cell = new TextCell(context);
+        cell.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite));
+        cell.setTextAndValue(title, value, divider);
+        cell.setOnClickListener(listener);
+        list.addView(cell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
+    }
+
     private void addButton(Context context, String title, boolean divider, View.OnClickListener listener) {
         TextCell cell = new TextCell(context);
         cell.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite));
         cell.setText(title, divider);
         cell.setOnClickListener(listener);
         list.addView(cell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
+    }
+
+    private void sharePack(Context context) {
+        String json = FuckgramConfig.exportPack();
+        if (json == null) {
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, json);
+        context.startActivity(Intent.createChooser(intent, t("Share pack", "Отправить пакет")));
     }
 
     private void exportPack(Context context) {
@@ -125,7 +269,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         if (clipboard != null) {
             clipboard.setPrimaryClip(ClipData.newPlainText("fuckgram", json));
-            Toast.makeText(context, LocaleController.getString(R.string.FuckgramExported), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, t("Copied", "Скопировано"), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -140,14 +284,10 @@ public class FuckgramSettingsActivity extends BaseFragment {
         } catch (Throwable ignore) {
         }
         boolean ok = text != null && FuckgramConfig.importPack(text);
-        Toast.makeText(context, LocaleController.getString(ok ? R.string.FuckgramImported : R.string.FuckgramImportFailed), Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, ok ? t("Imported", "Импортировано") : t("No valid pack in clipboard", "В буфере нет пакета"), Toast.LENGTH_SHORT).show();
         if (ok) {
-            // rebuild the screen so the switches show the imported values
-            list.removeAllViews();
-            createView(context);
-            ((ScrollView) fragmentView).requestLayout();
-            finishFragment();
-            presentFragment(new FuckgramSettingsActivity());
+            applyTheme();
+            build(context);
         }
     }
 }

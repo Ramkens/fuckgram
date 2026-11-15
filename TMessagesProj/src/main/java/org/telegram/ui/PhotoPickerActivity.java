@@ -178,7 +178,7 @@ public class PhotoPickerActivity extends BaseFragment implements NotificationCen
     private Drawable writeButtonDrawable;
     private SizeNotifierFrameLayout sizeNotifierFrameLayout;
     private int itemsPerRow = 3;
-    private TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private RectF rect = new RectF();
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private AnimatorSet animatorSet;
@@ -933,7 +933,7 @@ public class PhotoPickerActivity extends BaseFragment implements NotificationCen
 
         emptyView = new StickerEmptyView(context, flickerView, StickerEmptyView.STICKER_TYPE_SEARCH, getResourceProvider());
         emptyView.setAnimateLayoutChange(true);
-        emptyView.title.setTypeface(Typeface.DEFAULT);
+        emptyView.title.setTypeface(org.telegram.messenger.AndroidUtilities.regular());
         emptyView.title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
         ThemeBind.textColor(emptyView.title, Theme.key_windowBackgroundWhiteGrayText, getResourceProvider());
         emptyView.addView(flickerView, 0);

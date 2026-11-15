@@ -306,8 +306,8 @@ public class CustomPhoneKeyboardView extends ViewGroup {
     }
 
     private final static class NumberButtonView extends View implements Theme.Colorable {
-        private final TextPaint numberTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        private final TextPaint symbolsTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private final TextPaint numberTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+        private final TextPaint symbolsTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         private final String mNumber;
         private final String mSymbols;
         private final Rect rect = new Rect();

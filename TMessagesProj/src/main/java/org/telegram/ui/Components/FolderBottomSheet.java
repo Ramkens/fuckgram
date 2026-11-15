@@ -1279,8 +1279,8 @@ public class FolderBottomSheet extends BottomSheetWithRecyclerListView {
 
         private class FoldersPreview extends View implements Theme.Colorable {
 
-            TextPaint paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-            TextPaint selectedTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            TextPaint paint = org.telegram.messenger.FuckgramFonts.textPaint();
+            TextPaint selectedTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             Paint selectedPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             Path path = new Path();
             float[] radii = new float[8];

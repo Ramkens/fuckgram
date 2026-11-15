@@ -1355,8 +1355,8 @@ public class PhotoFilterView extends FrameLayout implements FilterShaders.Filter
 
     public static class EnhanceView extends View {
 
-        private TextPaint topTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        private TextPaint bottomTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private TextPaint topTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+        private TextPaint bottomTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
 
         private StaticLayout topText;
         private float topTextWidth, topTextLeft;

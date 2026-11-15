@@ -214,7 +214,7 @@ public class PreviewButtons extends FrameLayout {
 
     private class ShareButtonView extends View {
 
-        private final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         private final Paint buttonPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint darkenPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final StaticLayout staticLayout;

@@ -519,7 +519,7 @@ public class VideoTimelineView extends View {
         private Drawable tooltipBackground;
         private Drawable tooltipBackgroundArrow;
         private StaticLayout tooltipLayout;
-        private TextPaint tooltipPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private TextPaint tooltipPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         private long lastTime = -1;
 
         private float tooltipAlpha;

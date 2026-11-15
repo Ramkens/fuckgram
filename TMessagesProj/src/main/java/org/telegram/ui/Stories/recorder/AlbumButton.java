@@ -30,11 +30,11 @@ public class AlbumButton extends View implements Theme.Colorable {
     private final ImageReceiver imageReceiver = new ImageReceiver(this);
     private final CharSequence title, subtitle;
 
-    private final TextPaint namePaintLayout = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint namePaintLayout = org.telegram.messenger.FuckgramFonts.textPaint();
     private StaticLayout nameLayout;
     private float nameLayoutWidth, nameLayoutLeft;
 
-    private final TextPaint countPaintLayout = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint countPaintLayout = org.telegram.messenger.FuckgramFonts.textPaint();
     private StaticLayout countLayout;
     private float countLayoutWidth, countLayoutLeft;
 

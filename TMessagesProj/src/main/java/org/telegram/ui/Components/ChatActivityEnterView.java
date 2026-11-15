@@ -130,6 +130,9 @@ import org.telegram.messenger.DialogObject;
 import org.telegram.messenger.Emoji;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
+import org.telegram.messenger.FuckgramConfig;
+import org.telegram.messenger.FuckgramCrypto;
+import org.telegram.ui.FuckgramEncryptionUi;
 import org.telegram.messenger.ImageReceiver;
 import org.telegram.messenger.LiteMode;
 import org.telegram.messenger.LocaleController;
@@ -1219,7 +1222,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         private String tooltipMessage;
         private StaticLayout tooltipLayout;
         private float tooltipWidth;
-        private TextPaint tooltipPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private TextPaint tooltipPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         Paint lockBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         Paint lockPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         Paint lockOutlinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -5192,6 +5195,32 @@ public class ChatActivityEnterView extends FrameLayout implements
                     AndroidUtilities.cancelRunOnUIThread(dismissSendPreview);
                     AndroidUtilities.runOnUIThread(dismissSendPreview, 500);
                 }
+            });
+        }
+        if (containsSendMessage && audioToSend == null && messageEditText != null && editingMessageObject == null && FuckgramConfig.isEncryptionEnabled()) {
+            options.add(R.drawable.msg_secret, getString(R.string.FuckgramSendEncrypted), () -> {
+                String plain = messageEditText.getText() == null ? "" : messageEditText.getText().toString().trim();
+                if (plain.isEmpty()) {
+                    return;
+                }
+                String cipher = FuckgramCrypto.encrypt(plain, FuckgramCrypto.passphraseForSending(dialog_id));
+                if (cipher == null || cipher.length() > 4000) {
+                    android.widget.Toast.makeText(getContext(), getString(R.string.FuckgramEncryptTooLong), android.widget.Toast.LENGTH_LONG).show();
+                    return;
+                }
+                messageEditText.setText(cipher);
+                sentFromPreview = System.currentTimeMillis();
+                final boolean shownDialog = sendMessageInternal(true, 0, 0, 0, true);
+                dismissSendPreviewSent = !shownDialog;
+                AndroidUtilities.cancelRunOnUIThread(dismissSendPreview);
+                AndroidUtilities.runOnUIThread(dismissSendPreview, 500);
+            });
+            options.add(R.drawable.msg_secret, getString(R.string.FuckgramChatPassphrase), () -> {
+                if (messageSendPreview != null) {
+                    messageSendPreview.dismiss(false);
+                    messageSendPreview = null;
+                }
+                FuckgramEncryptionUi.showPassphraseDialog(getContext(), dialog_id);
             });
         }
         options.setupSelectors();
@@ -14312,10 +14341,10 @@ public class ChatActivityEnterView extends FrameLayout implements
         public SlideTextView(@NonNull Context context) {
             super(context);
             smallSize = AndroidUtilities.displaySize.x <= dp(320);
-            grayPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            grayPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             grayPaint.setTextSize(dp(smallSize ? 13 : 15));
 
-            bluePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            bluePaint = org.telegram.messenger.FuckgramFonts.textPaint();
             bluePaint.setTextSize(dp(15));
 
             bluePaint.setTypeface(AndroidUtilities.bold());
@@ -14561,7 +14590,7 @@ public class ChatActivityEnterView extends FrameLayout implements
         @Override
         protected void onDraw(Canvas canvas) {
             if (textPaint == null) {
-                textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                 textPaint.setTextSize(dp(15));
                 textPaint.setTypeface(AndroidUtilities.bold());
                 textPaint.setColor(getThemedColor(Theme.key_chat_recordTime));

@@ -1893,7 +1893,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             super(context);
             setVisibility(GONE);
 
-            textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             textPaint.setColor(Color.WHITE);
             textPaint.setTypeface(Typeface.SANS_SERIF);
             textPaint.setTextAlign(Paint.Align.CENTER);
@@ -11788,7 +11788,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 } else if (user.verified) {
                     nameTextView.setRightDrawable2(getVerifiedCrossfadeDrawable());
                     nameTextViewRightDrawable2ContentDescription = LocaleController.getString(R.string.AccDescrVerified);
-                } else if (user.self && FuckgramConfig.isShowBadge()) {
+                } else if ((user.self || org.telegram.messenger.FuckgramMarker.isMarked(user)) && FuckgramConfig.isShowBadge()) {
                     // fuckgram: local badge next to our own name
                     nameTextView.setRightDrawable2(FuckgramBadge.create(getContext()));
                     nameTextViewRightDrawable2ContentDescription = "fuckgram";

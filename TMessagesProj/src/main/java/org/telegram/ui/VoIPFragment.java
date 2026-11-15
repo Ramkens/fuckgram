@@ -2474,7 +2474,7 @@ public class VoIPFragment implements
                 drawable.setBounds(0, 0, AndroidUtilities.dp(40), AndroidUtilities.dp(40));
                 ((Emoji.EmojiDrawable) drawable).preload();
                 int[] emojiOnly = new int[1];
-                TextPaint paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                TextPaint paint = org.telegram.messenger.FuckgramFonts.textPaint();
                 paint.setTextSize(AndroidUtilities.dp(28));
                 CharSequence txt = emoji[i];
                 txt = Emoji.replaceEmoji(txt, paint.getFontMetricsInt(), false, emojiOnly);

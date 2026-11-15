@@ -123,12 +123,12 @@ public class GiveawayResultsMessageCell {
         if (counterTextPaint != null) {
             return;
         }
-        counterTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        counterStarsTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        chatTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        textDividerPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        countriesTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        counterTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+        counterStarsTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+        chatTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+        textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+        textDividerPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+        countriesTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         counterBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         chatBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 

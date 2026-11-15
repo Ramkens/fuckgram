@@ -1804,16 +1804,17 @@ public class Theme {
 
                 //override default themes
                 if (isHome(themeAccent) && name.equals("Dark Blue") || name.equals("Night")) {
-                    themeAccent.myMessagesAccentColor = 0xff258DE5;
-                    themeAccent.myMessagesGradientAccentColor1 = 0xff4272DF;
-                    themeAccent.myMessagesGradientAccentColor2 = 0xff8146D7;
-                    themeAccent.myMessagesGradientAccentColor3 = 0xff9F3EAA;
+                    // fuckgram: graphite outgoing bubbles and a plain black chat background instead of the blue / purple ones
+                    themeAccent.myMessagesAccentColor = 0xff2e2e33;
+                    themeAccent.myMessagesGradientAccentColor1 = 0xff2e2e33;
+                    themeAccent.myMessagesGradientAccentColor2 = 0xff2e2e33;
+                    themeAccent.myMessagesGradientAccentColor3 = 0xff2e2e33;
                     if (name.equals("Night")) {
-                        themeAccent.patternIntensity = -0.57f;
-                        themeAccent.backgroundOverrideColor = 0xff6c7fa6;
-                        themeAccent.backgroundGradientOverrideColor1 = 0xff2e344b;
-                        themeAccent.backgroundGradientOverrideColor2 = 0xff7874a7;
-                        themeAccent.backgroundGradientOverrideColor3 = 0xff333258;
+                        themeAccent.patternIntensity = 0f;
+                        themeAccent.backgroundOverrideColor = 0xff000000;
+                        themeAccent.backgroundGradientOverrideColor1 = 0;
+                        themeAccent.backgroundGradientOverrideColor2 = 0;
+                        themeAccent.backgroundGradientOverrideColor3 = 0;
                     }
                 }
                 themeAccentsMap.put(themeAccent.id, themeAccent);
@@ -8098,13 +8099,13 @@ public class Theme {
     public static void createCommonMessageResources() {
         synchronized (sync) {
             if (chat_msgTextPaint == null) {
-                chat_msgTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-                chat_msgGameTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                chat_msgTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+                chat_msgGameTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                 chat_msgTextPaintEmoji = new TextPaint[6];
-                chat_msgTextPaintOneEmoji = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-                chat_msgTextPaintTwoEmoji = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-                chat_msgTextPaintThreeEmoji = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-                chat_msgBotButtonPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                chat_msgTextPaintOneEmoji = org.telegram.messenger.FuckgramFonts.textPaint();
+                chat_msgTextPaintTwoEmoji = org.telegram.messenger.FuckgramFonts.textPaint();
+                chat_msgTextPaintThreeEmoji = org.telegram.messenger.FuckgramFonts.textPaint();
+                chat_msgBotButtonPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                 chat_msgBotButtonPaint.setTypeface(AndroidUtilities.bold());
                 chat_namePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
                 chat_namePaint.setTypeface(AndroidUtilities.bold());
@@ -8119,11 +8120,11 @@ public class Theme {
                 chat_forwardNamePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
                 chat_adminPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
                 chat_timePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-                chat_msgTextCodePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                chat_msgTextCodePaint = org.telegram.messenger.FuckgramFonts.textPaint();
                 chat_msgTextCodePaint.setTypeface(Typeface.MONOSPACE);
-                chat_msgTextCode2Paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                chat_msgTextCode2Paint = org.telegram.messenger.FuckgramFonts.textPaint();
                 chat_msgTextCode2Paint.setTypeface(Typeface.MONOSPACE);
-                chat_msgTextCode3Paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                chat_msgTextCode3Paint = org.telegram.messenger.FuckgramFonts.textPaint();
                 chat_msgTextCode3Paint.setTypeface(Typeface.MONOSPACE);
                 chat_msgCodeBgPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
                 chat_ephemeralPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
@@ -8131,7 +8132,7 @@ public class Theme {
 
             final float[] emojiSizePercents = new float[] {.68f, .46f, .34f, .28f, .22f, .19f};
             for (int i = 0; i < chat_msgTextPaintEmoji.length; ++i) {
-                chat_msgTextPaintEmoji[i] = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                chat_msgTextPaintEmoji[i] = org.telegram.messenger.FuckgramFonts.textPaint();
                 chat_msgTextPaintEmoji[i].setTextSize(dp(emojiSizePercents[i] * 120f));
             }
             chat_msgTextPaintOneEmoji.setTextSize(dp(28 + 18));
@@ -8161,20 +8162,20 @@ public class Theme {
         createCommonMessageResources();
 
         if (chat_infoPaint == null) {
-            chat_infoPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-            chat_infoBoldPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_infoPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+            chat_infoBoldPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_infoBoldPaint.setTypeface(AndroidUtilities.bold());
-            chat_stickerCommentCountPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_stickerCommentCountPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_stickerCommentCountPaint.setTypeface(AndroidUtilities.bold());
-            chat_docNamePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_docNamePaint = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_docNamePaint.setTypeface(AndroidUtilities.bold());
             chat_docBackPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             chat_deleteProgressPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             chat_deleteProgressPaint.setStyle(Paint.Style.STROKE);
             chat_deleteProgressPaint.setStrokeCap(Paint.Cap.ROUND);
-            chat_locationTitlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_locationTitlePaint = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_locationTitlePaint.setTypeface(AndroidUtilities.bold());
-            chat_locationAddressPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_locationAddressPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_urlPaint = new Paint();
             chat_urlPaint.setPathEffect(LinkPath.getRoundedEffect());
             chat_outUrlPaint = new Paint();
@@ -8189,20 +8190,20 @@ public class Theme {
             chat_radialProgress2Paint.setStrokeCap(Paint.Cap.ROUND);
             chat_radialProgress2Paint.setStyle(Paint.Style.STROKE);
             chat_audioTimePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            chat_livePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_livePaint = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_livePaint.setTypeface(Typeface.DEFAULT_BOLD);
-            chat_audioTitlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_audioTitlePaint = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_audioTitlePaint.setTypeface(AndroidUtilities.bold());
-            chat_audioPerformerPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-            chat_botButtonPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_audioPerformerPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+            chat_botButtonPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_botButtonPaint.setTypeface(AndroidUtilities.bold());
-            chat_contactNamePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_contactNamePaint = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_contactNamePaint.setTypeface(AndroidUtilities.bold());
-            chat_contactPhonePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-            chat_durationPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-            chat_gamePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_contactPhonePaint = org.telegram.messenger.FuckgramFonts.textPaint();
+            chat_durationPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+            chat_gamePaint = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_gamePaint.setTypeface(AndroidUtilities.bold());
-            chat_shipmentPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_shipmentPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_timePaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             chat_adminPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             chat_ephemeralPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
@@ -8216,7 +8217,7 @@ public class Theme {
             chat_topicTextPaint.setTypeface(AndroidUtilities.bold());
             chat_titleLabelTextPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
             chat_commentTextPaint = new TextPaint(TextPaint.ANTI_ALIAS_FLAG);
-            chat_instantViewPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_instantViewPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_instantViewPaint.setTypeface(AndroidUtilities.bold());
             chat_instantViewRectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             chat_instantViewRectPaint.setStyle(Paint.Style.STROKE);
@@ -8231,18 +8232,18 @@ public class Theme {
             chat_statusRecordPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             chat_statusRecordPaint.setStyle(Paint.Style.STROKE);
             chat_statusRecordPaint.setStrokeCap(Paint.Cap.ROUND);
-            chat_actionTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-            chat_actionTextPaint2 = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-            chat_actionTextPaint3 = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_actionTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+            chat_actionTextPaint2 = org.telegram.messenger.FuckgramFonts.textPaint();
+            chat_actionTextPaint3 = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_actionTextPaint.setTypeface(AndroidUtilities.bold());
-            chat_unlockExtendedMediaTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_unlockExtendedMediaTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_unlockExtendedMediaTextPaint.setTypeface(AndroidUtilities.bold());
             chat_actionBackgroundGradientDarkenPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             chat_actionBackgroundGradientDarkenPaint.setColor(0x15000000);
             chat_timeBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            chat_contextResult_titleTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_contextResult_titleTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_contextResult_titleTextPaint.setTypeface(AndroidUtilities.bold());
-            chat_contextResult_descriptionTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            chat_contextResult_descriptionTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             chat_composeBackgroundPaint = new Paint();
             chat_radialProgressPausedPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             chat_radialProgressPausedSeekbarPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -8987,7 +8988,7 @@ public class Theme {
 
     public static void createProfileResources(Context context) {
         if (profile_verifiedDrawable == null) {
-            profile_aboutTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            profile_aboutTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
 
             Resources resources = context.getResources();
 

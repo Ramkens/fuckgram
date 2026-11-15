@@ -228,7 +228,7 @@ public class PremiumPreviewGiftSentBottomSheet extends PremiumPreviewBottomSheet
             }
         }
 
-        TextPaint paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        TextPaint paint = org.telegram.messenger.FuckgramFonts.textPaint();
         int count;
 
         public AdditionalCounterView(Context context) {

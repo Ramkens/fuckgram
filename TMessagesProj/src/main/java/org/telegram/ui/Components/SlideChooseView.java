@@ -66,7 +66,7 @@ public class SlideChooseView extends View {
         this.resourcesProvider = resourcesProvider;
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         linePaint.setStrokeWidth(AndroidUtilities.dp(2));
         linePaint.setStrokeCap(Paint.Cap.ROUND);

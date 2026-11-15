@@ -31,7 +31,7 @@ public class HorizontalRoundTabsLayout extends HorizontalScrollView {
     public final LinearLayout linearLayout;
 
     private final Paint bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
 
     private boolean accent;
 

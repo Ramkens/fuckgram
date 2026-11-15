@@ -164,7 +164,7 @@ public class SecretMediaViewer implements NotificationCenter.NotificationCenterD
 
         private RLottieDrawable drawable;
 
-        private TextPaint oncePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private TextPaint oncePaint = org.telegram.messenger.FuckgramFonts.textPaint();
         private StaticLayout onceLayout;
         private float onceLayoutWidth, onceLayoutHeight;
 

@@ -7609,7 +7609,7 @@ public class RichMessageLayout {
 
         private final RadialProgress2 radialProgress;
         private final SeekBar seekBar;
-        private final TextPaint audioTimePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private final TextPaint audioTimePaint = org.telegram.messenger.FuckgramFonts.textPaint();
 
         private StaticLayout titleLayout;
         private StaticLayout durationLayout;
@@ -7995,8 +7995,8 @@ public class RichMessageLayout {
         private final RadialProgress2 radialProgress;
         private final ImageReceiver previewImage = new ImageReceiver();
         private final Paint previewBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private final TextPaint titlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        private final TextPaint sizePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private final TextPaint titlePaint = org.telegram.messenger.FuckgramFonts.textPaint();
+        private final TextPaint sizePaint = org.telegram.messenger.FuckgramFonts.textPaint();
         private StaticLayout titleLayout;
         private StaticLayout sizeLayout;
         private final int buttonX = dp(16);

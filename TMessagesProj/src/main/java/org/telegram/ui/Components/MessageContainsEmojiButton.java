@@ -99,7 +99,7 @@ public class MessageContainsEmojiButton extends FrameLayout implements Notificat
 
         ThemeBind.selectorBackground(this, Theme.createRadSelectorDrawable(Theme.getColor(Theme.key_listSelector, resourcesProvider), 0, 16), null, ThemeBind.of(Theme.key_listSelector), resourcesProvider);
 
-        textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         textPaint.setTextSize(AndroidUtilities.dp(13));
         textPaint.setColor(Theme.getColor(Theme.key_actionBarDefaultSubmenuItem, resourcesProvider));
 

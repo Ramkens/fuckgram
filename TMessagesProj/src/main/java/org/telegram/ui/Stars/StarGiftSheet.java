@@ -4701,7 +4701,7 @@ public class StarGiftSheet extends BottomSheetWithRecyclerListView implements No
             }, 0, to.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             CharSequence comment = null;
             if (details.message != null) {
-                TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                 textPaint.setTextSize(dp(14));
 
                 comment = new SpannableStringBuilder(details.message.text);
@@ -9362,7 +9362,7 @@ public class StarGiftSheet extends BottomSheetWithRecyclerListView implements No
         public ActionView(Context context) {
             super(context);
 
-            paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            paint = org.telegram.messenger.FuckgramFonts.textPaint();
             paint.setColor(Color.WHITE);
             paint.setTextSize(dp(13));
 

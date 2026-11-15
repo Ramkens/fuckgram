@@ -113,7 +113,7 @@ public class AvatarPreviewPagerIndicator extends View implements ProfileGalleryV
         });
 
 
-        textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         textPaint.setColor(Color.WHITE);
         textPaint.setTypeface(Typeface.SANS_SERIF);
         textPaint.setTextAlign(Paint.Align.CENTER);

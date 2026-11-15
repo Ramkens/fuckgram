@@ -250,8 +250,8 @@ public class AndroidUtilities {
     public final static int REPLACING_TAG_TYPE_LINK_NBSP = 3;
     public final static int REPLACING_TAG_TYPE_UNDERLINE = 4;
 
-    public final static String TYPEFACE_ROBOTO_MEDIUM = "fonts/rmedium.ttf";
-    public final static String TYPEFACE_ROBOTO_EXTRA_BOLD = "fonts/rextrabold.ttf";
+    public final static String TYPEFACE_ROBOTO_MEDIUM = "fonts/Inter-Medium.otf";
+    public final static String TYPEFACE_ROBOTO_EXTRA_BOLD = "fonts/Inter-ExtraBold.otf";
     public final static String TYPEFACE_ROBOTO_MEDIUM_ITALIC = "fonts/rmediumitalic.ttf";
     public final static String TYPEFACE_ROBOTO_MONO = "fonts/rmono.ttf";
     public final static String TYPEFACE_MERRIWEATHER_BOLD = "fonts/mw_bold.ttf";
@@ -264,13 +264,23 @@ public class AndroidUtilities {
 
     public static Typeface bold() {
         if (mediumTypeface == null) {
-            if (SharedConfig.useSystemBoldFont && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                mediumTypeface = Typeface.create(null, 500, false);
-            } else {
-                mediumTypeface = getTypeface(TYPEFACE_ROBOTO_MEDIUM);
-            }
+            mediumTypeface = getTypeface(TYPEFACE_ROBOTO_MEDIUM);
         }
         return mediumTypeface;
+    }
+
+    // fuckgram: bundled regular font (Inter) so the UI looks the same on every phone, not like the system font
+    public static final String TYPEFACE_FUCKGRAM_REGULAR = "fonts/Inter-Regular.otf";
+    private static Typeface fgRegularTypeface;
+
+    public static Typeface regular() {
+        if (fgRegularTypeface == null) {
+            if (ApplicationLoader.applicationContext == null) {
+                return Typeface.DEFAULT;
+            }
+            fgRegularTypeface = getTypeface(TYPEFACE_FUCKGRAM_REGULAR);
+        }
+        return fgRegularTypeface != null ? fgRegularTypeface : Typeface.DEFAULT;
     }
 
     private static final Hashtable<String, Typeface> typefaceCache = new Hashtable<>();
@@ -2507,10 +2517,9 @@ public class AndroidUtilities {
                     Typeface t;
                     if (Build.VERSION.SDK_INT >= 26) {
                         Typeface.Builder builder = new Typeface.Builder(ApplicationLoader.applicationContext.getAssets(), assetPath);
-                        if (assetPath.contains("rextrabold")) {
+                        if (assetPath.contains("rextrabold") || assetPath.contains("ExtraBold")) {
                             builder.setWeight(800);
-                        }
-                        if (assetPath.contains("medium") || assetPath.contains("rbold")) {
+                        } else if (assetPath.contains("rmedium") || assetPath.contains("rbold") || assetPath.contains("Inter-Medium")) {
                             builder.setWeight(700);
                         }
                         if (assetPath.contains("italic")) {

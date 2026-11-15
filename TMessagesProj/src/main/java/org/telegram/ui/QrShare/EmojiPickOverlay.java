@@ -48,7 +48,7 @@ final class EmojiPickOverlay extends View {
 
     private final Paint fill = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint stroke = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final TextPaint num = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint num = org.telegram.messenger.FuckgramFonts.textPaint();
     private final RectF rect = new RectF();
     private final int[] loc = new int[2], myLoc = new int[2];
 

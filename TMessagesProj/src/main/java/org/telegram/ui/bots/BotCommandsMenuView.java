@@ -50,7 +50,7 @@ public class BotCommandsMenuView extends View implements Theme.Colorable {
 
     final RectF rectTmp = new RectF();
     final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     final MenuDrawable backDrawable = new MenuDrawable() {
         @Override
         public void invalidateSelf() {

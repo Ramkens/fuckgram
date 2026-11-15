@@ -1551,7 +1551,7 @@ public class ThemePreviewActivity extends BaseFragment implements DownloadContro
             sheetDrawable.getPadding(paddings);
             sheetDrawable.setColorFilter(new PorterDuffColorFilter(sheetDrawableColor = getThemedColor(Theme.key_windowBackgroundWhite), PorterDuff.Mode.MULTIPLY));
 
-            TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             textPaint.setTextSize(dp(14));
             textPaint.setTypeface(AndroidUtilities.bold());
             if (!(currentWallpaper instanceof WallpapersListActivity.EmojiWallpaper)) {

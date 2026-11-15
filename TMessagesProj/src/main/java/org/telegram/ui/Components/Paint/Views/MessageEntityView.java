@@ -99,7 +99,7 @@ public class MessageEntityView extends EntityView {
         }
 //        dateCell = new ChatActionCell(context, false, resourcesProvider) {
 //            public final BlurringShader.StoryBlurDrawer blurDrawer = new BlurringShader.StoryBlurDrawer(blurManager, this, BlurringShader.StoryBlurDrawer.BLUR_TYPE_ACTION_BACKGROUND);
-//            private final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG); {
+//            private final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint(); {
 //                textPaint.setTypeface(AndroidUtilities.medium());
 //                textPaint.setTextSize(AndroidUtilities.dp(Math.max(16, SharedConfig.fontSize) - 2));
 //                textPaint.setColor(0xffffffff);
@@ -762,7 +762,7 @@ public class MessageEntityView extends EntityView {
                 if (viewType == 1) {
                     final ChatActionCell cell = new ChatActionCell(context, false, resourcesProvider) {
                         public final BlurringShader.StoryBlurDrawer blurDrawer = new BlurringShader.StoryBlurDrawer(blurManager, this, BlurringShader.StoryBlurDrawer.BLUR_TYPE_ACTION_BACKGROUND);
-                        private final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG); {
+                        private final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint(); {
                             textPaint.setTypeface(AndroidUtilities.bold());
                             textPaint.setTextSize(AndroidUtilities.dp(Math.max(16, SharedConfig.fontSize) - 2));
                             textPaint.setColor(0xffffffff);

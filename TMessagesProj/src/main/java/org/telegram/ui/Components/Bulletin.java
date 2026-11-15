@@ -2410,7 +2410,7 @@ public class Bulletin {
         public TimerView(Context context, Theme.ResourcesProvider resourcesProvider) {
             super(context);
 
-            textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             textPaint.setTextSize(dp(12));
             textPaint.setTypeface(AndroidUtilities.getTypeface("fonts/num.otf"));
 

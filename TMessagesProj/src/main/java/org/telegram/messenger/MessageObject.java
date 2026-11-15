@@ -201,6 +201,8 @@ public class MessageObject {
     private boolean emojiAnimatedStickerLoading;
     public String emojiAnimatedStickerColor;
     public CharSequence messageText;
+    public boolean fgEncrypted; // fuckgram: text was a fuckgram cipher
+    public boolean fgLocked; // fuckgram: ...and we have no key for it
     public CharSequence messageTextShort;
     public CharSequence messageTextForReply;
     public CharSequence linkDescription;
@@ -2077,6 +2079,7 @@ public class MessageObject {
         messageOwner = message;
         replyMessageObject = replyToMessage;
         eventId = eid;
+        FuckgramCrypto.onMessage(this, message, getDialogId(message));
         wasUnread = !messageOwner.out && messageOwner.unread;
 
         if (message.replyMessage != null) {
@@ -5776,7 +5779,7 @@ public class MessageObject {
                             if (end < _messageText.length() && _messageText.charAt(end) == ')') {
                                 end++;
                             }
-                            sp.setSpan(new TypefaceSpan(Typeface.DEFAULT), start, end, 0);
+                            sp.setSpan(new TypefaceSpan(org.telegram.messenger.AndroidUtilities.regular()), start, end, 0);
                             messageText = sp;
                         }
                     }
@@ -5832,7 +5835,7 @@ public class MessageObject {
                             if (end < _messageText.length() && _messageText.charAt(end) == ')') {
                                 end++;
                             }
-                            sp.setSpan(new TypefaceSpan(Typeface.DEFAULT), start, end, 0);
+                            sp.setSpan(new TypefaceSpan(org.telegram.messenger.AndroidUtilities.regular()), start, end, 0);
                             messageText = sp;
                         }
                     }
@@ -6354,7 +6357,7 @@ public class MessageObject {
         Theme.createCommonChatResources();
         TextPaint paint = Theme.chat_actionTextPaint;
         if (paint == null) {
-            paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            paint = org.telegram.messenger.FuckgramFonts.textPaint();
             paint.setTypeface(AndroidUtilities.bold());
             paint.setTextSize(dp(Math.max(16, SharedConfig.fontSize) - 2));
         }

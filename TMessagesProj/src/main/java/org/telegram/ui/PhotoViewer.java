@@ -696,7 +696,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
 
         Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         AnimatedTextView.AnimatedTextDrawable left;
-        TextPaint paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        TextPaint paint = org.telegram.messenger.FuckgramFonts.textPaint();
         StaticLayout center;
         float centerWidth, centerTop;
         AnimatedTextView.AnimatedTextDrawable right;
@@ -2359,7 +2359,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
 
         public CounterView(Context context) {
             super(context);
-            textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             textPaint.setTextSize(dp(15));
             textPaint.setTypeface(AndroidUtilities.bold());
             textPaint.setColor(0xffffffff);
@@ -21109,7 +21109,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
             super(context);
 
             paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             textPaint.setTextSize(dp(14));
             textPaint.setColor(0xffcdcdcd);
 

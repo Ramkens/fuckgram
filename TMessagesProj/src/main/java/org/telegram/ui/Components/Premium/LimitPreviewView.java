@@ -1060,7 +1060,7 @@ public class LimitPreviewView extends LinearLayout implements Theme.Colorable {
 
         Path path = new Path();
         PathEffect pathEffect = new CornerPathEffect(dp(6));
-        TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
 
         StaticLayout textLayout;
         float textWidth;

@@ -32,7 +32,7 @@ public class NumberTextView extends View {
 
     private ArrayList<StaticLayout> letters = new ArrayList<>();
     private ArrayList<StaticLayout> oldLetters = new ArrayList<>();
-    private TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private ObjectAnimator animator;
     private float progress = 0.0f;
     private int currentNumber = 1;

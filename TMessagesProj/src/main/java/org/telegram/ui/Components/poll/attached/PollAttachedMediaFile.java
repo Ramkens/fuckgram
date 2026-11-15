@@ -67,7 +67,7 @@ public class PollAttachedMediaFile extends PollAttachedMedia {
         }
 
         if (!TextUtils.isEmpty(ext)) {
-            tp = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            tp = org.telegram.messenger.FuckgramFonts.textPaint();
             tp.setTextSize(dp(13));
             tp.setTypeface(AndroidUtilities.bold());
             tp.setColor(Theme.getColor(Theme.key_files_iconText));
@@ -103,7 +103,7 @@ public class PollAttachedMediaFile extends PollAttachedMedia {
         }
 
         if (!TextUtils.isEmpty(ext)) {
-            tp = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            tp = org.telegram.messenger.FuckgramFonts.textPaint();
             tp.setTextSize(dp(13));
             tp.setTypeface(AndroidUtilities.bold());
             tp.setColor(Theme.getColor(Theme.key_files_iconText));
@@ -202,11 +202,11 @@ public class PollAttachedMediaFile extends PollAttachedMedia {
             paddingEnd = dp(12);
             lineSpacing = dp(4);
 
-            titlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            titlePaint = org.telegram.messenger.FuckgramFonts.textPaint();
             titlePaint.setTextSize(dp(15));
             titlePaint.setTypeface(AndroidUtilities.bold());
 
-            subtitlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            subtitlePaint = org.telegram.messenger.FuckgramFonts.textPaint();
             subtitlePaint.setTextSize(dp(13));
         }
 

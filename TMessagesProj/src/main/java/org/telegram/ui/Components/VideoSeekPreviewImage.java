@@ -56,7 +56,7 @@ public class VideoSeekPreviewImage extends View implements NotificationCenter.No
 
     private String frameTime;
     private int timeWidth;
-    private final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
 
     private BitmapShader bitmapShader;
     private RectF dstR = new RectF();

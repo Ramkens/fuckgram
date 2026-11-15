@@ -570,7 +570,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         private static final float HEIGHT_DP = 17.333f;
         private final String count;
         private final boolean hasUnmutedUnreadDialogs;
-        private final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         private final Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final float counterWidth;
 

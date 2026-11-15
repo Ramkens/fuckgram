@@ -595,7 +595,7 @@ public class CheckBoxBase {
             } else if (checkProgress != 0) {
                 if (checkedText != null) {
                     if (textPaint == null) {
-                        textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                        textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                         textPaint.setTypeface(AndroidUtilities.bold());
                     }
                     final float textSize, y;

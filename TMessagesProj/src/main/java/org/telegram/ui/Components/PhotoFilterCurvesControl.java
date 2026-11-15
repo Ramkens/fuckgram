@@ -53,7 +53,7 @@ public class PhotoFilterCurvesControl extends View {
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint paintDash = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint paintCurve = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private Path path = new Path();
 
     private PhotoFilterCurvesControlDelegate delegate;

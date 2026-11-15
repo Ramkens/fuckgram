@@ -904,8 +904,8 @@ public class GalleryListView extends FrameLayout implements NotificationCenter.N
         private final Matrix gradientMatrix = new Matrix();
 
         private final Paint durationBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private final TextPaint durationTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        private final TextPaint draftTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private final TextPaint durationTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+        private final TextPaint draftTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         private final Drawable durationPlayDrawable;
 
         private boolean drawDurationPlay;

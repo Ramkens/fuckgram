@@ -68,7 +68,7 @@ public class WallpaperCheckBoxView extends View {
 
         parentView = parent;
 
-        textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         textPaint.setTextSize(AndroidUtilities.dp(14));
         textPaint.setTypeface(AndroidUtilities.bold());
 

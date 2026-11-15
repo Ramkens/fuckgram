@@ -204,7 +204,7 @@ public class FilterCreateActivity extends BaseFragment {
             filter.color = (int) (Math.random() * 8);
             creatingNew = true;
         }
-        TextPaint paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        TextPaint paint = org.telegram.messenger.FuckgramFonts.textPaint();
         paint.setTextSize(dp(17));
         newFilterName = new SpannableStringBuilder(filter.name);
         newFilterName = Emoji.replaceEmoji(newFilterName, paint.getFontMetricsInt(), false);
@@ -2193,7 +2193,7 @@ public class FilterCreateActivity extends BaseFragment {
 
     public static class NewSpan extends ReplacementSpan {
 
-        TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         Paint bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         StaticLayout layout;
         float width, height;

@@ -2735,7 +2735,7 @@ public class EmojiBottomSheet extends BottomSheet implements NotificationCenter.
 
     private static class TabsView extends View {
 
-        private final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         private final Paint selectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         private StaticLayout emojiLayout;
@@ -2917,7 +2917,7 @@ public class EmojiBottomSheet extends BottomSheet implements NotificationCenter.
     private class StoryWidgetsCell extends View {
 
         private final Paint bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         {
             bgPaint.setColor(0x19ffffff);
             textPaint.setTypeface(AndroidUtilities.getTypeface("fonts/rcondensedbold.ttf"));

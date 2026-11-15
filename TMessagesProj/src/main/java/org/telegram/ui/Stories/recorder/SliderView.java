@@ -248,7 +248,7 @@ public class SliderView extends View {
 
     private float r;
     private int w, h;
-    private final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
 
     public int fixWidth;
 

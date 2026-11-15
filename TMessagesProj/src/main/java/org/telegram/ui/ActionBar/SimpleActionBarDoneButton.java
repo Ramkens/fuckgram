@@ -57,7 +57,7 @@ public class SimpleActionBarDoneButton extends View implements FactorAnimator.Ta
 
     private final Drawable checkDrawable;
     private final CircularProgressDrawable progressDrawable;
-    private final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final RectF rect = new RectF();
     private CharSequence text;

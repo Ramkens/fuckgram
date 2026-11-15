@@ -27,7 +27,7 @@ public class ChatListCell extends LinearLayout {
         private RadioButton button;
         private boolean isThreeLines;
         private RectF rect = new RectF();
-        private TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
 
         public ListView(Context context, boolean threeLines) {
             super(context);

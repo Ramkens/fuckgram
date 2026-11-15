@@ -1185,7 +1185,7 @@ public class ProfileGiftsContainer extends FrameLayout implements NotificationCe
                 }
                 final SpannableStringBuilder sb = new SpannableStringBuilder(collection.title);
                 if (collection.icon != null) {
-                    final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                    final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                     textPaint.setTextSize(dp(16));
                     final SpannableStringBuilder emoji = new SpannableStringBuilder("e ");
                     final AnimatedEmojiSpan span = new AnimatedEmojiSpan(collection.icon, textPaint.getFontMetricsInt());

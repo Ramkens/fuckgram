@@ -212,11 +212,11 @@ public class SharedLinkCell extends FrameLayout implements Theme.Colorable {
         this.viewType = viewType;
         setFocusable(true);
 
-        titleTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        titleTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         titleTextPaint.setTypeface(AndroidUtilities.bold());
         titleTextPaint.setColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText, resourcesProvider));
 
-        descriptionTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        descriptionTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
 
         titleTextPaint.setTextSize(dp(14));
         descriptionTextPaint.setTextSize(dp(14));
@@ -234,11 +234,11 @@ public class SharedLinkCell extends FrameLayout implements Theme.Colorable {
         addView(checkBox, LayoutHelper.createFrame(24, 24, (LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT) | Gravity.TOP, LocaleController.isRTL ? 0 : 44, 44, LocaleController.isRTL ? 44 : 0, 0));
 
         if (viewType == VIEW_TYPE_GLOBAL_SEARCH) {
-            description2TextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            description2TextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             description2TextPaint.setTextSize(dp(13));
         }
 
-        captionTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        captionTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         captionTextPaint.setTextSize(dp(13));
     }
 

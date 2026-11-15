@@ -200,12 +200,12 @@ public class StoriesIntro extends FrameLayout {
             backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             backgroundPaint.setColor(0x16D8D8D8);
 
-            headerTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            headerTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             headerTextPaint.setColor(Color.WHITE);
             headerTextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics()));
             headerTextPaint.setTypeface(AndroidUtilities.bold());
 
-            subHeaderTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            subHeaderTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
             subHeaderTextPaint.setColor(0x96FFFFFF);
 
             subHeaderTextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, getResources().getDisplayMetrics()));

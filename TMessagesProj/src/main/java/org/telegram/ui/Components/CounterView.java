@@ -78,7 +78,7 @@ public class CounterView extends View {
         int animationType = -1;
 
         public Paint circlePaint;
-        public TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        public TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         public RectF rectF = new RectF();
         public boolean addServiceGradient;
 

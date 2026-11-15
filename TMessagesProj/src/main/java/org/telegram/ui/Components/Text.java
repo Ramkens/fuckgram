@@ -45,7 +45,7 @@ public class Text {
     }
 
     public Text(CharSequence text, float textSizeDp, Typeface typeface) {
-        paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        paint = org.telegram.messenger.FuckgramFonts.textPaint();
         paint.setTextSize(dp(textSizeDp));
         paint.setTypeface(typeface);
         setText(text);

@@ -477,9 +477,9 @@ public class ChatActionCell extends BaseCell implements DownloadController.FileD
     private StaticLayout settingWallpaperProgressTextLayout;
     private float giftPremiumButtonWidth;
 
-    private TextPaint giftTitlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-    private TextPaint giftTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-    private TextPaint giftSubtitlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private TextPaint giftTitlePaint = org.telegram.messenger.FuckgramFonts.textPaint();
+    private TextPaint giftTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+    private TextPaint giftSubtitlePaint = org.telegram.messenger.FuckgramFonts.textPaint();
 
     private TLRPC.Document giftSticker;
     private TLRPC.VideoSize giftEffectAnimation;
@@ -3533,7 +3533,7 @@ public class ChatActionCell extends BaseCell implements DownloadController.FileD
             if (overrideBackgroundPaint == null) {
                 overrideBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 overrideBackgroundPaint.setColor(color);
-                overrideTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                overrideTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                 overrideTextPaint.setTypeface(AndroidUtilities.bold());
                 overrideTextPaint.setTextSize(dp(Math.max(16, SharedConfig.fontSize) - 2));
                 overrideTextPaint.setColor(getThemedColor(overrideText));

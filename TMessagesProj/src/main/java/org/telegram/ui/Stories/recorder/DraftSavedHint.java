@@ -28,7 +28,7 @@ public class DraftSavedHint extends View {
 
     private final Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    private final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private final StaticLayout layout;
     private final float layoutWidth, layoutLeft;
 

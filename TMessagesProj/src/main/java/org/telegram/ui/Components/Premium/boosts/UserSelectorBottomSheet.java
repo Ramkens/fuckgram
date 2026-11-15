@@ -1207,7 +1207,7 @@ public class UserSelectorBottomSheet extends BottomSheetWithRecyclerListView imp
     }
 
     private static class AddressChipSpan extends ReplacementSpan {
-        private final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         private final Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final RectF rect = new RectF();
         private final boolean fade;

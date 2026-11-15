@@ -269,7 +269,7 @@ public class QrShareView extends View {
     private long sweepStart;
     private boolean sweepDone;          // the free text has fully taken over the chip
     private float burnFrac = 1f;        // remaining time 0..1 (frozen when the fee comes back)
-    private final TextPaint chipPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint chipPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     // the remove-price button: one label "Remove ★50 fee", the star inline before the price (feeA ★ feeB)
     private String feeA = "", feeB = "";
     private static final int FEE_PAD = 11; // symmetric text insets of the label
@@ -413,8 +413,8 @@ public class QrShareView extends View {
     private final Paint fill = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint stroke = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint cardPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final TextPaint text = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-    private final TextPaint bold = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint text = org.telegram.messenger.FuckgramFonts.textPaint();
+    private final TextPaint bold = org.telegram.messenger.FuckgramFonts.textPaint();
     private final Path path = new Path();
     private final Path star = new Path();
     private final RectF rect = new RectF();
@@ -1775,7 +1775,7 @@ public class QrShareView extends View {
 
     // the expiry toast: its number in Medium, the rest Regular (three runs on one baseline)
     private String expiryText, expA, expB, expC;
-    private final TextPaint toastMedium = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint toastMedium = org.telegram.messenger.FuckgramFonts.textPaint();
 
     {toastMedium.setTypeface(AndroidUtilities.bold());}
 
@@ -5705,7 +5705,7 @@ public class QrShareView extends View {
     }
 
     private final RectF buyRect = new RectF();
-    private final TextPaint emptyTitle = new TextPaint(Paint.ANTI_ALIAS_FLAG), emptySub = new TextPaint(Paint.ANTI_ALIAS_FLAG), buyText = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint emptyTitle = org.telegram.messenger.FuckgramFonts.textPaint(), emptySub = org.telegram.messenger.FuckgramFonts.textPaint(), buyText = org.telegram.messenger.FuckgramFonts.textPaint();
     private TextPaint buyDarken;
     private final TextPaint buyKnock = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.SUBPIXEL_TEXT_FLAG);
 
@@ -5864,7 +5864,7 @@ public class QrShareView extends View {
         // the cut-out letters a touch darker, hue kept: multiplied by a light, chroma-boosted tint of the backdrop
         // (the pattern still shows through; ≈12% darker, slightly richer)
         if (buyDarken == null) {
-            buyDarken = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            buyDarken = org.telegram.messenger.FuckgramFonts.textPaint();
             buyDarken.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY));
         }
         buyDarken.setTypeface(AndroidUtilities.bold());

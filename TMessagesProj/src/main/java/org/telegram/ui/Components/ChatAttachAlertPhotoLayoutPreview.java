@@ -2207,7 +2207,7 @@ public class ChatAttachAlertPhotoLayoutPreview extends ChatAttachAlert.AttachAle
                         bitmapCanvas.drawColor(0x00000000);
 
                         if (textPaint == null) {
-                            textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                            textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                             textPaint.setTypeface(AndroidUtilities.bold());
                         }
                         textPaint.setColor(getThemedColor(Theme.key_chat_attachCheckBoxCheck));
@@ -2250,7 +2250,7 @@ public class ChatAttachAlertPhotoLayoutPreview extends ChatAttachAlert.AttachAle
                     if (durationText != null) {
                         if (videoDurationBitmap == null || videoDurationBitmapText == null || !videoDurationBitmapText.equals(durationText)) {
                             if (videoDurationTextPaint == null) {
-                                videoDurationTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                                videoDurationTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                                 videoDurationTextPaint.setTypeface(AndroidUtilities.bold());
                                 videoDurationTextPaint.setColor(0xffffffff);
                             }

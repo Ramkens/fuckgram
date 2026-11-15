@@ -25,7 +25,7 @@ public class VoIPTimerView extends View {
     Paint activePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     Paint inactivePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     String currentTimeStr;
-    TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private int signalBarCount = 4;
     private boolean isDrawCallIcon = false;
     private final Drawable callsDeclineDrawable;

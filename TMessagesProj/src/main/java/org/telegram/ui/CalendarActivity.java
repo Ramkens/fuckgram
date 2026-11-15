@@ -87,9 +87,9 @@ public class CalendarActivity extends BaseFragment implements NotificationCenter
 
     RecyclerListView listView;
     LinearLayoutManager layoutManager;
-    TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-    TextPaint activeTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-    TextPaint textPaint2 = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+    TextPaint activeTextPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+    TextPaint textPaint2 = org.telegram.messenger.FuckgramFonts.textPaint();
 
     TextView selectDaysButton;
     TextView removeDaysButton;

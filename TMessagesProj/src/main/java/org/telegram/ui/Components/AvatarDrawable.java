@@ -128,7 +128,7 @@ public class AvatarDrawable extends Drawable {
     public AvatarDrawable(Theme.ResourcesProvider resourcesProvider) {
         super();
         this.resourcesProvider = resourcesProvider;
-        namePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        namePaint = org.telegram.messenger.FuckgramFonts.textPaint();
         namePaint.setTypeface(AndroidUtilities.bold());
         namePaint.setTextSize(dp(18));
     }

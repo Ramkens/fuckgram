@@ -128,7 +128,7 @@ public class ThemesHorizontalListCell extends RecyclerListView implements Notifi
         private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private Drawable optionsDrawable;
 
-        private TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         private Drawable inDrawable;
         private Drawable outDrawable;
         private boolean isLast;

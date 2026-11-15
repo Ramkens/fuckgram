@@ -363,8 +363,8 @@ public class DownloadButton extends ImageView {
     public static class PreparingVideoToast extends View {
 
         private final Paint dimPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        private final TextPaint textPaint2 = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
+        private final TextPaint textPaint2 = org.telegram.messenger.FuckgramFonts.textPaint();
         private final Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint whitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint greyPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

@@ -2761,7 +2761,7 @@ public class SharedMediaLayout extends FrameLayout implements Theme.Colorable, N
                                 // no hint before the list is measured: a layout of a negative width throws
                             } else {
                                 if (archivedHintPaint == null) {
-                                    archivedHintPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+                                    archivedHintPaint = org.telegram.messenger.FuckgramFonts.textPaint();
                                     archivedHintPaint.setTextSize(dp(14));
                                     archivedHintPaint.setColor(getThemedColor(Theme.key_windowBackgroundWhiteGrayText2));
                                 }

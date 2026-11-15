@@ -35,7 +35,7 @@ public class BottomPagerTabs extends View {
         final RLottieDrawable drawable;
         final Drawable ripple;
 
-        final TextPaint paint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        final TextPaint paint = org.telegram.messenger.FuckgramFonts.textPaint();
         final StaticLayout layout;
         final float layoutWidth, layoutLeft;
 

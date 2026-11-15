@@ -50,7 +50,7 @@ public class LinkPreview extends View {
     public final int padx, pady;
 
     private float textScale = 1;
-    private final TextPaint layoutPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint layoutPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private StaticLayout layout;
     private float layoutWidth, layoutLeft;
 
@@ -72,7 +72,7 @@ public class LinkPreview extends View {
     private Text siteNameText;
 
     private boolean hasDescription;
-    private final TextPaint descriptionPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint descriptionPaint = org.telegram.messenger.FuckgramFonts.textPaint();
     private StaticLayout descriptionLayout;
     private float descriptionLayoutWidth, descriptionLayoutLeft;
 

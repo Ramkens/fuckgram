@@ -68,7 +68,7 @@ public class OutlineTextContainerView extends FrameLayout implements Theme.Color
     private final RectF rect = new RectF();
     private String mText = "";
     private final Paint outlinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final TextPaint textPaint = org.telegram.messenger.FuckgramFonts.textPaint();
 
     private final SpringAnimation selectionSpring = new SpringAnimation(this, SELECTION_PROGRESS_PROPERTY);
     private float selectionProgress;

@@ -540,7 +540,7 @@ public class RecyclerListView extends RecyclerView implements IBlur3Capture {
         private boolean fromTop;
         private float lastLetterY;
         private float fromWidth;
-        private TextPaint letterPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        private TextPaint letterPaint = org.telegram.messenger.FuckgramFonts.textPaint();
         private String currentLetter;
         private Path path = new Path();
         private Path arrowPath = new Path();
