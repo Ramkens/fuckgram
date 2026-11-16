@@ -12428,7 +12428,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         }
         boolean onlySelfStories = !isArchive() && getStoriesController().hasOnlySelfStories();
         boolean newVisibility;
-        if (communityId != 0) {
+        if (communityId != 0 || org.telegram.messenger.FuckgramConfig.get(org.telegram.messenger.FuckgramConfig.HIDE_STORIES)) {
             newVisibility = false;
         } else if (isArchive()) {
             newVisibility = !getStoriesController().getHiddenList().isEmpty();
@@ -12437,7 +12437,6 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             onlySelfStories = getStoriesController().hasOnlySelfStories();
         }
         if (org.telegram.messenger.FuckgramConfig.get(org.telegram.messenger.FuckgramConfig.HIDE_STORIES)) {
-            newVisibility = false;
             onlySelfStories = false;
         }
 
