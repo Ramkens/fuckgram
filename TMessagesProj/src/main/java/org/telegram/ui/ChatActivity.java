@@ -21144,7 +21144,6 @@ public class ChatActivity extends BaseFragment implements
         hideFieldPanel(false);
     }
 
-    @Override
     /** fuckgram: sends a picture with hidden text as a file (a photo would be recompressed by Telegram). */
     public void fgSendHiddenImage(String path) {
         ArrayList<String> paths = new ArrayList<>();
@@ -21154,6 +21153,7 @@ public class ChatActivity extends BaseFragment implements
         SendMessagesHelper.prepareSendingDocuments(getAccountInstance(), paths, originalPaths, null, null, null, dialog_id, replyingMessageObject, getThreadMessage(), null, replyingQuote, editingMessageObject, true, 0, null, getMessageChatSendParams(), 0, false, 0);
     }
 
+    @Override
     public void onActivityResultFragment(int requestCode, int resultCode, Intent data) {
         if (FuckgramStegoUi.onResult(this, requestCode, resultCode, data)) {
             return;
