@@ -795,6 +795,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
             items.add(UItem.asShadow(null));
         }
 
+        items.add(SettingCell.Factory.of(30, 0xFF4a4a52, 0xFF1c1c1e, R.drawable.settings_features, "fuckgram", org.telegram.messenger.FuckgramText.t("Ghost mode, encryption, themes, animations", "Призрак, шифрование, темы, анимации")));
         items.add(SettingCell.Factory.of(1, IconBackgroundColors.BLUE.top, IconBackgroundColors.BLUE.bottom, R.drawable.settings_account, getString(R.string.SettingsAccount), getString(R.string.SettingsAccountInfo)));
         items.add(SettingCell.Factory.of(2, IconBackgroundColors.ORANGE.top, IconBackgroundColors.ORANGE.bottom, R.drawable.settings_chat, getString(R.string.SettingsChat), getString(R.string.SettingsChatInfo)));
         items.add(SettingCell.Factory.of(3, IconBackgroundColors.GREEN.top, IconBackgroundColors.GREEN.bottom, R.drawable.settings_privacy, getString(R.string.SettingsPrivacySecurity), getString(R.string.SettingsPrivacySecurityInfo)));
@@ -964,6 +965,9 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                 UserSelectorBottomSheet.open(0, BirthdayController.getInstance(UserConfig.selectedAccount).getState());
                 break;
 
+            case 30:
+                presentFragment(new FuckgramSettingsActivity());
+                break;
             case 17:
                 showDialog(AlertsCreator.createSupportAlert(this, resourceProvider));
                 break;
@@ -1056,7 +1060,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                     }
                     break;
             }
-            return formatString(R.string.TelegramVersion, String.format(Locale.US, "v%s (%d)\n%s", pInfo.versionName, code, abi));
+            return formatString(R.string.TelegramVersion, String.format(Locale.US, "v%s\n%s", BuildVars.FUCKGRAM_VERSION, abi));
         } catch (Exception e) {
             FileLog.e(e);
         }

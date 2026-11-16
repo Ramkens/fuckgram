@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.2
+**Fixes**
+- fuckgram settings are now in the main Settings list (first item) as well as in the profile.
+- Messages deleted by the other side are kept by default (switch in Messages & encryption).
+- The 🔐 mark of encrypted messages no longer disappears after leaving the chat.
+- Intro / login logo now fills the circle properly; version label shows fuckgram's own version.
+- Buttons on bots' messages, send button and file icons are readable again (no more white-on-white); red error colors restored.
+- Light theme: no more leftover blue.
+
+**Features**
+- fuckgram users recognise each other more reliably: plain outgoing messages carry an invisible marker, the badge appears in the profile and in the chat header of other fuckgram users.
+
+**Note**: the live background and transition options were removed from the settings until they actually work.
+
 ## 1.1
 **Look**
 - New black-and-white themes: pure black with white text, and a clean white one (switch in fuckgram settings). Graphite buttons with white text, no more blue accents.

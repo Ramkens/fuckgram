@@ -101,6 +101,7 @@ jobs:
           F=TMessagesProj/src/main/java/org/telegram/messenger/BuildVars.java
           sed -i "s|public static int APP_ID = 0;|public static int APP_ID = ${FG_API_ID};|" "$F"
           sed -i "s|public static String APP_HASH = \"\";|public static String APP_HASH = \"${FG_API_HASH}\";|" "$F"
+          sed -i "s/FUCKGRAM_VERSION = \"[^\"]*\"/FUCKGRAM_VERSION = \"$(tr -d '[:space:]' < VERSION)\"/" "$F"
           grep -q "APP_ID = ${FG_API_ID};" "$F" || { echo "::error::APP_ID injection failed"; exit 1; }
           echo "$FG_KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/fuckgram.jks"
           echo "FG_KEYSTORE_FILE=$RUNNER_TEMP/fuckgram.jks" >> "$GITHUB_ENV"

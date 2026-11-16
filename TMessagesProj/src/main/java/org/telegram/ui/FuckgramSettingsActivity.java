@@ -111,21 +111,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addHeader(context, t("Theme", "Тема"));
                 addValue(context, t("Theme", "Тема"), FuckgramConfig.getInt(FuckgramConfig.THEME_MODE) == 0 ? t("Black", "Чёрная") : t("White", "Белая"), false,
                         v -> pick(context, t("Theme", "Тема"), new String[]{t("Black", "Чёрная"), t("White", "Белая")}, FuckgramConfig.THEME_MODE, 0, () -> applyTheme()));
-                addHeader(context, t("Live chat background", "Живой фон чата"));
-                addValue(context, t("Mode", "Режим"), liveName(FuckgramConfig.getInt(FuckgramConfig.LIVE_BG)), true,
-                        v -> pick(context, t("Live background", "Живой фон"), new String[]{t("Off", "Выключен"), t("Gradient", "Градиент"), t("Gradient + particles", "Градиент + частицы")}, FuckgramConfig.LIVE_BG, 0, null));
-                addValue(context, t("Speed", "Скорость"), level(FuckgramConfig.getInt(FuckgramConfig.LIVE_BG_SPEED)), true,
-                        v -> pick(context, t("Speed", "Скорость"), levels(), FuckgramConfig.LIVE_BG_SPEED, 1, null));
-                addValue(context, t("Particles", "Частицы"), level(FuckgramConfig.getInt(FuckgramConfig.LIVE_BG_DENSITY)), true,
-                        v -> pick(context, t("Particles", "Частицы"), levels(), FuckgramConfig.LIVE_BG_DENSITY, 1, null));
-                addSwitch(context, FuckgramConfig.LIVE_BG_BATTERY, t("Pause in power saving mode", "Останавливать в режиме экономии"), false);
-                addInfo(context, t("The animation is capped at 30 FPS and stops when the chat is not on screen.",
-                        "Анимация ограничена 30 кадрами и останавливается, когда чат не на экране."));
-                addHeader(context, t("Screen transitions", "Переходы между экранами"));
-                addValue(context, t("Style", "Стиль"), transitionName(FuckgramConfig.getInt(FuckgramConfig.TRANSITION)), true,
-                        v -> pick(context, t("Transition", "Переход"), new String[]{t("Default", "Стандартный"), t("Fade", "Затухание"), t("Zoom", "Масштаб"), t("Slide up", "Снизу вверх")}, FuckgramConfig.TRANSITION, 0, null));
-                addValue(context, t("Duration", "Длительность"), level(FuckgramConfig.getInt(FuckgramConfig.TRANSITION_SPEED)), false,
-                        v -> pick(context, t("Duration", "Длительность"), new String[]{t("Fast", "Быстро"), t("Normal", "Нормально"), t("Slow", "Медленно")}, FuckgramConfig.TRANSITION_SPEED, 1, null));
+                addInfo(context, t("Live backgrounds and custom transitions are coming in the next versions.", "Живые фоны и свои переходы появятся в следующих версиях."));
                 break;
             case PROFILE:
                 addHeader(context, t("Badge", "Значок"));

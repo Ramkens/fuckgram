@@ -9,6 +9,9 @@ public class FuckgramMarks {
         }
         boolean deleted = FuckgramConfig.isKeepDeleted() && object.getId() > 0 && FuckgramDeleted.isDeleted(account, object.getDialogId(), object.getId());
         boolean enc = object.fgEncrypted;
+        if (enc && !object.fgLocked && object.getId() > 0) {
+            FuckgramDeleted.markEncrypted(account, object.getDialogId(), object.getId());
+        }
         if (!deleted && !enc) {
             return null;
         }

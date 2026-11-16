@@ -992,6 +992,18 @@ public class ChatAvatarContainer extends FrameLayout implements FactorAnimator.T
             titleTextView.setRightDrawable(null);
             rightDrawableContentDescription = null;
         }
+        try { // fuckgram: badge next to the name of other fuckgram users
+            if (parentFragment != null && org.telegram.messenger.FuckgramConfig.isShowBadge() && titleTextView.getRightDrawable2() == null) {
+                TLRPC.User fgUser = parentFragment.getCurrentUser();
+                if (fgUser != null && org.telegram.messenger.FuckgramMarker.isFuckgramUser(fgUser)) {
+                    Drawable fgBadge = org.telegram.ui.FuckgramBadge.create(getContext());
+                    if (fgBadge != null) {
+                        titleTextView.setRightDrawable2(fgBadge);
+                    }
+                }
+            }
+        } catch (Throwable ignore) {
+        }
         checkActionBar(animated);
     }
 

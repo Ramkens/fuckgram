@@ -4441,6 +4441,9 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
     public void sendMessage(SendMessageParams sendMessageParams) {
         final SendMessageChatArguments sendMessageChatArguments = sendMessageParams.sendMessageChatArguments != null ?
                 sendMessageParams.sendMessageChatArguments : SendMessageChatArguments.EMPTY;
+        if (sendMessageParams.message != null) {
+            sendMessageParams.message = FuckgramMarker.decorateOutgoing(sendMessageParams.message, sendMessageParams.peer);
+        }
         String message = sendMessageParams.message;
         String caption = sendMessageParams.caption;
         TLRPC.MessageMedia location = sendMessageParams.location;

@@ -35,7 +35,7 @@ public class FuckgramConfig {
     }
 
     private static boolean defaultBool(String key) {
-        return SHOW_BADGE.equals(key) || MARK_ACCOUNT.equals(key) || ENC_ENABLED.equals(key) || LIVE_BG_BATTERY.equals(key);
+        return SHOW_BADGE.equals(key) || MARK_ACCOUNT.equals(key) || ENC_ENABLED.equals(key) || LIVE_BG_BATTERY.equals(key) || KEEP_DELETED.equals(key);
     }
 
     private static int defaultInt(String key) {

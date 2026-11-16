@@ -266,6 +266,11 @@ public class FuckgramCrypto {
         if (message == null || message.message == null) {
             return;
         }
+        FuckgramMarker.onIncoming(message, dialogId, false);
+        if (message.id > 0 && FuckgramDeleted.isEncrypted(object.currentAccount, dialogId, message.id)) {
+            object.fgEncrypted = true; // already decrypted earlier, the plain text is stored locally
+            return;
+        }
         if (encryptedMessages.containsKey(message)) {
             object.fgEncrypted = true;
             return;
@@ -278,6 +283,7 @@ public class FuckgramCrypto {
         String plain = decryptFor(dialogId, message.message);
         if (plain != null) {
             message.message = plain;
+            FuckgramMarker.onIncoming(message, dialogId, true);
         } else {
             object.fgLocked = true;
         }

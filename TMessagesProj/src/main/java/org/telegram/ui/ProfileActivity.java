@@ -11788,7 +11788,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 } else if (user.verified) {
                     nameTextView.setRightDrawable2(getVerifiedCrossfadeDrawable());
                     nameTextViewRightDrawable2ContentDescription = LocaleController.getString(R.string.AccDescrVerified);
-                } else if ((user.self || org.telegram.messenger.FuckgramMarker.isMarked(user)) && FuckgramConfig.isShowBadge()) {
+                } else if ((user.self || org.telegram.messenger.FuckgramMarker.isFuckgramUser(user)) && FuckgramConfig.isShowBadge()) {
                     // fuckgram: local badge next to our own name
                     nameTextView.setRightDrawable2(FuckgramBadge.create(getContext()));
                     nameTextViewRightDrawable2ContentDescription = "fuckgram";

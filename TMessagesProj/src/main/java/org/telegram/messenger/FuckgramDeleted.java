@@ -68,4 +68,45 @@ public class FuckgramDeleted {
             return s.contains("0_" + id) || s.contains(dialogId + "_" + id);
         }
     }
+
+    // ---- messages that were fg-encrypted (the plain text is what we keep, the mark must survive a restart) -------
+
+    private static final Set<String> encrypted = new HashSet<>();
+    private static boolean encLoaded;
+
+    private static synchronized void loadEnc() {
+        if (encLoaded) {
+            return;
+        }
+        encLoaded = true;
+        try {
+            for (String part : ApplicationLoader.applicationContext.getSharedPreferences("fuckgram_enc", Context.MODE_PRIVATE).getString("ids", "").split(",")) {
+                if (!part.isEmpty()) {
+                    encrypted.add(part);
+                }
+            }
+        } catch (Throwable ignore) {
+        }
+    }
+
+    public static synchronized boolean isEncrypted(int account, long dialogId, int id) {
+        loadEnc();
+        return encrypted.contains(account + "_" + dialogId + "_" + id);
+    }
+
+    public static synchronized void markEncrypted(int account, long dialogId, int id) {
+        loadEnc();
+        if (id <= 0 || !encrypted.add(account + "_" + dialogId + "_" + id)) {
+            return;
+        }
+        if (encrypted.size() > LIMIT * 2) {
+            ArrayList<String> list = new ArrayList<>(encrypted);
+            encrypted.clear();
+            encrypted.addAll(list.subList(list.size() - LIMIT, list.size()));
+        }
+        try {
+            ApplicationLoader.applicationContext.getSharedPreferences("fuckgram_enc", Context.MODE_PRIVATE).edit().putString("ids", android.text.TextUtils.join(",", encrypted)).apply();
+        } catch (Throwable ignore) {
+        }
+    }
 }
