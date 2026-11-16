@@ -3456,6 +3456,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             actionBar.setClipContent(true);
         //}
         actionBar.setTitleActionRunnable(() -> {
+            if (FuckgramPanic.tap(this)) { // fuckgram: three taps on the logo = panic
+                return;
+            }
             if (initialDialogsType != DIALOGS_TYPE_WIDGET) {
                 hideFloatingButton(false);
             }
@@ -10927,6 +10930,15 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
     @NonNull
     public ArrayList<TLRPC.Dialog> getDialogsArray(int currentAccount, int dialogsType, int folderId, boolean frozen) {
+        ArrayList<TLRPC.Dialog> fgList = fgGetDialogsArray(currentAccount, dialogsType, folderId, frozen);
+        if (org.telegram.messenger.FuckgramDecoy.isActive() && !(frozen && frozenDialogsList != null && fgList == frozenDialogsList)) {
+            return org.telegram.messenger.FuckgramDecoy.filter(currentAccount, fgList); // fuckgram: quiet mode shows only allowed chats
+        }
+        return fgList;
+    }
+
+    @NonNull
+    private ArrayList<TLRPC.Dialog> fgGetDialogsArray(int currentAccount, int dialogsType, int folderId, boolean frozen) {
         if (frozen && frozenDialogsList != null) {
             return frozenDialogsList;
         }

@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.3.0
+
+### 🇷🇺 Русский
+**Новое**
+- **Тайный текст в картинке.** Зажмите кнопку отправки → «Спрятать текст в картинке»: выбираете картинку, пишете текст, он шифруется и прячется внутри. Картинка уходит файлом (PNG), потому что Telegram пережимает обычные фото и стирает скрытое. Друг с fuckgram зажимает файл → «Проявить скрытый текст». Ключ — пароль чата или встроенный.
+- **Пароль-призрак.** Второй код на экране блокировки: приложение открывается «тихо» — видны только «Избранное» и разрешённые вами чаты, уведомления от остальных молчат, закрытые чаты не открываются даже из поиска. Настоящий код возвращает всё (Настройки → fuckgram → Пароль-призрак и тревога).
+- **Тревожная кнопка.** Три быстрых нажатия на логотип fuckgram в списке чатов: открытые чаты закрываются, включается тихий режим, приложение блокируется. Нужен включённый код-пароль.
+
+**Важно знать**
+- Скрытый текст в картинке виден как обычный файл-картинка, но не как «фото» в ленте: так нужно, чтобы текст не пропал.
+- Тихий режим скрывает чаты в приложении, а не на сервере Telegram; на других устройствах всё как обычно.
+
+### 🇬🇧 English
+**New**
+- **Hidden text in a picture.** Long-press the send button → "Hide text in a picture": pick a picture, type the text, it is encrypted and hidden inside. The picture is sent as a PNG file, because Telegram recompresses ordinary photos and erases the hidden bits. A friend with fuckgram long-presses the file → "Reveal hidden text". The key is the chat passphrase or the built-in one.
+- **Ghost password.** A second code on the lock screen: the app opens quietly. Only Saved Messages and the chats you allowed are visible, notifications from the rest are silent, and hidden chats cannot be opened even from search. Your real code brings everything back (Settings → fuckgram → Ghost password & panic).
+- **Panic button.** Tap the fuckgram logo in the chat list three times quickly: open chats close, the quiet mode turns on and the app locks. Needs a passcode.
+
+**Good to know**
+- The hidden text travels in a picture file, not in a "photo" message: that is needed so the text survives.
+- The quiet mode hides chats inside the app only, not on Telegram's servers; other devices stay as they are.
+
 ## 1.2.2
 
 ### 🇷🇺 Русский

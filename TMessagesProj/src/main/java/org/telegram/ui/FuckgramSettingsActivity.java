@@ -16,6 +16,7 @@ import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.FuckgramColors;
 import org.telegram.messenger.FuckgramConfig;
 import org.telegram.messenger.FuckgramCrypto;
+import org.telegram.messenger.FuckgramDecoy;
 import org.telegram.messenger.FuckgramText;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
@@ -32,7 +33,7 @@ import org.telegram.ui.Components.LayoutHelper;
  */
 public class FuckgramSettingsActivity extends BaseFragment {
 
-    public static final int MENU = 0, PRIVACY = 1, MESSAGES = 2, LOOK = 3, PROFILE = 4, PACKS = 5, CLEAN = 6, COLORS = 7, ANIM = 8;
+    public static final int MENU = 0, PRIVACY = 1, MESSAGES = 2, LOOK = 3, PROFILE = 4, PACKS = 5, CLEAN = 6, COLORS = 7, ANIM = 8, GHOSTPASS = 9;
 
     private final int category;
     private LinearLayout list;
@@ -83,6 +84,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
             case PROFILE: return t("Badge", "Значок fuckgram");
             case PACKS: return t("Settings packs", "Пакеты настроек");
             case CLEAN: return t("Clean-up", "Убрать лишнее");
+            case GHOSTPASS: return t("Ghost password & panic", "Пароль-призрак и тревога");
             case COLORS: return t("My colors", "Свои цвета");
             case ANIM: return t("Animations", "Анимации");
             default: return t("fuckgram settings", "Настройки fuckgram");
@@ -141,6 +143,25 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addInfo(context, t("Each switch hides only its own part. Some screens update after the app is restarted.",
                         "Каждый переключатель скрывает только свою часть. Часть экранов обновится после перезапуска приложения."));
                 break;
+            case GHOSTPASS:
+                addHeader(context, t("Ghost password", "Пароль-призрак"));
+                addValue(context, t("Ghost password", "Пароль-призрак"), FuckgramDecoy.hasCode() ? t("set", "задан") : t("not set", "не задан"), true, v -> askGhostCode(context));
+                if (FuckgramDecoy.hasCode()) {
+                    addButton(context, t("Remove ghost password", "Удалить пароль-призрак"), true, v -> {
+                        FuckgramDecoy.clearCode();
+                        build(context);
+                    });
+                }
+                addButton(context, t("Chats shown in quiet mode", "Чаты, видимые в тихом режиме"), false, v -> pickQuietChats(context));
+                addInfo(context, t("Enter the ghost password on the lock screen instead of your real code: the app opens quietly, only Saved Messages and the chats you allowed are visible, and notifications from the others are silent. Your real code brings everything back. A passcode must be turned on (Settings → Privacy).",
+                        "Введите пароль-призрак на экране блокировки вместо настоящего кода: приложение откроется «тихо», видны только «Избранное» и разрешённые вами чаты, уведомления от остальных не приходят. Настоящий код возвращает всё обратно. Код-пароль должен быть включён (Настройки → Конфиденциальность)."));
+                addHeader(context, t("Panic button", "Тревожная кнопка"));
+                addInfo(context, t("Tap the «fuckgram» logo in the chat list three times quickly: open chats close, the app switches to the quiet mode and locks. Enter your real code to come back. Needs a passcode.",
+                        "Быстро нажмите три раза на логотип «fuckgram» в списке чатов: открытые чаты закроются, приложение перейдёт в тихий режим и заблокируется. Чтобы вернуться, введите настоящий код. Нужен код-пароль."));
+                addHeader(context, t("Text in pictures", "Текст в картинках"));
+                addInfo(context, t("Long-press the send button → «Hide text in a picture». The picture goes as a file (Telegram would squeeze a photo and erase the hidden text). A friend with fuckgram long-presses the file → «Reveal hidden text». The text is encrypted with the chat passphrase or the built-in key.",
+                        "Зажмите кнопку отправки → «Спрятать текст в картинке». Картинка уходит файлом (Telegram пережимает фото и стирает скрытый текст). Друг с fuckgram зажимает файл → «Проявить скрытый текст». Текст шифруется паролем чата или встроенным ключом."));
+                break;
             case COLORS:
                 addHeader(context, t("Ready palettes", "Готовые палитры"));
                 for (int a = 0; a < FuckgramColors.PRESET_NAMES.length; a++) {
@@ -192,6 +213,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addButton(context, t("Privacy & ghost mode", "Приватность и призрак"), true, v -> presentFragment(new FuckgramSettingsActivity(PRIVACY)));
                 addButton(context, t("Messages & encryption", "Сообщения и шифрование"), true, v -> presentFragment(new FuckgramSettingsActivity(MESSAGES)));
                 addButton(context, t("Appearance & animations", "Оформление и анимации"), true, v -> presentFragment(new FuckgramSettingsActivity(LOOK)));
+                addButton(context, t("Ghost password & panic", "Пароль-призрак и тревога"), true, v -> presentFragment(new FuckgramSettingsActivity(GHOSTPASS)));
                 addButton(context, t("Clean-up (hide ads, Premium…)", "Убрать лишнее (реклама, Premium…)"), true, v -> presentFragment(new FuckgramSettingsActivity(CLEAN)));
                 addButton(context, t("Badge", "Значок fuckgram"), true, v -> presentFragment(new FuckgramSettingsActivity(PROFILE)));
                 addButton(context, t("Settings packs", "Пакеты настроек"), true, v -> presentFragment(new FuckgramSettingsActivity(PACKS)));
@@ -222,6 +244,76 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 }
             });
         });
+    }
+
+    private void askGhostCode(Context context) {
+        if (org.telegram.messenger.SharedConfig.passcodeHash == null || org.telegram.messenger.SharedConfig.passcodeHash.length() == 0) {
+            Toast.makeText(context, t("Turn on the passcode first (Settings → Privacy)", "Сначала включите код-пароль (Настройки → Конфиденциальность)"), Toast.LENGTH_LONG).show();
+            return;
+        }
+        final android.widget.EditText input = new android.widget.EditText(context);
+        input.setSingleLine(true);
+        input.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setHint(t("New ghost password", "Новый пароль-призрак"));
+        input.setTextColor(Theme.getColor(Theme.key_dialogTextBlack));
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(t("Ghost password", "Пароль-призрак"));
+        builder.setView(input);
+        builder.setPositiveButton("OK", (d, w) -> {
+            String code = input.getText().toString();
+            if (code.length() < 2) {
+                Toast.makeText(context, t("Too short", "Слишком короткий"), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (org.telegram.messenger.SharedConfig.checkPasscode(code)) {
+                Toast.makeText(context, t("It must differ from your real code", "Он должен отличаться от настоящего кода"), Toast.LENGTH_LONG).show();
+                return;
+            }
+            FuckgramDecoy.setCode(code);
+            if (fragmentView != null) {
+                build(context);
+            }
+        });
+        builder.setNegativeButton(t("Cancel", "Отмена"), null);
+        showDialog(builder.create());
+    }
+
+    private void pickQuietChats(Context context) {
+        final java.util.ArrayList<org.telegram.tgnet.TLRPC.Dialog> all = getMessagesController().getAllDialogs();
+        final java.util.ArrayList<Long> ids = new java.util.ArrayList<>();
+        final java.util.ArrayList<String> names = new java.util.ArrayList<>();
+        for (int i = 0; i < all.size() && ids.size() < 60; i++) {
+            org.telegram.tgnet.TLRPC.Dialog dialog = all.get(i);
+            if (dialog == null || dialog.id == 0 || dialog.id == getUserConfig().getClientUserId()) {
+                continue;
+            }
+            String name = org.telegram.messenger.DialogObject.getName(currentAccount, dialog.id);
+            if (name == null || name.isEmpty()) {
+                continue;
+            }
+            ids.add(dialog.id);
+            names.add(name);
+        }
+        LinearLayout box = new LinearLayout(context);
+        box.setOrientation(LinearLayout.VERTICAL);
+        for (int i = 0; i < ids.size(); i++) {
+            final long id = ids.get(i);
+            TextCheckCell cell = new TextCheckCell(context);
+            cell.setTextAndCheck(names.get(i), FuckgramDecoy.isAllowedChat(id), true);
+            cell.setOnClickListener(v -> {
+                boolean value = !cell.isChecked();
+                FuckgramDecoy.setAllowedChat(id, value);
+                cell.setChecked(value);
+            });
+            box.addView(cell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
+        }
+        ScrollView scroll = new ScrollView(context);
+        scroll.addView(box);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(t("Chats shown in quiet mode", "Чаты, видимые в тихом режиме"));
+        builder.setView(scroll);
+        builder.setPositiveButton("OK", null);
+        showDialog(builder.create());
     }
 
     private void addColorRow(Context context, int role, String title) {

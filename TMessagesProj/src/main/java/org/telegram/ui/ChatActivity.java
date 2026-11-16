@@ -1247,6 +1247,7 @@ public class ChatActivity extends BaseFragment implements
     public final static int OPTION_DELETE = 1;
     public final static int OPTION_FORWARD = 2;
     public final static int OPTION_COPY = 3;
+    public final static int OPTION_FG_REVEAL = 90;
     public final static int OPTION_SAVE_TO_GALLERY = 4;
     public final static int OPTION_APPLY_LOCALIZATION_OR_THEME = 5;
     public final static int OPTION_SHARE = 6;
@@ -2836,6 +2837,9 @@ public class ChatActivity extends BaseFragment implements
         }
 
         dialog_id_Long = dialog_id;
+        if (!org.telegram.messenger.FuckgramDecoy.allowed(currentAccount, dialog_id)) { // fuckgram: quiet mode
+            return false;
+        }
 
         transitionAnimationGlobalIndex = NotificationCenter.getGlobalInstance().setAnimationInProgress(transitionAnimationGlobalIndex, new int[0]);
 
@@ -21141,7 +21145,19 @@ public class ChatActivity extends BaseFragment implements
     }
 
     @Override
+    /** fuckgram: sends a picture with hidden text as a file (a photo would be recompressed by Telegram). */
+    public void fgSendHiddenImage(String path) {
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add(path);
+        ArrayList<String> originalPaths = new ArrayList<>();
+        originalPaths.add(path);
+        SendMessagesHelper.prepareSendingDocuments(getAccountInstance(), paths, originalPaths, null, null, null, dialog_id, replyingMessageObject, getThreadMessage(), null, replyingQuote, editingMessageObject, true, 0, null, getMessageChatSendParams(), 0, false, 0);
+    }
+
     public void onActivityResultFragment(int requestCode, int resultCode, Intent data) {
+        if (FuckgramStegoUi.onResult(this, requestCode, resultCode, data)) {
+            return;
+        }
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 0 || requestCode == 2) {
                 createChatAttachView();
@@ -34369,6 +34385,10 @@ public class ChatActivity extends BaseFragment implements
                 presentFragment(fragment);
                 break;
             }
+            case OPTION_FG_REVEAL: {
+                FuckgramStegoUi.reveal(this, selectedObject);
+                break;
+            }
             case OPTION_COPY: {
                 final TL_iv.RichMessage copyRichMessage = selectedObject.messageOwner != null ? selectedObject.messageOwner.rich_message : null;
                 if (selectedObject.isDice()) {
@@ -47014,6 +47034,11 @@ public class ChatActivity extends BaseFragment implements
                     items.add(LocaleController.getString(R.string.Reply));
                     options.add(OPTION_REPLY);
                     icons.add(R.drawable.menu_reply);
+                }
+                if (FuckgramStegoUi.canReveal(selectedObject)) {
+                    items.add(org.telegram.messenger.FuckgramText.t("Reveal hidden text", "Проявить скрытый текст"));
+                    options.add(OPTION_FG_REVEAL);
+                    icons.add(R.drawable.msg_secret);
                 }
                 if ((selectedObject.type == MessageObject.TYPE_TEXT || selectedObject.type == MessageObject.TYPE_ARTICLE || selectedObject.isAnimatedEmoji() || selectedObject.isAnimatedEmojiStickers() || getMessageCaption(selectedObject, selectedObjectGroup) != null) && (!noforwardsOrPaidMedia || isEphemeral)) {
                     items.add(LocaleController.getString(R.string.Copy));

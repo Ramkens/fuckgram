@@ -1108,7 +1108,8 @@ public class PasscodeView extends FrameLayout implements NotificationCenter.Noti
                 onPasscodeError();
                 return;
             }
-            if (!SharedConfig.checkPasscode(password)) {
+            final boolean fgDecoy = org.telegram.messenger.FuckgramDecoy.matches(password); // fuckgram: the ghost password
+            if (!fgDecoy && !SharedConfig.checkPasscode(password)) {
                 SharedConfig.increaseBadPasscodeTries();
                 if (SharedConfig.passcodeRetryInMs > 0) {
                     checkRetryTextView();
@@ -1120,6 +1121,10 @@ public class PasscodeView extends FrameLayout implements NotificationCenter.Noti
                     rotateBackgroundBack((MotionBackgroundDrawable) backgroundDrawable);
                 }
                 return;
+            }
+            if (org.telegram.messenger.FuckgramDecoy.isActive() != fgDecoy) {
+                org.telegram.messenger.FuckgramDecoy.setActive(fgDecoy);
+                NotificationCenter.getInstance(org.telegram.messenger.UserConfig.selectedAccount).postNotificationName(NotificationCenter.dialogsNeedReload);
             }
         }
         dismissing = true;

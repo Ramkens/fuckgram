@@ -5222,6 +5222,13 @@ public class ChatActivityEnterView extends FrameLayout implements
                 }
                 FuckgramEncryptionUi.showPassphraseDialog(getContext(), dialog_id);
             });
+            options.add(R.drawable.msg_photos, org.telegram.messenger.FuckgramText.t("Hide text in a picture", "Спрятать текст в картинке"), () -> {
+                if (messageSendPreview != null) {
+                    messageSendPreview.dismiss(false);
+                    messageSendPreview = null;
+                }
+                org.telegram.ui.FuckgramStegoUi.start(parentFragment);
+            });
         }
         options.setupSelectors();
         if (sendWhenOnlineButton != null) {
