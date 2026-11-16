@@ -84,7 +84,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
             case PROFILE: return t("Badge", "Значок fuckgram");
             case PACKS: return t("Settings packs", "Пакеты настроек");
             case CLEAN: return t("Clean-up", "Убрать лишнее");
-            case GHOSTPASS: return t("Ghost password & panic", "Пароль-призрак и тревога");
+            case GHOSTPASS: return t("Ghost password & spaces", "Пароль-призрак и пространства");
             case COLORS: return t("My colors", "Свои цвета");
             case ANIM: return t("Animations", "Анимации");
             default: return t("fuckgram settings", "Настройки fuckgram");
@@ -117,10 +117,9 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addHeader(context, t("Theme", "Тема"));
                 addValue(context, t("Theme", "Тема"), FuckgramConfig.getInt(FuckgramConfig.THEME_MODE) == 0 ? t("Black", "Чёрная") : t("White", "Белая"), false,
                         v -> pick(context, t("Theme", "Тема"), new String[]{t("Black", "Чёрная"), t("White", "Белая")}, FuckgramConfig.THEME_MODE, 0, () -> applyTheme()));
-                addHeader(context, t("Original Telegram", "Оригинальный Telegram"));
-                addSwitch(context, FuckgramConfig.TG_ORIGINAL, t("Original Telegram theme and font", "Оригинальная тема и шрифт Telegram"), false);
-                addInfo(context, t("Uses the official light / dark theme of Telegram and its Roboto font instead of the black-and-white look. Pick light or dark in «Theme» above. The font changes after restarting the app.",
-                        "Официальные светлая и тёмная темы Telegram и шрифт Roboto вместо чёрно-белого оформления. Светлая или тёмная — в пункте «Тема» выше. Шрифт сменится после перезапуска приложения."));
+                addHeader(context, t("Font", "Шрифт"));
+                addSwitch(context, FuckgramConfig.TG_FONT, t("Telegram font (Roboto)", "Шрифт Telegram (Roboto)"), false);
+                addInfo(context, t("Instead of Inter. The font changes after restarting the app.", "Вместо Inter. Шрифт сменится после перезапуска приложения."));
                 addButton(context, t("My colors", "Свои цвета"), true, v -> presentFragment(new FuckgramSettingsActivity(COLORS)));
                 addButton(context, t("Animations", "Анимации"), false, v -> presentFragment(new FuckgramSettingsActivity(ANIM)));
                 addHeader(context, t("Backgrounds (photo or video)", "Фоны (фото или видео)"));
@@ -154,24 +153,15 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 }
                 addButton(context, t("Chats shown in quiet mode", "Чаты, видимые в тихом режиме"), false, v -> pickQuietChats(context));
                 addInfo(context, t("Enter the ghost password on the lock screen instead of your real code: the app opens quietly, only Saved Messages and the chats you allowed are visible, and notifications from the others are silent. Your real code brings everything back. A passcode must be turned on (Settings → Privacy).",
-                        "Введите пароль-призрак на экране блокировки вместо настоящего кода: приложение откроется «тихо», видны только «Избранное» и разрешённые вами чаты, уведомления от остальных не приходят. Настоящий код возвращает всё обратно. Код-пароль должен быть включён (Настройки → Конфиденциальность)."));
-                addHeader(context, t("Panic button", "Тревожная кнопка"));
+                        "Если висит код-пароль, введите пароль-призрак вместо настоящего: откроется второе пространство — видны только «Избранное» и разрешённые вами чаты, уведомления от остальных не приходят. Настоящий код открывает основное. Код-пароль должен быть включён (Настройки → Конфиденциальность). Без пароля пространства переключаются двумя тапами по логотипу."));
+                addHeader(context, t("Space switch", "Переключатель пространств"));
                 addInfo(context, t("Tap the «fuckgram» logo in the chat list three times quickly: open chats close, the app switches to the quiet mode and locks. Enter your real code to come back. Needs a passcode.",
-                        "Быстро нажмите три раза на логотип «fuckgram» в списке чатов: открытые чаты закроются, приложение перейдёт в тихий режим и заблокируется. Чтобы вернуться, введите настоящий код. Нужен код-пароль."));
+                        "Быстро нажмите два раза на логотип «fuckgram» в списке чатов: открытые чаты закроются и приложение переключится между основным и вторым пространством (тихим режимом). Пароль не спрашивается, код-пароль для этого не нужен. Ещё два нажатия вернут обратно."));
                 addHeader(context, t("Text in pictures", "Текст в картинках"));
                 addInfo(context, t("Long-press the send button → «Hide text in a picture». The picture goes as a file (Telegram would squeeze a photo and erase the hidden text). A friend with fuckgram long-presses the file → «Reveal hidden text». The text is encrypted with the chat passphrase or the built-in key.",
                         "Зажмите кнопку отправки → «Спрятать текст в картинке». Картинка уходит файлом (Telegram пережимает фото и стирает скрытый текст). Друг с fuckgram зажимает файл → «Проявить скрытый текст». Текст шифруется паролем чата или встроенным ключом."));
                 break;
             case COLORS:
-                addHeader(context, t("Ready palettes", "Готовые палитры"));
-                for (int a = 0; a < FuckgramColors.PRESET_NAMES.length; a++) {
-                    final int index = a;
-                    addButton(context, FuckgramColors.PRESET_NAMES[a], true, v -> {
-                        FuckgramColors.applyPreset(index);
-                        applyTheme();
-                        build(context);
-                    });
-                }
                 addHeader(context, t("Your own colors", "Свои цвета"));
                 addColorRow(context, FuckgramColors.ACCENT, t("Accent (buttons, links, headers)", "Акцент (кнопки, ссылки, заголовки)"));
                 addColorRow(context, FuckgramColors.OUT, t("My messages", "Мои сообщения"));
@@ -213,7 +203,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addButton(context, t("Privacy & ghost mode", "Приватность и призрак"), true, v -> presentFragment(new FuckgramSettingsActivity(PRIVACY)));
                 addButton(context, t("Messages & encryption", "Сообщения и шифрование"), true, v -> presentFragment(new FuckgramSettingsActivity(MESSAGES)));
                 addButton(context, t("Appearance & animations", "Оформление и анимации"), true, v -> presentFragment(new FuckgramSettingsActivity(LOOK)));
-                addButton(context, t("Ghost password & panic", "Пароль-призрак и тревога"), true, v -> presentFragment(new FuckgramSettingsActivity(GHOSTPASS)));
+                addButton(context, t("Ghost password & spaces", "Пароль-призрак и пространства"), true, v -> presentFragment(new FuckgramSettingsActivity(GHOSTPASS)));
                 addButton(context, t("Clean-up (hide ads, Premium…)", "Убрать лишнее (реклама, Premium…)"), true, v -> presentFragment(new FuckgramSettingsActivity(CLEAN)));
                 addButton(context, t("Badge", "Значок fuckgram"), true, v -> presentFragment(new FuckgramSettingsActivity(PROFILE)));
                 addButton(context, t("Settings packs", "Пакеты настроек"), true, v -> presentFragment(new FuckgramSettingsActivity(PACKS)));

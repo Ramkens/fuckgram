@@ -198,6 +198,71 @@ public class FuckgramCrypto {
         }
     }
 
+    /** Whole files: iv + AES-GCM(0x02 | name length | name | data). The result looks like noise. */
+    public static byte[] encryptBytes(byte[] data, String name, String passphrase) {
+        try {
+            byte[] nameBytes = (name == null ? "" : name).getBytes(StandardCharsets.UTF_8);
+            if (nameBytes.length > 200) {
+                nameBytes = java.util.Arrays.copyOf(nameBytes, 200);
+            }
+            byte[] plain = new byte[2 + nameBytes.length + data.length];
+            plain[0] = 2;
+            plain[1] = (byte) nameBytes.length;
+            System.arraycopy(nameBytes, 0, plain, 2, nameBytes.length);
+            System.arraycopy(data, 0, plain, 2 + nameBytes.length, data.length);
+            byte[] iv = new byte[12];
+            random.nextBytes(iv);
+            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(deriveKey(passphrase), "AES"), new GCMParameterSpec(128, iv));
+            byte[] ct = cipher.doFinal(plain);
+            byte[] out = new byte[12 + ct.length];
+            System.arraycopy(iv, 0, out, 0, 12);
+            System.arraycopy(ct, 0, out, 12, ct.length);
+            return out;
+        } catch (Throwable e) {
+            FileLog.e(e);
+            return null;
+        }
+    }
+
+    private static Object[] decryptBytes(byte[] raw, String passphrase) {
+        try {
+            if (raw.length < 12 + 16 + 2) {
+                return null;
+            }
+            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(deriveKey(passphrase), "AES"), new GCMParameterSpec(128, java.util.Arrays.copyOfRange(raw, 0, 12)));
+            byte[] data = cipher.doFinal(raw, 12, raw.length - 12);
+            if (data.length < 2 || data[0] != 2) {
+                return null;
+            }
+            int nameLength = data[1] & 0xff;
+            if (data.length < 2 + nameLength) {
+                return null;
+            }
+            String name = new String(data, 2, nameLength, StandardCharsets.UTF_8);
+            return new Object[]{name, java.util.Arrays.copyOfRange(data, 2 + nameLength, data.length)};
+        } catch (Throwable e) {
+            return null;
+        }
+    }
+
+    /** Tries the chat passphrase, the default one and the built-in key. Returns {name, bytes} or null. */
+    public static Object[] decryptBytesFor(long dialogId, byte[] raw) {
+        String pass = getPassphrase(dialogId);
+        Object[] result = pass != null ? decryptBytes(raw, pass) : null;
+        if (result == null) {
+            String def = getDefaultPassphrase();
+            if (def != null && !def.equals(pass)) {
+                result = decryptBytes(raw, def);
+            }
+        }
+        if (result == null) {
+            result = decryptBytes(raw, BUILTIN_PASSPHRASE);
+        }
+        return result;
+    }
+
     public static boolean looksEncrypted(CharSequence s) {
         if (s == null || s.length() < MIN_LEN || s.length() > 8000) {
             return false;

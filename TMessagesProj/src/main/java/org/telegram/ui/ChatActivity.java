@@ -1248,6 +1248,7 @@ public class ChatActivity extends BaseFragment implements
     public final static int OPTION_FORWARD = 2;
     public final static int OPTION_COPY = 3;
     public final static int OPTION_FG_REVEAL = 90;
+    public final static int OPTION_FG_DECRYPT = 91;
     public final static int OPTION_SAVE_TO_GALLERY = 4;
     public final static int OPTION_APPLY_LOCALIZATION_OR_THEME = 5;
     public final static int OPTION_SHARE = 6;
@@ -34385,6 +34386,10 @@ public class ChatActivity extends BaseFragment implements
                 presentFragment(fragment);
                 break;
             }
+            case OPTION_FG_DECRYPT: {
+                FuckgramStegoUi.decryptFile(this, selectedObject);
+                break;
+            }
             case OPTION_FG_REVEAL: {
                 FuckgramStegoUi.reveal(this, selectedObject);
                 break;
@@ -47034,6 +47039,11 @@ public class ChatActivity extends BaseFragment implements
                     items.add(LocaleController.getString(R.string.Reply));
                     options.add(OPTION_REPLY);
                     icons.add(R.drawable.menu_reply);
+                }
+                if (FuckgramStegoUi.canDecryptFile(selectedObject)) {
+                    items.add(org.telegram.messenger.FuckgramText.t("Decrypt file", "Расшифровать файл"));
+                    options.add(OPTION_FG_DECRYPT);
+                    icons.add(R.drawable.msg_secret);
                 }
                 if (FuckgramStegoUi.canReveal(selectedObject)) {
                     items.add(org.telegram.messenger.FuckgramText.t("Reveal hidden text", "Проявить скрытый текст"));

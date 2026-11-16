@@ -5229,6 +5229,13 @@ public class ChatActivityEnterView extends FrameLayout implements
                 }
                 org.telegram.ui.FuckgramStegoUi.start(parentFragment);
             });
+            options.add(R.drawable.msg_secret, org.telegram.messenger.FuckgramText.t("Encrypt a picture or file", "Зашифровать фото или файл"), () -> {
+                if (messageSendPreview != null) {
+                    messageSendPreview.dismiss(false);
+                    messageSendPreview = null;
+                }
+                org.telegram.ui.FuckgramStegoUi.startFile(parentFragment);
+            });
         }
         options.setupSelectors();
         if (sendWhenOnlineButton != null) {

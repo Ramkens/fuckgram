@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.3.1
+
+### 🇷🇺 Русский
+**Новое**
+- **Шифрование любого фото или файла.** Зажмите кнопку отправки → «Зашифровать фото или файл»: любой формат (до 30 МБ) шифруется целиком и уходит файлом `.fgx`, для остальных это просто шум. У друга с fuckgram: зажать файл → «Расшифровать файл», откроется превью с кнопкой «Сохранить».
+- **Два пространства.** Два быстрых нажатия на логотип fuckgram в списке чатов переключают основное и второе пространство без пароля и без блокировки (код-пароль для этого не нужен). Если на входе висит код-пароль, пароль-призрак открывает второе пространство, настоящий — основное.
+
+**Изменено**
+- Убраны готовые цветовые палитры и тема Telegram. Остались свои цвета (ввод #RRGGBB) и отдельный переключатель шрифта Telegram (Roboto).
+
+**Исправления**
+- «Вложение не поддерживается» при отправке картинки со скрытым текстом: файл теперь готовится в разрешённой папке.
+
+### 🇬🇧 English
+**New**
+- **Encrypt any picture or file.** Long-press the send button → "Encrypt a picture or file": any format (up to 30 MB) is encrypted as a whole and sent as a `.fgx` file, which looks like noise to everybody else. A friend with fuckgram long-presses the file → "Decrypt file" and gets a preview with a "Save" button.
+- **Two spaces.** Two quick taps on the fuckgram logo in the chat list switch between the main and the second space, without a password and without locking (no passcode needed). If a passcode is shown at start, the ghost password opens the second space and the real one opens the main space.
+
+**Changed**
+- The ready color palettes and the Telegram theme are removed. Your own colors (#RRGGBB input) stay, and the Telegram font (Roboto) is a separate switch.
+
+**Fixes**
+- "Attachment is not supported" when sending a picture with hidden text: the file is now prepared in an allowed folder.
+
 ## 1.3.0
 
 ### 🇷🇺 Русский
