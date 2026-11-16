@@ -267,13 +267,12 @@ public class FuckgramCrypto {
             return;
         }
         FuckgramMarker.onIncoming(message, dialogId, false);
+        // the mark must survive restarts, the cipher text itself stays in the message and is decrypted every time
         if (message.id > 0 && FuckgramDeleted.isEncrypted(object.currentAccount, dialogId, message.id)) {
-            object.fgEncrypted = true; // already decrypted earlier, the plain text is stored locally
-            return;
+            object.fgEncrypted = true;
         }
         if (encryptedMessages.containsKey(message)) {
             object.fgEncrypted = true;
-            return;
         }
         if (!FuckgramConfig.isEncryptionEnabled() || !looksEncrypted(message.message)) {
             return;

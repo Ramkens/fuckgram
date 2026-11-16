@@ -5565,6 +5565,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         glassEngine.setPositionsMerger(new GlassPositionsMerger(Float.POSITIVE_INFINITY, dp(48)));
 
         ViewCompat.setOnApplyWindowInsetsListener(fragmentView, this::onApplyWindowInsets);
+        FuckgramBackground.attach(contentView, FuckgramBackground.AREA_LIST);
         return fragmentView;
     }
 

@@ -489,6 +489,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
         updateActionBarVisible(true, false);
 
         ViewCompat.setOnApplyWindowInsetsListener(contentView, this::onApplyWindowInsets);
+        FuckgramBackground.attach(contentView, FuckgramBackground.AREA_SETTINGS);
         return fragmentView = contentView;
     }
 

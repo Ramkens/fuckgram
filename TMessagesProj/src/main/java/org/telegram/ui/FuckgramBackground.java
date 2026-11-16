@@ -31,18 +31,35 @@ public class FuckgramBackground {
 
     public static final int NONE = 0, PHOTO = 1, VIDEO = 2;
 
+    public static final int AREA_CHAT = 0, AREA_LIST = 1, AREA_SETTINGS = 2;
+
+    public static String kindKey(int area) {
+        return area == AREA_LIST ? FuckgramConfig.BG_KIND_LIST : area == AREA_SETTINGS ? FuckgramConfig.BG_KIND_SETTINGS : FuckgramConfig.BG_KIND;
+    }
+
+    public static File file(int area) {
+        return new File(ApplicationLoader.applicationContext.getFilesDir(), area == AREA_CHAT ? "fg_background" : "fg_background_" + area);
+    }
+
     public static File file() {
-        return new File(ApplicationLoader.applicationContext.getFilesDir(), "fg_background");
+        return file(AREA_CHAT);
+    }
+
+    public static int kind(int area) {
+        return FuckgramConfig.getInt(kindKey(area));
     }
 
     public static boolean isActive() {
-        int kind = FuckgramConfig.getInt(FuckgramConfig.BG_KIND);
-        return kind != NONE && file().exists();
+        return isActive(AREA_CHAT);
+    }
+
+    public static boolean isActive(int area) {
+        return kind(area) != NONE && file(area).exists();
     }
 
     /** Copies the picked file into the app folder. Runs on a worker thread, returns true on success. */
-    public static boolean importFrom(Context context, Uri uri, boolean video) {
-        try (InputStream in = context.getContentResolver().openInputStream(uri); FileOutputStream out = new FileOutputStream(file())) {
+    public static boolean importFrom(Context context, Uri uri, boolean video, int area) {
+        try (InputStream in = context.getContentResolver().openInputStream(uri); FileOutputStream out = new FileOutputStream(file(area))) {
             if (in == null) {
                 return false;
             }
@@ -51,7 +68,7 @@ public class FuckgramBackground {
             while ((n = in.read(buf)) > 0) {
                 out.write(buf, 0, n);
             }
-            FuckgramConfig.setInt(FuckgramConfig.BG_KIND, video ? VIDEO : PHOTO);
+            FuckgramConfig.setInt(kindKey(area), video ? VIDEO : PHOTO);
             return true;
         } catch (Throwable e) {
             FileLog.e(e);
@@ -59,28 +76,32 @@ public class FuckgramBackground {
         }
     }
 
-    public static void remove() {
-        FuckgramConfig.setInt(FuckgramConfig.BG_KIND, NONE);
+    public static void remove(int area) {
+        FuckgramConfig.setInt(kindKey(area), NONE);
         try {
-            file().delete();
+            file(area).delete();
         } catch (Throwable ignore) {
         }
     }
 
     /** Puts the background under everything in the given chat container. Does nothing if no background is set. */
     public static void attach(FrameLayout container) {
+        attach(container, AREA_CHAT);
+    }
+
+    public static void attach(FrameLayout container, int area) {
         try {
-            if (container == null || !isActive()) {
+            if (container == null || !isActive(area)) {
                 return;
             }
             Context context = container.getContext();
             FrameLayout root = new FrameLayout(context);
-            if (FuckgramConfig.getInt(FuckgramConfig.BG_KIND) == VIDEO) {
-                root.addView(new VideoView(context), new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            if (kind(area) == VIDEO) {
+                root.addView(new VideoView(context, area), new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             } else {
                 ImageView image = new ImageView(context);
                 image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                image.setImageBitmap(loadScaled());
+                image.setImageBitmap(loadScaled(area));
                 root.addView(image, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             }
             View dim = new View(context);
@@ -94,10 +115,10 @@ public class FuckgramBackground {
         }
     }
 
-    private static Bitmap loadScaled() {
+    private static Bitmap loadScaled(int area) {
         BitmapFactory.Options bounds = new BitmapFactory.Options();
         bounds.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(file().getAbsolutePath(), bounds);
+        BitmapFactory.decodeFile(file(area).getAbsolutePath(), bounds);
         int target = Math.max(AndroidUtilities.displaySize.x, AndroidUtilities.displaySize.y);
         int sample = 1;
         while (bounds.outWidth / (sample * 2) >= target && bounds.outHeight / (sample * 2) >= target) {
@@ -105,16 +126,18 @@ public class FuckgramBackground {
         }
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = sample;
-        return BitmapFactory.decodeFile(file().getAbsolutePath(), options);
+        return BitmapFactory.decodeFile(file(area).getAbsolutePath(), options);
     }
 
     private static class VideoView extends TextureView implements TextureView.SurfaceTextureListener {
         private MediaPlayer player;
         private Surface surface;
         private boolean prepared;
+        private final int area;
 
-        VideoView(Context context) {
+        VideoView(Context context, int area) {
             super(context);
+            this.area = area;
             setSurfaceTextureListener(this);
         }
 
@@ -124,7 +147,7 @@ public class FuckgramBackground {
             try {
                 surface = new Surface(texture);
                 player = new MediaPlayer();
-                player.setDataSource(file().getAbsolutePath());
+                player.setDataSource(file(area).getAbsolutePath());
                 player.setSurface(surface);
                 player.setLooping(true);
                 player.setVolume(0, 0);

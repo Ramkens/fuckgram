@@ -26,11 +26,13 @@ public class FuckgramConfig {
     public static final String TRANSITION = "transition";          // 0 default, 1 fade, 2 zoom, 3 slide up
     public static final String TRANSITION_SPEED = "transition_speed"; // 1 fast .. 3 slow
     public static final String BG_KIND = "bg_kind";                // 0 none, 1 photo, 2 video (the file itself is not part of a pack)
+    public static final String BG_KIND_LIST = "bg_kind_list";      // same for the chat list
+    public static final String BG_KIND_SETTINGS = "bg_kind_settings"; // same for the settings screens
     public static final String BG_DIM = "bg_dim";                  // 1 light .. 3 dark
     public static final String THEME_MODE = "fg_theme";            // 0 black, 1 white
 
     public static final String[] ALL_KEYS = {GHOST_NO_READ, GHOST_NO_TYPING, GHOST_OFFLINE, KEEP_DELETED, SHOW_BADGE, MARK_ACCOUNT,
-            ENC_ENABLED, LIVE_BG, LIVE_BG_SPEED, LIVE_BG_DENSITY, LIVE_BG_BATTERY, TRANSITION, TRANSITION_SPEED, THEME_MODE, BG_DIM};
+            ENC_ENABLED, LIVE_BG, LIVE_BG_SPEED, LIVE_BG_DENSITY, LIVE_BG_BATTERY, TRANSITION, TRANSITION_SPEED, THEME_MODE, BG_DIM, BG_KIND_LIST, BG_KIND_SETTINGS};
 
     private static SharedPreferences prefs() {
         return ApplicationLoader.applicationContext.getSharedPreferences("fuckgram_config", Context.MODE_PRIVATE);

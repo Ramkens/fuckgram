@@ -1,12 +1,13 @@
 # Changelog
 
-## 1.3
+## 1.2.1
 **New**
-- Your own photo or video as the background of every chat (Settings → fuckgram → Appearance). Video is muted and pauses when the chat is closed. Chat list and other screens keep the normal background for now.
+- Separate photo or video backgrounds for chats, the chat list and Settings (Settings → fuckgram → Appearance). Video is muted and pauses when the screen is closed.
+- The "deleted" mark appears right away, without reopening the chat.
 
 **Fixes**
-- The "deleted" mark now appears right away, without reopening the chat.
-- Dark theme: gray text (message previews, dates, hints, file info, tabs) is much brighter and readable.
+- fg-encrypted messages are decrypted again after reopening the chat or restarting the app (the 🔐 mark no longer shows with cipher text).
+- Dark theme: gray text (previews, dates, hints, file info, tabs) is much brighter and readable.
 
 ## 1.2
 **Fixes**

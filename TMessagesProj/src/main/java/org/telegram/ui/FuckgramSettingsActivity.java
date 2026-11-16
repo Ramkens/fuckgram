@@ -111,23 +111,14 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addHeader(context, t("Theme", "Тема"));
                 addValue(context, t("Theme", "Тема"), FuckgramConfig.getInt(FuckgramConfig.THEME_MODE) == 0 ? t("Black", "Чёрная") : t("White", "Белая"), false,
                         v -> pick(context, t("Theme", "Тема"), new String[]{t("Black", "Чёрная"), t("White", "Белая")}, FuckgramConfig.THEME_MODE, 0, () -> applyTheme()));
-                addHeader(context, t("Chat background", "Фон чатов"));
-                addValue(context, t("Current", "Сейчас"), FuckgramBackground.isActive() ? (FuckgramConfig.getInt(FuckgramConfig.BG_KIND) == FuckgramBackground.VIDEO ? t("Video", "Видео") : t("Photo", "Фото")) : t("None", "Нет"), true, v -> {});
-                addButton(context, t("Choose photo or video", "Выбрать фото или видео"), true, v -> {
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.setType("*/*");
-                    intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*", "video/*"});
-                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-                    startActivityForResult(Intent.createChooser(intent, t("Choose photo or video", "Выбрать фото или видео")), 9701);
-                });
-                addButton(context, t("Remove background", "Убрать фон"), true, v -> {
-                    FuckgramBackground.remove();
-                    build(context);
-                });
+                addHeader(context, t("Backgrounds (photo or video)", "Фоны (фото или видео)"));
+                addBgArea(context, FuckgramBackground.AREA_CHAT, t("Chats", "Чаты"));
+                addBgArea(context, FuckgramBackground.AREA_LIST, t("Chat list", "Список чатов"));
+                addBgArea(context, FuckgramBackground.AREA_SETTINGS, t("Settings", "Настройки"));
                 addValue(context, t("Dimming", "Затемнение"), level(FuckgramConfig.getInt(FuckgramConfig.BG_DIM)), false,
                         v -> pick(context, t("Dimming", "Затемнение"), new String[]{t("Light", "Слабое"), t("Medium", "Среднее"), t("Strong", "Сильное")}, FuckgramConfig.BG_DIM, 1, null));
-                addInfo(context, t("The photo or video is shown behind the messages in every chat (video is muted and pauses when the chat is not on screen). Reopen the chat to see a change.",
-                        "Фото или видео показывается за сообщениями во всех чатах (видео без звука и ставится на паузу, когда чат закрыт). Чтобы увидеть изменения, откройте чат заново."));
+                addInfo(context, t("Each screen has its own photo or video (video is muted and pauses when the screen is closed). Reopen the screen to see a change.",
+                        "У каждого экрана свой фон — фото или видео (видео без звука, на паузе, когда экран закрыт). Чтобы увидеть изменения, откройте экран заново."));
                 addInfo(context, t("Live backgrounds and custom transitions are coming in the next versions.", "Живые фоны и свои переходы появятся в следующих версиях."));
                 break;
             case PROFILE:
@@ -158,9 +149,10 @@ public class FuckgramSettingsActivity extends BaseFragment {
 
     @Override
     public void onActivityResultFragment(int requestCode, int resultCode, Intent data) {
-        if (requestCode != 9701 || resultCode != android.app.Activity.RESULT_OK || data == null || data.getData() == null) {
+        if (requestCode < 9701 || requestCode > 9703 || resultCode != android.app.Activity.RESULT_OK || data == null || data.getData() == null) {
             return;
         }
+        final int area = requestCode - 9701;
         final android.net.Uri uri = data.getData();
         final Context context = getParentActivity();
         if (context == null) {
@@ -169,7 +161,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
         String type = context.getContentResolver().getType(uri);
         final boolean video = type != null && type.startsWith("video");
         org.telegram.messenger.Utilities.globalQueue.postRunnable(() -> {
-            boolean ok = FuckgramBackground.importFrom(context, uri, video);
+            boolean ok = FuckgramBackground.importFrom(context, uri, video, area);
             AndroidUtilities.runOnUIThread(() -> {
                 Toast.makeText(context, ok ? t("Background set", "Фон установлен") : t("Could not read the file", "Не удалось прочитать файл"), Toast.LENGTH_SHORT).show();
                 if (fragmentView != null) {
@@ -177,6 +169,23 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 }
             });
         });
+    }
+
+    private void addBgArea(Context context, int area, String title) {
+        String now = FuckgramBackground.isActive(area) ? (FuckgramBackground.kind(area) == FuckgramBackground.VIDEO ? t("Video", "Видео") : t("Photo", "Фото")) : t("None", "Нет");
+        addValue(context, title, now, true, v -> {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("*/*");
+            intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*", "video/*"});
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            startActivityForResult(Intent.createChooser(intent, t("Choose photo or video", "Выбрать фото или видео")), 9701 + area);
+        });
+        if (FuckgramBackground.isActive(area)) {
+            addButton(context, t("Remove: ", "Убрать: ") + title, true, v -> {
+                FuckgramBackground.remove(area);
+                build(context);
+            });
+        }
     }
 
     private String[] levels() {
