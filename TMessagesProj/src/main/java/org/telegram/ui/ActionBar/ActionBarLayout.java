@@ -1461,6 +1461,8 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
         animationInProgress = false;
         containerView.setTranslationX(0);
         containerViewBack.setTranslationX(0);
+        containerView.setTranslationY(0); // fuckgram: animation packs also move the screens vertically
+        containerViewBack.setTranslationY(0);
         containerView.setLayerType(LAYER_TYPE_NONE, null);
         setInnerTranslationX(0);
     }
@@ -1921,6 +1923,42 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
         containerViewBack.setVisibility(View.INVISIBLE);
     }
 
+    /** fuckgram: animation pack (0 classic, 1 fade, 2 zoom, 3 slide up, 4 wide slide, 5 drop). */
+    private int fgPack(boolean preview) {
+        return preview ? 0 : org.telegram.messenger.FuckgramConfig.getInt(org.telegram.messenger.FuckgramConfig.TRANSITION);
+    }
+
+    private float fgDuration() {
+        int speed = org.telegram.messenger.FuckgramConfig.getInt(org.telegram.messenger.FuckgramConfig.TRANSITION_SPEED);
+        return speed <= 1 ? 160.0f : speed == 2 ? 240.0f : 360.0f;
+    }
+
+    /** hidden = 1 means fully hidden, 0 fully shown. The alpha follows the same value. */
+    private void fgTransform(View view, int pack, float hidden) {
+        view.setAlpha(MathUtils.clamp(1.0f - hidden, 0, 1));
+        view.setTranslationX(0);
+        view.setTranslationY(0);
+        view.setScaleX(1f);
+        view.setScaleY(1f);
+        switch (pack) {
+            case 2:
+                view.setScaleX(1f - 0.15f * hidden);
+                view.setScaleY(1f - 0.15f * hidden);
+                break;
+            case 3:
+                view.setTranslationY(dp(72) * hidden);
+                break;
+            case 4:
+                view.setTranslationX(dp(160) * hidden);
+                break;
+            case 5:
+                view.setTranslationY(-dp(72) * hidden);
+                break;
+            default:
+                break;
+        }
+    }
+
     private void startLayoutAnimation(final boolean open, final boolean first, final boolean preview) {
         if (first) {
             animationProgress = 0.0f;
@@ -1945,6 +1983,9 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
                 }
                 lastFrameTime = newTime;
                 float duration = preview && open ? 190.0f : 150.0f;
+                if (!preview && fgPack(false) != 0) {
+                    duration = fgDuration();
+                }
                 animationProgress += dt / duration;
                 if (animationProgress > 1.0f) {
                     animationProgress = 1.0f;
@@ -2005,6 +2046,8 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
                         Theme.moveUpDrawable.setAlpha((int) (255 * clampedInterpolated));
                         containerView.invalidate();
                         invalidate();
+                    } else if (fgPack(false) != 0) {
+                        fgTransform(containerView, fgPack(false), 1.0f - interpolated);
                     } else {
                         containerView.setTranslationX(dp(48) * (1.0f - interpolated));
                     }
@@ -2020,6 +2063,8 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
                         }
                         containerView.invalidate();
                         invalidate();
+                    } else if (fgPack(false) != 0) {
+                        fgTransform(containerViewBack, fgPack(false), interpolated);
                     } else {
                         containerViewBack.setTranslationX(dp(48) * interpolated);
                     }
@@ -2339,6 +2384,9 @@ public class ActionBarLayout extends FrameLayout implements INavigationLayout, F
                         containerView.setTranslationX(48.0f);
                         containerView.setScaleX(1.0f);
                         containerView.setScaleY(1.0f);
+                        if (fgPack(false) != 0) {
+                            fgTransform(containerView, fgPack(false), 1f);
+                        }
                     }
                     if (containerView.isKeyboardVisible || containerViewBack.isKeyboardVisible) {
                         if (currentFragment != null && !preview) {

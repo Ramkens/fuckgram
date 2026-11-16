@@ -1,5 +1,31 @@
 # Changelog
 
+## 1.2.2
+
+### 🇷🇺 Русский
+**Новое**
+- **Убрать лишнее** (Настройки → fuckgram → Убрать лишнее): отдельные переключатели скрывают официальную рекламу Telegram, Premium, Business, Звёзды и TON, подарки, истории и кошелёк.
+- **Свои цвета**: готовые палитры и ручной ввод цвета для акцента, своих и чужих сообщений, фона и текста.
+- **Оригинальный Telegram**: переключатель возвращает официальные светлую и тёмную темы и шрифт Roboto (шрифт меняется после перезапуска).
+- **Паки анимаций**: «Классика», «Затухание», «Масштаб», «Снизу вверх», «Широкий сдвиг», «Сверху вниз» + скорость. Работают при открытии и закрытии любых экранов.
+- Иконка в уведомлениях теперь fuckgram, а не синий самолётик.
+
+**Исправления**
+- Метка «удалено» появляется сразу, без повторного входа в чат.
+- Убран фон для экрана настроек (остались фоны для чатов и списка чатов).
+
+### 🇬🇧 English
+**New**
+- **Clean-up** (Settings → fuckgram → Clean-up): separate switches hide official Telegram ads, Premium, Business, Stars & TON, gifts, stories and the wallet.
+- **My colors**: ready palettes and manual color input for accent, outgoing and incoming messages, background and text.
+- **Original Telegram**: a switch brings back the official light and dark themes and the Roboto font (the font changes after a restart).
+- **Animation packs**: Classic, Fade, Zoom, Slide up, Wide slide, Drop + speed. They apply to opening and closing any screen.
+- The notification icon is now fuckgram's instead of the blue plane.
+
+**Fixes**
+- The "deleted" mark shows up instantly, no need to reopen the chat.
+- The settings screen background was removed (chats and chat list keep their own).
+
 ## 1.2.1
 **New**
 - Separate photo or video backgrounds for chats, the chat list and Settings (Settings → fuckgram → Appearance). Video is muted and pauses when the screen is closed.

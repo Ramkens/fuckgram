@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.FuckgramColors;
 import org.telegram.messenger.FuckgramConfig;
 import org.telegram.messenger.FuckgramCrypto;
 import org.telegram.messenger.FuckgramText;
@@ -31,7 +32,7 @@ import org.telegram.ui.Components.LayoutHelper;
  */
 public class FuckgramSettingsActivity extends BaseFragment {
 
-    public static final int MENU = 0, PRIVACY = 1, MESSAGES = 2, LOOK = 3, PROFILE = 4, PACKS = 5;
+    public static final int MENU = 0, PRIVACY = 1, MESSAGES = 2, LOOK = 3, PROFILE = 4, PACKS = 5, CLEAN = 6, COLORS = 7, ANIM = 8;
 
     private final int category;
     private LinearLayout list;
@@ -81,6 +82,9 @@ public class FuckgramSettingsActivity extends BaseFragment {
             case LOOK: return t("Appearance & animations", "Оформление и анимации");
             case PROFILE: return t("Badge", "Значок fuckgram");
             case PACKS: return t("Settings packs", "Пакеты настроек");
+            case CLEAN: return t("Clean-up", "Убрать лишнее");
+            case COLORS: return t("My colors", "Свои цвета");
+            case ANIM: return t("Animations", "Анимации");
             default: return t("fuckgram settings", "Настройки fuckgram");
         }
     }
@@ -111,15 +115,63 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addHeader(context, t("Theme", "Тема"));
                 addValue(context, t("Theme", "Тема"), FuckgramConfig.getInt(FuckgramConfig.THEME_MODE) == 0 ? t("Black", "Чёрная") : t("White", "Белая"), false,
                         v -> pick(context, t("Theme", "Тема"), new String[]{t("Black", "Чёрная"), t("White", "Белая")}, FuckgramConfig.THEME_MODE, 0, () -> applyTheme()));
+                addHeader(context, t("Original Telegram", "Оригинальный Telegram"));
+                addSwitch(context, FuckgramConfig.TG_ORIGINAL, t("Original Telegram theme and font", "Оригинальная тема и шрифт Telegram"), false);
+                addInfo(context, t("Uses the official light / dark theme of Telegram and its Roboto font instead of the black-and-white look. Pick light or dark in «Theme» above. The font changes after restarting the app.",
+                        "Официальные светлая и тёмная темы Telegram и шрифт Roboto вместо чёрно-белого оформления. Светлая или тёмная — в пункте «Тема» выше. Шрифт сменится после перезапуска приложения."));
+                addButton(context, t("My colors", "Свои цвета"), true, v -> presentFragment(new FuckgramSettingsActivity(COLORS)));
+                addButton(context, t("Animations", "Анимации"), false, v -> presentFragment(new FuckgramSettingsActivity(ANIM)));
                 addHeader(context, t("Backgrounds (photo or video)", "Фоны (фото или видео)"));
                 addBgArea(context, FuckgramBackground.AREA_CHAT, t("Chats", "Чаты"));
                 addBgArea(context, FuckgramBackground.AREA_LIST, t("Chat list", "Список чатов"));
-                addBgArea(context, FuckgramBackground.AREA_SETTINGS, t("Settings", "Настройки"));
                 addValue(context, t("Dimming", "Затемнение"), level(FuckgramConfig.getInt(FuckgramConfig.BG_DIM)), false,
                         v -> pick(context, t("Dimming", "Затемнение"), new String[]{t("Light", "Слабое"), t("Medium", "Среднее"), t("Strong", "Сильное")}, FuckgramConfig.BG_DIM, 1, null));
                 addInfo(context, t("Each screen has its own photo or video (video is muted and pauses when the screen is closed). Reopen the screen to see a change.",
                         "У каждого экрана свой фон — фото или видео (видео без звука, на паузе, когда экран закрыт). Чтобы увидеть изменения, откройте экран заново."));
-                addInfo(context, t("Live backgrounds and custom transitions are coming in the next versions.", "Живые фоны и свои переходы появятся в следующих версиях."));
+                break;
+            case CLEAN:
+                addHeader(context, t("Hide from the app", "Скрыть в приложении"));
+                addSwitch(context, FuckgramConfig.HIDE_ADS, t("Official Telegram ads", "Официальную рекламу Telegram"), true);
+                addSwitch(context, FuckgramConfig.HIDE_PREMIUM, t("Telegram Premium", "Telegram Premium"), true);
+                addSwitch(context, FuckgramConfig.HIDE_BUSINESS, t("Telegram Business", "Telegram Business"), true);
+                addSwitch(context, FuckgramConfig.HIDE_STARS, t("Stars and TON", "Звёзды и TON"), true);
+                addSwitch(context, FuckgramConfig.HIDE_GIFTS, t("Gifts", "Подарки"), true);
+                addSwitch(context, FuckgramConfig.HIDE_STORIES, t("Stories", "Истории"), true);
+                addSwitch(context, FuckgramConfig.HIDE_WALLET, t("Wallet", "Кошелёк"), false);
+                addInfo(context, t("Each switch hides only its own part. Some screens update after the app is restarted.",
+                        "Каждый переключатель скрывает только свою часть. Часть экранов обновится после перезапуска приложения."));
+                break;
+            case COLORS:
+                addHeader(context, t("Ready palettes", "Готовые палитры"));
+                for (int a = 0; a < FuckgramColors.PRESET_NAMES.length; a++) {
+                    final int index = a;
+                    addButton(context, FuckgramColors.PRESET_NAMES[a], true, v -> {
+                        FuckgramColors.applyPreset(index);
+                        applyTheme();
+                        build(context);
+                    });
+                }
+                addHeader(context, t("Your own colors", "Свои цвета"));
+                addColorRow(context, FuckgramColors.ACCENT, t("Accent (buttons, links, headers)", "Акцент (кнопки, ссылки, заголовки)"));
+                addColorRow(context, FuckgramColors.OUT, t("My messages", "Мои сообщения"));
+                addColorRow(context, FuckgramColors.IN, t("Their messages", "Сообщения собеседника"));
+                addColorRow(context, FuckgramColors.BG, t("Background", "Фон"));
+                addColorRow(context, FuckgramColors.TEXT, t("Text", "Текст"));
+                addButton(context, t("Reset colors", "Сбросить цвета"), false, v -> {
+                    FuckgramColors.reset();
+                    applyTheme();
+                    build(context);
+                });
+                addInfo(context, t("Tap a color and type it as #RRGGBB. A color that is not set follows the theme.",
+                        "Нажмите на цвет и введите его как #RRGGBB. Не заданный цвет берётся из темы."));
+                break;
+            case ANIM:
+                addHeader(context, t("Screen transitions", "Переходы между экранами"));
+                addValue(context, t("Pack", "Пак"), transitionName(FuckgramConfig.getInt(FuckgramConfig.TRANSITION)), true,
+                        v -> pick(context, t("Pack", "Пак"), new String[]{transitionName(0), transitionName(1), transitionName(2), transitionName(3), transitionName(4), transitionName(5)}, FuckgramConfig.TRANSITION, 0, null));
+                addValue(context, t("Speed", "Скорость"), (FuckgramConfig.getInt(FuckgramConfig.TRANSITION_SPEED) <= 1 ? t("Fast", "Быстро") : FuckgramConfig.getInt(FuckgramConfig.TRANSITION_SPEED) == 2 ? t("Medium", "Средне") : t("Slow", "Медленно")), false,
+                        v -> pick(context, t("Speed", "Скорость"), new String[]{t("Fast", "Быстро"), t("Medium", "Средне"), t("Slow", "Медленно")}, FuckgramConfig.TRANSITION_SPEED, 1, null));
+                addInfo(context, t("Applies to opening and closing screens everywhere in the app.", "Работает при открытии и закрытии экранов во всём приложении."));
                 break;
             case PROFILE:
                 addHeader(context, t("Badge", "Значок"));
@@ -140,6 +192,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addButton(context, t("Privacy & ghost mode", "Приватность и призрак"), true, v -> presentFragment(new FuckgramSettingsActivity(PRIVACY)));
                 addButton(context, t("Messages & encryption", "Сообщения и шифрование"), true, v -> presentFragment(new FuckgramSettingsActivity(MESSAGES)));
                 addButton(context, t("Appearance & animations", "Оформление и анимации"), true, v -> presentFragment(new FuckgramSettingsActivity(LOOK)));
+                addButton(context, t("Clean-up (hide ads, Premium…)", "Убрать лишнее (реклама, Premium…)"), true, v -> presentFragment(new FuckgramSettingsActivity(CLEAN)));
                 addButton(context, t("Badge", "Значок fuckgram"), true, v -> presentFragment(new FuckgramSettingsActivity(PROFILE)));
                 addButton(context, t("Settings packs", "Пакеты настроек"), true, v -> presentFragment(new FuckgramSettingsActivity(PACKS)));
                 addButton(context, t("About fuckgram", "О fuckgram"), false, v -> presentFragment(new FuckgramAboutActivity()));
@@ -168,6 +221,43 @@ public class FuckgramSettingsActivity extends BaseFragment {
                     build(context);
                 }
             });
+        });
+    }
+
+    private void addColorRow(Context context, int role, String title) {
+        int color = FuckgramColors.role(role);
+        addValue(context, title, color == 0 ? t("theme", "из темы") : String.format("#%06X", color & 0xFFFFFF), true, v -> {
+            final android.widget.EditText input = new android.widget.EditText(context);
+            input.setSingleLine(true);
+            input.setHint("#RRGGBB");
+            int cur = FuckgramColors.role(role);
+            input.setText(cur == 0 ? "" : String.format("#%06X", cur & 0xFFFFFF));
+            input.setTextColor(Theme.getColor(Theme.key_dialogTextBlack));
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(title);
+            builder.setView(input);
+            builder.setPositiveButton("OK", (d, w) -> {
+                String text = input.getText().toString().trim();
+                try {
+                    if (text.isEmpty()) {
+                        FuckgramColors.setRole(role, 0);
+                    } else {
+                        if (!text.startsWith("#")) {
+                            text = "#" + text;
+                        }
+                        FuckgramColors.setRole(role, android.graphics.Color.parseColor(text) | 0xFF000000);
+                    }
+                } catch (Throwable e) {
+                    Toast.makeText(context, t("Wrong color", "Неверный цвет"), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                applyTheme();
+                if (fragmentView != null) {
+                    build(context);
+                }
+            });
+            builder.setNegativeButton(t("Cancel", "Отмена"), null);
+            showDialog(builder.create());
         });
     }
 
@@ -205,6 +295,8 @@ public class FuckgramSettingsActivity extends BaseFragment {
             case 1: return t("Fade", "Затухание");
             case 2: return t("Zoom", "Масштаб");
             case 3: return t("Slide up", "Снизу вверх");
+            case 4: return t("Wide slide", "Широкий сдвиг");
+            case 5: return t("Drop", "Сверху вниз");
             default: return t("Default", "Стандартный");
         }
     }

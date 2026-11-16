@@ -79,6 +79,8 @@ import org.json.JSONObject;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.Bitmaps;
+import org.telegram.messenger.FuckgramColors;
+import org.telegram.messenger.FuckgramConfig;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
@@ -1803,7 +1805,7 @@ public class Theme {
                 }
 
                 //override default themes
-                if (isHome(themeAccent) && name.equals("Dark Blue") || name.equals("Night")) {
+                if (!FuckgramConfig.get(FuckgramConfig.TG_ORIGINAL) && (isHome(themeAccent) && name.equals("Dark Blue") || name.equals("Night"))) {
                     // fuckgram: graphite outgoing bubbles and a plain black chat background instead of the blue / purple ones
                     themeAccent.myMessagesAccentColor = 0xff2e2e33;
                     themeAccent.myMessagesGradientAccentColor1 = 0xff2e2e33;
@@ -7670,6 +7672,13 @@ public class Theme {
             byte[] bytes = new byte[1024];
             int currentPosition = 0;
             if (assetName != null) {
+                if (FuckgramConfig.get(FuckgramConfig.TG_ORIGINAL)) { // fuckgram: original Telegram themes
+                    if ("night.attheme".equals(assetName)) {
+                        assetName = "tg_night.attheme";
+                    } else if ("day.attheme".equals(assetName)) {
+                        assetName = "tg_day.attheme";
+                    }
+                }
                 file = getAssetFile(assetName);
             }
             stream = new FileInputStream(file);
@@ -9131,6 +9140,13 @@ public class Theme {
     }
 
     public static int getColor(int key, boolean[] isDefault, boolean ignoreAnimation) {
+        final int fgColor = FuckgramColors.get(key); // fuckgram: own colours
+        if (fgColor != 0) {
+            if (isDefault != null) {
+                isDefault[0] = false;
+            }
+            return fgColor;
+        }
         if (SharedConfig.compactMode) {
             // compact mode swaps some message colors for its own keys, see getCompactColor
             final Integer compactColor = getCompactColor(key, null);

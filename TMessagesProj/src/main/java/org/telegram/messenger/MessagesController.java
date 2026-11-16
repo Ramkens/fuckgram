@@ -737,13 +737,13 @@ public class MessagesController extends BaseController implements NotificationCe
     public boolean starsLocked;
 
     public boolean starsPurchaseAvailable() {
-        return !starsLocked;
+        return !starsLocked && !FuckgramConfig.get(FuckgramConfig.HIDE_STARS);
     }
     public boolean premiumFeaturesBlocked() {
-        return premiumLocked && !getUserConfig().isPremium();
+        return premiumLocked && !getUserConfig().isPremium() || FuckgramConfig.get(FuckgramConfig.HIDE_PREMIUM);
     }
     public boolean premiumPurchaseBlocked() {
-        return premiumLocked;
+        return premiumLocked || FuckgramConfig.get(FuckgramConfig.HIDE_PREMIUM) || FuckgramConfig.get(FuckgramConfig.HIDE_GIFTS);
     }
 
     public List<String> directPaymentsCurrency = new ArrayList<>();
@@ -10889,6 +10889,9 @@ public class MessagesController extends BaseController implements NotificationCe
     private long lastCheckPromoInfoTime;
 
     private void checkPromoInfoInternal(boolean reset) {
+        if (FuckgramConfig.get(FuckgramConfig.HIDE_ADS) && promoDialogType != PROMO_TYPE_PROXY) {
+            return;
+        }
         if (reset && checkingPromoInfo) {
             checkingPromoInfo = false;
         }
@@ -21738,6 +21741,9 @@ public class MessagesController extends BaseController implements NotificationCe
     }
 
     public SponsoredMessagesInfo getSponsoredMessages(long dialogId) {
+        if (FuckgramConfig.get(FuckgramConfig.HIDE_ADS)) {
+            return null;
+        }
         SponsoredMessagesInfo info = sponsoredMessages.get(dialogId);
         if (info != null && (info.loading || Math.abs(SystemClock.elapsedRealtime() - info.loadTime) <= 5 * 60 * 1000)) {
             return info;
@@ -23816,6 +23822,9 @@ public class MessagesController extends BaseController implements NotificationCe
     }
 
     public boolean storiesEnabled() {
+        if (FuckgramConfig.get(FuckgramConfig.HIDE_STORIES)) {
+            return false;
+        }
         switch (storiesPosting) {
             case "premium":
                 return getUserConfig().isPremium();

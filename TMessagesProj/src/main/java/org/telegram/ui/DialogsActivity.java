@@ -12436,6 +12436,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             newVisibility = !onlySelfStories && getStoriesController().hasStories();
             onlySelfStories = getStoriesController().hasOnlySelfStories();
         }
+        if (org.telegram.messenger.FuckgramConfig.get(org.telegram.messenger.FuckgramConfig.HIDE_STORIES)) {
+            newVisibility = false;
+            onlySelfStories = false;
+        }
 
         hasOnlySlefStories = onlySelfStories;
 

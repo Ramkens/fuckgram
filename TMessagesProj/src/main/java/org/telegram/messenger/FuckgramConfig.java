@@ -29,17 +29,33 @@ public class FuckgramConfig {
     public static final String BG_KIND_LIST = "bg_kind_list";      // same for the chat list
     public static final String BG_KIND_SETTINGS = "bg_kind_settings"; // same for the settings screens
     public static final String BG_DIM = "bg_dim";                  // 1 light .. 3 dark
+    public static final String HIDE_ADS = "hide_ads";              // official Telegram ads (sponsored messages, video ads, promo chat)
+    public static final String HIDE_PREMIUM = "hide_premium";
+    public static final String HIDE_BUSINESS = "hide_business";
+    public static final String HIDE_STARS = "hide_stars";          // Stars and TON
+    public static final String HIDE_GIFTS = "hide_gifts";
+    public static final String HIDE_STORIES = "hide_stories";
+    public static final String HIDE_WALLET = "hide_wallet";
+    public static final String TG_ORIGINAL = "tg_original";        // original Telegram themes and font
+    public static final String COL_ACCENT = "col_accent";
+    public static final String COL_OUT = "col_out";
+    public static final String COL_IN = "col_in";
+    public static final String COL_BG = "col_bg";
+    public static final String COL_TEXT = "col_text";
     public static final String THEME_MODE = "fg_theme";            // 0 black, 1 white
 
     public static final String[] ALL_KEYS = {GHOST_NO_READ, GHOST_NO_TYPING, GHOST_OFFLINE, KEEP_DELETED, SHOW_BADGE, MARK_ACCOUNT,
-            ENC_ENABLED, LIVE_BG, LIVE_BG_SPEED, LIVE_BG_DENSITY, LIVE_BG_BATTERY, TRANSITION, TRANSITION_SPEED, THEME_MODE, BG_DIM, BG_KIND_LIST, BG_KIND_SETTINGS};
+            ENC_ENABLED, LIVE_BG, LIVE_BG_SPEED, LIVE_BG_DENSITY, LIVE_BG_BATTERY, TRANSITION, TRANSITION_SPEED, THEME_MODE, BG_DIM, BG_KIND_LIST, BG_KIND_SETTINGS,
+            TG_ORIGINAL, COL_ACCENT, COL_OUT, COL_IN, COL_BG, COL_TEXT,
+            HIDE_ADS, HIDE_PREMIUM, HIDE_BUSINESS, HIDE_STARS, HIDE_GIFTS, HIDE_STORIES, HIDE_WALLET};
 
     private static SharedPreferences prefs() {
         return ApplicationLoader.applicationContext.getSharedPreferences("fuckgram_config", Context.MODE_PRIVATE);
     }
 
     private static boolean defaultBool(String key) {
-        return SHOW_BADGE.equals(key) || MARK_ACCOUNT.equals(key) || ENC_ENABLED.equals(key) || LIVE_BG_BATTERY.equals(key) || KEEP_DELETED.equals(key);
+        return SHOW_BADGE.equals(key) || MARK_ACCOUNT.equals(key) || ENC_ENABLED.equals(key) || LIVE_BG_BATTERY.equals(key) || KEEP_DELETED.equals(key)
+                || HIDE_ADS.equals(key) || HIDE_PREMIUM.equals(key) || HIDE_BUSINESS.equals(key) || HIDE_STARS.equals(key) || HIDE_GIFTS.equals(key) || HIDE_STORIES.equals(key) || HIDE_WALLET.equals(key);
     }
 
     private static int defaultInt(String key) {

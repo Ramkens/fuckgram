@@ -23116,10 +23116,11 @@ public class ChatActivity extends BaseFragment implements
                 for (int fgI = 0; fgI < messages.size(); fgI++) {
                     MessageObject fgObj = messages.get(fgI);
                     if (fgObj != null && fgObj.getId() > 0 && FuckgramDeleted.isDeleted(currentAccount, fgObj.getDialogId(), fgObj.getId())) {
+                        fgObj.forceUpdate = true; // otherwise the cell sees the same object and keeps the old time text
                         chatAdapter.updateRowWithMessageObject(fgObj, false, false);
                     }
                 }
-                chatListView.invalidateViews();
+                chatAdapter.notifyDataSetChanged(false);
             }
         } else if (id == NotificationCenter.messagesDeleted) {
             boolean scheduled = (Boolean) args[2];

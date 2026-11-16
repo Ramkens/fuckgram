@@ -264,7 +264,8 @@ public class AndroidUtilities {
 
     public static Typeface bold() {
         if (mediumTypeface == null) {
-            mediumTypeface = getTypeface(TYPEFACE_ROBOTO_MEDIUM);
+            // fuckgram: the original Telegram font (Roboto) when it is switched on
+            mediumTypeface = getTypeface(FuckgramConfig.get(FuckgramConfig.TG_ORIGINAL) ? "fonts/rmedium.ttf" : TYPEFACE_ROBOTO_MEDIUM);
         }
         return mediumTypeface;
     }
@@ -278,7 +279,7 @@ public class AndroidUtilities {
             if (ApplicationLoader.applicationContext == null) {
                 return Typeface.DEFAULT;
             }
-            fgRegularTypeface = getTypeface(TYPEFACE_FUCKGRAM_REGULAR);
+            fgRegularTypeface = FuckgramConfig.get(FuckgramConfig.TG_ORIGINAL) ? Typeface.DEFAULT : getTypeface(TYPEFACE_FUCKGRAM_REGULAR);
         }
         return fgRegularTypeface != null ? fgRegularTypeface : Typeface.DEFAULT;
     }

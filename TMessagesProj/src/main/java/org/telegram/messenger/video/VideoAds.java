@@ -194,7 +194,7 @@ public static VideoAds make(
     private int requestId;
     private boolean loading, loaded;
     private void load() {
-        if (loading || loaded) return;
+        if (loading || loaded || org.telegram.messenger.FuckgramConfig.get(org.telegram.messenger.FuckgramConfig.HIDE_ADS)) return;
 
         if (UserConfig.getInstance(currentAccount).isPremium() && MessagesController.getInstance(currentAccount).isSponsoredDisabled()) {
             return;
