@@ -164,6 +164,7 @@ import org.telegram.messenger.EmojiData;
 import org.telegram.messenger.FactCheckController;
 import org.telegram.messenger.FileLoader;
 import org.telegram.messenger.FileLog;
+import org.telegram.messenger.FuckgramDeleted;
 import org.telegram.messenger.FlagSecureReason;
 import org.telegram.messenger.HashtagSearchController;
 import org.telegram.messenger.ImageLoader;
@@ -2904,6 +2905,7 @@ public class ChatActivity extends BaseFragment implements
             .add(NotificationCenter.didLoadSendAsPeers)
             .add(NotificationCenter.closeChatActivity)
             .add(NotificationCenter.messagesDeleted)
+            .add(NotificationCenter.fuckgramMessagesDeleted)
             .add(NotificationCenter.historyCleared)
             .add(NotificationCenter.messageReceivedByServer)
             .add(NotificationCenter.messageReceivedByAck)
@@ -4536,6 +4538,7 @@ public class ChatActivity extends BaseFragment implements
         }
         removingFromParent = false;
         fragmentView = contentView = new ChatActivityFragmentView(context, parentLayout);
+        FuckgramBackground.attach(contentView);
 
         viewPositionWatcher = new ViewPositionWatcher(contentView);
 
@@ -23106,6 +23109,17 @@ public class ChatActivity extends BaseFragment implements
             removeUnreadPlane(true);
             if (updated && chatAdapter != null) {
                 chatAdapter.notifyDataSetChanged(false);
+            }
+        } else if (id == NotificationCenter.fuckgramMessagesDeleted) {
+            // fuckgram: show the "deleted" mark right away
+            if (chatAdapter != null) {
+                for (int fgI = 0; fgI < messages.size(); fgI++) {
+                    MessageObject fgObj = messages.get(fgI);
+                    if (fgObj != null && fgObj.getId() > 0 && FuckgramDeleted.isDeleted(currentAccount, fgObj.getDialogId(), fgObj.getId())) {
+                        chatAdapter.updateRowWithMessageObject(fgObj, false, false);
+                    }
+                }
+                chatListView.invalidateViews();
             }
         } else if (id == NotificationCenter.messagesDeleted) {
             boolean scheduled = (Boolean) args[2];

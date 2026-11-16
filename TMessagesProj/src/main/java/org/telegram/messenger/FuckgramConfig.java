@@ -25,10 +25,12 @@ public class FuckgramConfig {
     public static final String LIVE_BG_BATTERY = "live_bg_battery";// stop animation in power saving mode
     public static final String TRANSITION = "transition";          // 0 default, 1 fade, 2 zoom, 3 slide up
     public static final String TRANSITION_SPEED = "transition_speed"; // 1 fast .. 3 slow
+    public static final String BG_KIND = "bg_kind";                // 0 none, 1 photo, 2 video (the file itself is not part of a pack)
+    public static final String BG_DIM = "bg_dim";                  // 1 light .. 3 dark
     public static final String THEME_MODE = "fg_theme";            // 0 black, 1 white
 
     public static final String[] ALL_KEYS = {GHOST_NO_READ, GHOST_NO_TYPING, GHOST_OFFLINE, KEEP_DELETED, SHOW_BADGE, MARK_ACCOUNT,
-            ENC_ENABLED, LIVE_BG, LIVE_BG_SPEED, LIVE_BG_DENSITY, LIVE_BG_BATTERY, TRANSITION, TRANSITION_SPEED, THEME_MODE};
+            ENC_ENABLED, LIVE_BG, LIVE_BG_SPEED, LIVE_BG_DENSITY, LIVE_BG_BATTERY, TRANSITION, TRANSITION_SPEED, THEME_MODE, BG_DIM};
 
     private static SharedPreferences prefs() {
         return ApplicationLoader.applicationContext.getSharedPreferences("fuckgram_config", Context.MODE_PRIVATE);
@@ -43,6 +45,7 @@ public class FuckgramConfig {
             case LIVE_BG_SPEED:
             case LIVE_BG_DENSITY:
             case TRANSITION_SPEED:
+            case BG_DIM:
                 return 2;
             default:
                 return 0;

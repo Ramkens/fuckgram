@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3
+**New**
+- Your own photo or video as the background of every chat (Settings → fuckgram → Appearance). Video is muted and pauses when the chat is closed. Chat list and other screens keep the normal background for now.
+
+**Fixes**
+- The "deleted" mark now appears right away, without reopening the chat.
+- Dark theme: gray text (message previews, dates, hints, file info, tabs) is much brighter and readable.
+
 ## 1.2
 **Fixes**
 - fuckgram settings are now in the main Settings list (first item) as well as in the profile.
