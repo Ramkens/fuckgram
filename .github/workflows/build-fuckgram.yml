@@ -171,10 +171,8 @@ jobs:
             echo
             echo "Неофициальный клиент на основе Telegram for Android 13.2.2 (GPLv2). Автор: @scamchrome. / Unofficial client based on Telegram for Android 13.2.2 (GPLv2). Creator: @scamchrome. Source: this repository at tag \`v$VERSION\`."
           } > body.md
-          # one release per version and no old builds lying around
-          for old in $(gh release list --repo "$GITHUB_REPOSITORY" --limit 100 --json tagName --jq '.[].tagName'); do
-            gh release delete "$old" --repo "$GITHUB_REPOSITORY" --yes --cleanup-tag || true
-          done
+          # old releases are kept; only the release of this same version is replaced if it exists
+          gh release delete "v$VERSION" --repo "$GITHUB_REPOSITORY" --yes --cleanup-tag 2>/dev/null || true
           gh release create "v$VERSION" "$NAME" \
             --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
             --title "fuckgram $VERSION" --notes-file body.md --latest
