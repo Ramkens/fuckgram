@@ -40,6 +40,7 @@ public class FuckgramConfig {
     public static final String HIDE_NOTIF_TEXT = "hide_notif_text"; // notifications never show the text
     public static final String SHOW_SECONDS = "show_seconds";      // seconds in the message time (like AyuGram)
     public static final String SHOW_MSG_ID = "show_msg_id";        // message id next to the time (like AyuGram)
+    public static final String VPN_AUTO = "vpn_auto";              // refresh and sort the free proxies at start
     public static final String TG_FONT = "tg_font";                // original Telegram font (Roboto)
     public static final String COL_ACCENT = "col_accent";
     public static final String COL_OUT = "col_out";
@@ -50,7 +51,7 @@ public class FuckgramConfig {
 
     public static final String[] ALL_KEYS = {GHOST_NO_READ, GHOST_NO_TYPING, GHOST_OFFLINE, KEEP_DELETED, SHOW_BADGE, MARK_ACCOUNT,
             ENC_ENABLED, LIVE_BG, LIVE_BG_SPEED, LIVE_BG_DENSITY, LIVE_BG_BATTERY, TRANSITION, TRANSITION_SPEED, THEME_MODE, BG_DIM, BG_KIND_LIST, BG_KIND_SETTINGS,
-            TG_FONT, SHOW_SECONDS, SHOW_MSG_ID, HIDE_NOTIF_TEXT, COL_ACCENT, COL_OUT, COL_IN, COL_BG, COL_TEXT,
+            TG_FONT, VPN_AUTO, SHOW_SECONDS, SHOW_MSG_ID, HIDE_NOTIF_TEXT, COL_ACCENT, COL_OUT, COL_IN, COL_BG, COL_TEXT,
             HIDE_ADS, HIDE_PREMIUM, HIDE_BUSINESS, HIDE_STARS, HIDE_GIFTS, HIDE_STORIES, HIDE_WALLET};
 
     private static SharedPreferences prefs() {

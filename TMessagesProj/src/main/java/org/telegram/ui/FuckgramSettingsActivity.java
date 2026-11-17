@@ -19,6 +19,7 @@ import org.telegram.messenger.FuckgramCrypto;
 import org.telegram.messenger.FuckgramBotBlock;
 import org.telegram.messenger.FuckgramDecoy;
 import org.telegram.messenger.FuckgramProfiles;
+import org.telegram.messenger.FuckgramVpn;
 import org.telegram.messenger.FuckgramText;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
@@ -35,7 +36,7 @@ import org.telegram.ui.Components.LayoutHelper;
  */
 public class FuckgramSettingsActivity extends BaseFragment {
 
-    public static final int MENU = 0, PRIVACY = 1, MESSAGES = 2, LOOK = 3, PROFILE = 4, PACKS = 5, CLEAN = 6, COLORS = 7, ANIM = 8, GHOSTPASS = 9, BOTBLOCK = 10, BROADCAST = 11, PROFILES = 12;
+    public static final int MENU = 0, PRIVACY = 1, MESSAGES = 2, LOOK = 3, PROFILE = 4, PACKS = 5, CLEAN = 6, COLORS = 7, ANIM = 8, GHOSTPASS = 9, BOTBLOCK = 10, BROADCAST = 11, PROFILES = 12, VPN = 13;
 
     private final int category;
     private LinearLayout list;
@@ -89,6 +90,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
             case BOTBLOCK: return t("Bot ban", "Запрет на ботов");
             case BROADCAST: return t("Broadcast", "Рассылка");
             case PROFILES: return t("Profile presets", "Конфиги профиля");
+            case VPN: return t("Built-in VPN", "Встроенный VPN");
             case GHOSTPASS: return t("Ghost password & spaces", "Пароль-призрак и пространства");
             case COLORS: return t("My colors", "Свои цвета");
             case ANIM: return t("Animations", "Анимации");
@@ -150,6 +152,29 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addInfo(context, t("Each switch hides only its own part. Some screens update after the app is restarted.",
                         "Каждый переключатель скрывает только свою часть. Часть экранов обновится после перезапуска приложения."));
                 break;
+            case VPN: {
+                addHeader(context, t("Free proxies for Telegram", "Бесплатные прокси для Telegram"));
+                addValue(context, t("Now", "Сейчас"), FuckgramVpn.currentText(), true, v -> {});
+                addButton(context, FuckgramVpn.running ? t("Searching…", "Идёт поиск…") : t("Find the fastest and switch on", "Найти самые быстрые и включить"), true, v -> startVpnSearch(context));
+                addButton(context, t("Switch the proxy off", "Выключить прокси"), true, v -> {
+                    FuckgramVpn.turnOff();
+                    build(context);
+                });
+                addSwitch(context, FuckgramConfig.VPN_AUTO, t("Refresh automatically at start (every 3 h)", "Обновлять сам при запуске (раз в 3 часа)"), true);
+                addValue(context, t("My keys", "Свои ключи"), FuckgramVpn.getCustomKeys().isEmpty() ? t("none", "нет") : String.valueOf(FuckgramVpn.parse(FuckgramVpn.getCustomKeys()).size()), true,
+                        v -> promptText(context, t("Keys: tg://proxy, t.me/proxy, socks5://ip:port, one per line", "Ключи: tg://proxy, t.me/proxy, socks5://ip:port, по одному в строке"), "", FuckgramVpn.getCustomKeys(), true, text -> {
+                            FuckgramVpn.setCustomKeys(text);
+                            build(context);
+                        }));
+                addValue(context, t("My lists (links)", "Свои списки (ссылки)"), FuckgramVpn.getCustomSources().isEmpty() ? t("none", "нет") : t("set", "заданы"), true,
+                        v -> promptText(context, t("Links to lists of proxies, one per line", "Ссылки на списки прокси, по одной в строке"), "https://", FuckgramVpn.getCustomSources(), true, text -> {
+                            FuckgramVpn.setCustomSources(text);
+                            build(context);
+                        }));
+                addInfo(context, t("fuckgram takes proxies from several public lists plus your own keys, checks how fast each one answers, sorts them and switches Telegram to the fastest. Your own keys are always checked first.\n\nWhat it can and cannot do: it works with MTProto and SOCKS5 and carries only Telegram's traffic, not the whole phone. Keys of vless / vmess / trojan / Happ need a separate engine and are skipped. Free proxies are slow and die fast, and their owners see that you use Telegram (not your messages). Do not count on them for anonymity.",
+                        "fuckgram берёт прокси из нескольких открытых списков и ваших ключей, проверяет скорость ответа каждого, сортирует и переключает Telegram на самый быстрый. Ваши ключи проверяются всегда.\n\nЧто это умеет и что нет: работает с MTProto и SOCKS5 и ведёт только трафик Telegram, а не всего телефона. Ключи vless / vmess / trojan / Happ требуют отдельного движка и пропускаются. Бесплатные прокси медленные и быстро умирают, а их владельцы видят, что вы пользуетесь Telegram (но не сообщения). На анонимность рассчитывать нельзя."));
+                break;
+            }
             case BOTBLOCK: {
                 boolean active = FuckgramBotBlock.isActive();
                 addHeader(context, t("Self-ban on bots", "Самозапрет на ботов"));
@@ -280,6 +305,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addButton(context, t("Messages & encryption", "Сообщения и шифрование"), true, v -> presentFragment(new FuckgramSettingsActivity(MESSAGES)));
                 addButton(context, t("Appearance & animations", "Оформление и анимации"), true, v -> presentFragment(new FuckgramSettingsActivity(LOOK)));
                 addButton(context, t("Ghost password & spaces", "Пароль-призрак и пространства"), true, v -> presentFragment(new FuckgramSettingsActivity(GHOSTPASS)));
+                addButton(context, t("Built-in VPN (free proxies)", "Встроенный VPN (бесплатные прокси)"), true, v -> presentFragment(new FuckgramSettingsActivity(VPN)));
                 addButton(context, t("Bot ban (timer)", "Запрет на ботов (таймер)"), true, v -> presentFragment(new FuckgramSettingsActivity(BOTBLOCK)));
                 addButton(context, t("Broadcast", "Рассылка"), true, v -> presentFragment(new FuckgramSettingsActivity(BROADCAST)));
                 addButton(context, t("Profile presets", "Конфиги профиля"), true, v -> presentFragment(new FuckgramSettingsActivity(PROFILES)));
@@ -479,6 +505,34 @@ public class FuckgramSettingsActivity extends BaseFragment {
         });
         builder.setNegativeButton(t("Cancel", "Отмена"), null);
         showDialog(builder.create());
+    }
+
+    private void startVpnSearch(Context context) {
+        if (FuckgramVpn.running) {
+            return;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(t("Built-in VPN", "Встроенный VPN"));
+        builder.setMessage(t("Loading lists…", "Загружаю списки…"));
+        builder.setNegativeButton(t("Cancel", "Отмена"), (d, w) -> FuckgramVpn.cancelled = true);
+        final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        showDialog(dialog);
+        FuckgramVpn.refresh(currentAccount, text -> {
+            try {
+                dialog.setMessage(text);
+            } catch (Throwable ignore) {
+            }
+        }, result -> {
+            try {
+                dialog.dismiss();
+            } catch (Throwable ignore) {
+            }
+            Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+            if (fragmentView != null) {
+                build(context);
+            }
+        });
     }
 
     private void presetActions(Context context, final FuckgramProfiles.Preset preset) {

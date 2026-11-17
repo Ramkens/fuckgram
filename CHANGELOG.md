@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.3.4
+
+### 🇷🇺 Русский
+**Новое**
+- **Встроенный VPN для Telegram** (Настройки → fuckgram → Встроенный VPN). fuckgram собирает бесплатные MTProto и SOCKS5 прокси из нескольких открытых списков, проверяет скорость ответа каждого, сортирует и включает самый быстрый. Одна кнопка «Найти самые быстрые и включить», показ хода проверки, отмена.
+- **Свои ключи и списки:** вставляйте `tg://proxy`, `t.me/proxy`, `socks5://ip:port` и ссылки на свои списки прокси. Свои ключи проверяются всегда.
+- **Автообновление** при запуске раз в 3 часа (переключатель).
+
+**Важно знать**
+- Это прокси только для трафика Telegram, а не VPN на весь телефон.
+- Ключи vless / vmess / trojan / Happ не поддерживаются: им нужен отдельный движок. Такие ключи пропускаются.
+- Бесплатные прокси медленные и быстро умирают, их владельцы видят сам факт использования Telegram (но не ваши сообщения).
+
+### 🇬🇧 English
+**New**
+- **Built-in VPN for Telegram** (Settings → fuckgram → Built-in VPN). fuckgram collects free MTProto and SOCKS5 proxies from several public lists, checks how fast each one answers, sorts them and switches on the fastest. One button "Find the fastest and switch on", live progress, cancel.
+- **Your own keys and lists:** paste `tg://proxy`, `t.me/proxy`, `socks5://ip:port` and links to your own proxy lists. Your keys are always checked.
+- **Auto refresh** at start every 3 hours (a switch).
+
+**Good to know**
+- These are proxies for Telegram's traffic only, not a VPN for the whole phone.
+- vless / vmess / trojan / Happ keys are not supported: they need a separate engine. Such keys are skipped.
+- Free proxies are slow and die fast, and their owners see the fact that you use Telegram (not your messages).
+
 ## 1.3.3
 
 ### 🇷🇺 Русский
