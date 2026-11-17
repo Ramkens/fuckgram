@@ -263,6 +263,33 @@ public class FuckgramCrypto {
         return result;
     }
 
+    /** "Always encrypt" for a chat: everything typed there leaves the phone as a cipher. */
+    public static boolean isAlways(long dialogId) {
+        try {
+            return prefs().getBoolean("always_" + dialogId, false);
+        } catch (Throwable e) {
+            return false;
+        }
+    }
+
+    public static void setAlways(long dialogId, boolean value) {
+        prefs().edit().putBoolean("always_" + dialogId, value).apply();
+    }
+
+    /** Encrypts the outgoing text if the chat is set to "always encrypt". Commands and ready ciphers are left alone. */
+    public static String autoEncrypt(String text, long dialogId) {
+        try {
+            if (text == null || text.length() == 0 || !FuckgramConfig.isEncryptionEnabled() || !isAlways(dialogId)
+                    || text.startsWith("/") || looksEncrypted(text) || text.getBytes(StandardCharsets.UTF_8).length > 3500) {
+                return text;
+            }
+            String cipher = encrypt(text, passphraseForSending(dialogId));
+            return cipher != null ? cipher : text;
+        } catch (Throwable e) {
+            return text;
+        }
+    }
+
     public static boolean looksEncrypted(CharSequence s) {
         if (s == null || s.length() < MIN_LEN || s.length() > 8000) {
             return false;

@@ -2556,6 +2556,9 @@ public class NotificationsController extends BaseController implements Notificat
     }
 
     private String getStringForMessage(MessageObject messageObject, boolean shortMessage, boolean[] text, boolean[] preview) {
+        if (FuckgramConfig.get(FuckgramConfig.HIDE_NOTIF_TEXT)) { // fuckgram: no texts in notifications
+            return LocaleController.getString(R.string.YouHaveNewMessage);
+        }
         if (AndroidUtilities.needShowPasscode() || SharedConfig.isWaitingForPasscodeEnter) {
             return LocaleController.getString(R.string.YouHaveNewMessage);
         }

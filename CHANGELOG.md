@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.3.2
+
+### 🇷🇺 Русский
+**Новое**
+- **Всегда шифровать в этом чате.** Зажмите кнопку отправки → «Всегда шифровать в этом чате»: всё, что вы пишете, уходит шифром само, без выбора в меню. У вас текст виден как обычно, у друга с fuckgram тоже, у остальных мешанина символов. Выключается там же.
+- **Без текста в уведомлениях.** Переключатель в «Убрать лишнее»: уведомление пишет «новое сообщение» вместо текста (в том числе вместо шифра).
+
+**Исправления**
+- Кнопки «Расшифровать файл» и «Проявить скрытый текст» не появлялись в меню сообщения у файлов и картинок. Теперь они есть у любого сообщения.
+
+### 🇬🇧 English
+**New**
+- **Always encrypt in this chat.** Long-press the send button → "Always encrypt in this chat": everything you type leaves as a cipher, no menu needed. You see plain text, so does a friend with fuckgram, everybody else sees a pile of symbols. Turn it off in the same place.
+- **No text in notifications.** A switch in "Clean-up": the notification says "new message" instead of the text (including ciphers).
+
+**Fixes**
+- The "Decrypt file" and "Reveal hidden text" buttons did not show up in the menu of files and pictures. They are now there for any message.
+
 ## 1.3.1
 
 ### 🇷🇺 Русский

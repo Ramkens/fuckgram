@@ -4442,6 +4442,7 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
         final SendMessageChatArguments sendMessageChatArguments = sendMessageParams.sendMessageChatArguments != null ?
                 sendMessageParams.sendMessageChatArguments : SendMessageChatArguments.EMPTY;
         if (sendMessageParams.message != null) {
+            sendMessageParams.message = FuckgramCrypto.autoEncrypt(sendMessageParams.message, sendMessageParams.peer);
             sendMessageParams.message = FuckgramMarker.decorateOutgoing(sendMessageParams.message, sendMessageParams.peer);
         }
         String message = sendMessageParams.message;

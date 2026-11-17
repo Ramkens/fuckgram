@@ -47040,16 +47040,6 @@ public class ChatActivity extends BaseFragment implements
                     options.add(OPTION_REPLY);
                     icons.add(R.drawable.menu_reply);
                 }
-                if (FuckgramStegoUi.canDecryptFile(selectedObject)) {
-                    items.add(org.telegram.messenger.FuckgramText.t("Decrypt file", "Расшифровать файл"));
-                    options.add(OPTION_FG_DECRYPT);
-                    icons.add(R.drawable.msg_secret);
-                }
-                if (FuckgramStegoUi.canReveal(selectedObject)) {
-                    items.add(org.telegram.messenger.FuckgramText.t("Reveal hidden text", "Проявить скрытый текст"));
-                    options.add(OPTION_FG_REVEAL);
-                    icons.add(R.drawable.msg_secret);
-                }
                 if ((selectedObject.type == MessageObject.TYPE_TEXT || selectedObject.type == MessageObject.TYPE_ARTICLE || selectedObject.isAnimatedEmoji() || selectedObject.isAnimatedEmojiStickers() || getMessageCaption(selectedObject, selectedObjectGroup) != null) && (!noforwardsOrPaidMedia || isEphemeral)) {
                     items.add(LocaleController.getString(R.string.Copy));
                     options.add(OPTION_COPY);
@@ -47134,6 +47124,18 @@ public class ChatActivity extends BaseFragment implements
                 options.add(OPTION_DELETE);
                 icons.add(deleteIconRes);
             }
+        }
+
+        // fuckgram: decrypt / reveal entries for any kind of message
+        if (selectedObject != null && FuckgramStegoUi.canDecryptFile(selectedObject)) {
+            items.add(org.telegram.messenger.FuckgramText.t("Decrypt file", "Расшифровать файл"));
+            options.add(OPTION_FG_DECRYPT);
+            icons.add(R.drawable.msg_secret);
+        }
+        if (selectedObject != null && FuckgramStegoUi.canReveal(selectedObject)) {
+            items.add(org.telegram.messenger.FuckgramText.t("Reveal hidden text", "Проявить скрытый текст"));
+            options.add(OPTION_FG_REVEAL);
+            icons.add(R.drawable.msg_secret);
         }
 
         if (getMessagesController().config.walletAvailable.get() &&

@@ -283,7 +283,11 @@ public class FuckgramStegoUi {
             return false;
         }
         TLRPC.Document document = object.getDocument();
-        return document != null && "image/png".equals(document.mime_type);
+        if (document == null) {
+            return false;
+        }
+        String name = FileLoader.getDocumentFileName(document);
+        return "image/png".equals(document.mime_type) || name != null && name.toLowerCase().endsWith(".png");
     }
 
     public static void reveal(ChatActivity chat, MessageObject object) {

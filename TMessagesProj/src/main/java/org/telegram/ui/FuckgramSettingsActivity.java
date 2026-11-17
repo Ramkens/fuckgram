@@ -138,7 +138,8 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addSwitch(context, FuckgramConfig.HIDE_STARS, t("Stars and TON", "Звёзды и TON"), true);
                 addSwitch(context, FuckgramConfig.HIDE_GIFTS, t("Gifts", "Подарки"), true);
                 addSwitch(context, FuckgramConfig.HIDE_STORIES, t("Stories", "Истории"), true);
-                addSwitch(context, FuckgramConfig.HIDE_WALLET, t("Wallet", "Кошелёк"), false);
+                addSwitch(context, FuckgramConfig.HIDE_WALLET, t("Wallet", "Кошелёк"), true);
+                addSwitch(context, FuckgramConfig.HIDE_NOTIF_TEXT, t("Texts in notifications (show «new message»)", "Тексты в уведомлениях (писать «новое сообщение»)"), false);
                 addInfo(context, t("Each switch hides only its own part. Some screens update after the app is restarted.",
                         "Каждый переключатель скрывает только свою часть. Часть экранов обновится после перезапуска приложения."));
                 break;

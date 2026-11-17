@@ -5229,6 +5229,15 @@ public class ChatActivityEnterView extends FrameLayout implements
                 }
                 org.telegram.ui.FuckgramStegoUi.start(parentFragment);
             });
+            options.add(R.drawable.msg_secret, org.telegram.messenger.FuckgramText.t(org.telegram.messenger.FuckgramCrypto.isAlways(dialog_id) ? "Always encrypt: turn off" : "Always encrypt in this chat", org.telegram.messenger.FuckgramCrypto.isAlways(dialog_id) ? "Всегда шифровать: выключить" : "Всегда шифровать в этом чате"), () -> {
+                if (messageSendPreview != null) {
+                    messageSendPreview.dismiss(false);
+                    messageSendPreview = null;
+                }
+                boolean value = !org.telegram.messenger.FuckgramCrypto.isAlways(dialog_id);
+                org.telegram.messenger.FuckgramCrypto.setAlways(dialog_id, value);
+                android.widget.Toast.makeText(getContext(), org.telegram.messenger.FuckgramText.t(value ? "Everything you type here is encrypted now" : "Encryption is no longer automatic here", value ? "Теперь всё, что вы пишете здесь, шифруется" : "Авто-шифрование здесь выключено"), android.widget.Toast.LENGTH_SHORT).show();
+            });
             options.add(R.drawable.msg_secret, org.telegram.messenger.FuckgramText.t("Encrypt a picture or file", "Зашифровать фото или файл"), () -> {
                 if (messageSendPreview != null) {
                     messageSendPreview.dismiss(false);
