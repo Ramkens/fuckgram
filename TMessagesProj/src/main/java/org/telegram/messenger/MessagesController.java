@@ -24672,6 +24672,7 @@ public class MessagesController extends BaseController implements NotificationCe
     }
     public void openApp(BaseFragment _fragment, TLRPC.User bot, String param, int classGuid, Browser.Progress progress, boolean botCompact, boolean botFullscreen) {
         if (bot == null) return;
+        if (FuckgramBotBlock.blocked(currentAccount, bot.id)) return; // fuckgram: self-imposed ban on bots
 
         boolean[] cancelled = new boolean[] { false };
         if (progress != null) {

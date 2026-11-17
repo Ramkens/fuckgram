@@ -15678,6 +15678,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
             currentTimeString = TextUtils.concat("⭐️", AndroidUtilities.formatWholeNumber((int) starsPrice, 0), "  ", currentTimeString);
             currentTimeString = StarsIntroActivity.replaceStars(currentTimeString, 0.8f, null, 0, dp(-.33f), 0.94f);
         }
+        currentTimeString = org.telegram.messenger.FuckgramMarks.decorateTime(currentTimeString, currentMessageObject);
         CharSequence fgPrefix = org.telegram.messenger.FuckgramMarks.timePrefix(currentAccount, currentMessageObject);
         if (fgPrefix != null) {
             currentTimeString = TextUtils.concat(fgPrefix, " ", currentTimeString);

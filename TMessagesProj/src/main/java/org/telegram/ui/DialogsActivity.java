@@ -10931,8 +10931,11 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     @NonNull
     public ArrayList<TLRPC.Dialog> getDialogsArray(int currentAccount, int dialogsType, int folderId, boolean frozen) {
         ArrayList<TLRPC.Dialog> fgList = fgGetDialogsArray(currentAccount, dialogsType, folderId, frozen);
-        if (org.telegram.messenger.FuckgramDecoy.isActive() && !(frozen && frozenDialogsList != null && fgList == frozenDialogsList)) {
-            return org.telegram.messenger.FuckgramDecoy.filter(currentAccount, fgList); // fuckgram: quiet mode shows only allowed chats
+        if (org.telegram.messenger.FuckgramDecoy.isActive()) {
+            fgList = org.telegram.messenger.FuckgramDecoy.filter(currentAccount, fgList); // fuckgram: quiet mode shows only allowed chats
+        }
+        if (org.telegram.messenger.FuckgramBotBlock.isActive()) {
+            fgList = org.telegram.messenger.FuckgramBotBlock.filter(currentAccount, fgList); // fuckgram: self-imposed ban on bots
         }
         return fgList;
     }

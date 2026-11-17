@@ -27,7 +27,7 @@ public class BuildVars {
     public static String BUILD_VERSION_STRING = BuildConfig.BUILD_VERSION_STRING;
 
     public static int APP_ID = 0; // fuckgram: set your own api_id (CI injects it from the FG_API_ID secret)
-    public static final String FUCKGRAM_VERSION = "1.3.2"; // CI writes the value of the VERSION file here
+    public static final String FUCKGRAM_VERSION = "1.3.3"; // CI writes the value of the VERSION file here
     public static String APP_HASH = ""; // fuckgram: set your own api_hash (CI injects it from the FG_API_HASH secret)
 
     // SafetyNet key for Google Identity SDK, set it to empty to disable

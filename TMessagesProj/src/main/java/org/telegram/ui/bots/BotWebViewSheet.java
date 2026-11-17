@@ -1432,6 +1432,9 @@ public class BotWebViewSheet extends Dialog implements NotificationCenter.Notifi
     }
 
     public void requestWebView(BaseFragment fragment, WebViewRequestProps props) {
+        if (org.telegram.messenger.FuckgramBotBlock.blocked(props.currentAccount, props.botId)) { // fuckgram: self-imposed ban on bots
+            return;
+        }
         this.requestProps = props;
         this.currentAccount = props.currentAccount;
         this.peerId = props.peerId;

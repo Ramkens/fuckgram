@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.3.3
+
+### 🇷🇺 Русский
+**Новое**
+- **Самозапрет на ботов с таймером** (Настройки → fuckgram → Запрет на ботов). Добавьте юзернеймы ботов и включите запрет на 15 минут, час, 6 часов, день, 7 или 30 дней. Пока запрет идёт: чаты этих ботов скрыты и не открываются (в том числе из поиска и по ссылкам), их мини-приложения не запускаются, уведомления молчат. Досрочно снять нельзя, можно только добавить ботов или продлить срок.
+- **Рассылка** (Настройки → fuckgram → Рассылка): выберите получателей из своего списка чатов (до 100), напишите текст с подстановкой `{имя}`, отправка идёт по одному сообщению раз в 2–4 секунды, есть кнопка «Стоп».
+- **Конфиги профиля**: сохраните набор «имя, фамилия, описание, аватар» и применяйте к аккаунту одним нажатием. Значок fuckgram у имени сохраняется.
+- **Из AyuGram:** секунды во времени сообщения и ID сообщения рядом со временем (оба в «Сообщения», выключены по умолчанию).
+
+**Важно знать**
+- Запрет работает внутри fuckgram и по часам телефона. Это барьер для импульса, а не замок.
+- Если азартные игры отнимают контроль над жизнью, поговорите со специалистом: запрет в приложении только помогает.
+
+### 🇬🇧 English
+**New**
+- **Self-ban on bots with a timer** (Settings → fuckgram → Bot ban). Add bot usernames and start the ban for 15 minutes, 1 hour, 6 hours, 1 day, 7 or 30 days. While it runs: the bots' chats are hidden and cannot be opened (also from search and links), their mini apps do not start, and notifications are silent. It cannot be cancelled early, only extended or made stricter with more bots.
+- **Broadcast** (Settings → fuckgram → Broadcast): pick recipients from your chat list (up to 100), write a text with `{name}`, messages go out one every 2–4 seconds, with a Stop button.
+- **Profile presets**: save a set of first name, last name, description and avatar and apply it to your account in one tap. The fuckgram badge next to the name is kept.
+- **From AyuGram:** seconds in the message time and the message ID next to the time (both in "Messages", off by default).
+
+**Good to know**
+- The ban works inside fuckgram and follows the phone's clock. It is a barrier for an impulse, not a lock.
+- If gambling takes control of your life, talk to a professional: the in-app ban only helps.
+
 ## 1.3.2
 
 ### 🇷🇺 Русский

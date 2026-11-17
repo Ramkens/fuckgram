@@ -2841,6 +2841,10 @@ public class ChatActivity extends BaseFragment implements
         if (!org.telegram.messenger.FuckgramDecoy.allowed(currentAccount, dialog_id)) { // fuckgram: quiet mode
             return false;
         }
+        if (org.telegram.messenger.FuckgramBotBlock.blocked(currentAccount, dialog_id)) { // fuckgram: self-imposed ban on bots
+            AndroidUtilities.runOnUIThread(() -> android.widget.Toast.makeText(ApplicationLoader.applicationContext, org.telegram.messenger.FuckgramText.t("This bot is blocked by you until the timer ends", "Вы запретили этого бота до конца таймера"), android.widget.Toast.LENGTH_LONG).show());
+            return false;
+        }
 
         transitionAnimationGlobalIndex = NotificationCenter.getGlobalInstance().setAnimationInProgress(transitionAnimationGlobalIndex, new int[0]);
 

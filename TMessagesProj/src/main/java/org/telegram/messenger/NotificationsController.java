@@ -1087,6 +1087,16 @@ public class NotificationsController extends BaseController implements Notificat
             FileLog.d("NotificationsController: processNewMessages msgs.size()=" + (messageObjects == null ? "null" : messageObjects.size()) + " isLast=" + isLast + " isFcm=" + isFcm + ")");
         }
 
+        if (messageObjects != null && FuckgramBotBlock.isActive()) { // fuckgram: no notifications from banned bots
+            ArrayList<MessageObject> fgKept = new ArrayList<>();
+            for (int i = 0; i < messageObjects.size(); i++) {
+                MessageObject fgObject = messageObjects.get(i);
+                if (fgObject == null || !FuckgramBotBlock.blocked(currentAccount, fgObject.getDialogId())) {
+                    fgKept.add(fgObject);
+                }
+            }
+            messageObjects = fgKept;
+        }
         if (messageObjects != null) {
             for (int i = 0; i < messageObjects.size(); ++i) {
                 final MessageObject messageObject = messageObjects.get(i);

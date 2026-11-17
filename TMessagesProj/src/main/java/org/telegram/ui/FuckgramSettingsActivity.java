@@ -16,7 +16,9 @@ import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.FuckgramColors;
 import org.telegram.messenger.FuckgramConfig;
 import org.telegram.messenger.FuckgramCrypto;
+import org.telegram.messenger.FuckgramBotBlock;
 import org.telegram.messenger.FuckgramDecoy;
+import org.telegram.messenger.FuckgramProfiles;
 import org.telegram.messenger.FuckgramText;
 import org.telegram.messenger.NotificationCenter;
 import org.telegram.messenger.R;
@@ -33,7 +35,7 @@ import org.telegram.ui.Components.LayoutHelper;
  */
 public class FuckgramSettingsActivity extends BaseFragment {
 
-    public static final int MENU = 0, PRIVACY = 1, MESSAGES = 2, LOOK = 3, PROFILE = 4, PACKS = 5, CLEAN = 6, COLORS = 7, ANIM = 8, GHOSTPASS = 9;
+    public static final int MENU = 0, PRIVACY = 1, MESSAGES = 2, LOOK = 3, PROFILE = 4, PACKS = 5, CLEAN = 6, COLORS = 7, ANIM = 8, GHOSTPASS = 9, BOTBLOCK = 10, BROADCAST = 11, PROFILES = 12;
 
     private final int category;
     private LinearLayout list;
@@ -84,6 +86,9 @@ public class FuckgramSettingsActivity extends BaseFragment {
             case PROFILE: return t("Badge", "Значок fuckgram");
             case PACKS: return t("Settings packs", "Пакеты настроек");
             case CLEAN: return t("Clean-up", "Убрать лишнее");
+            case BOTBLOCK: return t("Bot ban", "Запрет на ботов");
+            case BROADCAST: return t("Broadcast", "Рассылка");
+            case PROFILES: return t("Profile presets", "Конфиги профиля");
             case GHOSTPASS: return t("Ghost password & spaces", "Пароль-призрак и пространства");
             case COLORS: return t("My colors", "Свои цвета");
             case ANIM: return t("Animations", "Анимации");
@@ -104,7 +109,9 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 break;
             case MESSAGES:
                 addHeader(context, t("Deleted messages", "Удалённые сообщения"));
-                addSwitch(context, FuckgramConfig.KEEP_DELETED, t("Keep messages deleted by others", "Сохранять сообщения, удалённые собеседником"), false);
+                addSwitch(context, FuckgramConfig.KEEP_DELETED, t("Keep messages deleted by others", "Сохранять сообщения, удалённые собеседником"), true);
+                addSwitch(context, FuckgramConfig.SHOW_SECONDS, t("Seconds in message time", "Секунды во времени сообщений"), true);
+                addSwitch(context, FuckgramConfig.SHOW_MSG_ID, t("Message ID next to the time", "ID сообщения рядом со временем"), false);
                 addInfo(context, t("A deleted message stays in the chat with a «deleted» mark next to the time (it appears after the chat is reopened).",
                         "Удалённое сообщение остаётся в чате с пометкой «удалено» у времени (видна после повторного открытия чата)."));
                 addHeader(context, t("fg encryption", "fg-шифрование"));
@@ -143,6 +150,74 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addInfo(context, t("Each switch hides only its own part. Some screens update after the app is restarted.",
                         "Каждый переключатель скрывает только свою часть. Часть экранов обновится после перезапуска приложения."));
                 break;
+            case BOTBLOCK: {
+                boolean active = FuckgramBotBlock.isActive();
+                addHeader(context, t("Self-ban on bots", "Самозапрет на ботов"));
+                addValue(context, t("Status", "Статус"), active ? t("until ", "до ") + java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.SHORT, java.text.DateFormat.SHORT).format(new java.util.Date(FuckgramBotBlock.until())) : t("off", "выключен"), true, v -> {});
+                java.util.ArrayList<String> names = FuckgramBotBlock.names();
+                for (final String name : names) {
+                    addValue(context, "@" + name, active ? t("locked", "заблокирован") : t("tap to remove", "нажмите, чтобы убрать"), true, v -> {
+                        if (FuckgramBotBlock.remove(name)) {
+                            build(context);
+                        } else {
+                            Toast.makeText(context, t("The ban is running, the list cannot be shortened", "Запрет идёт, список нельзя сократить"), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                addButton(context, t("Add a bot (@username)", "Добавить бота (@username)"), true, v -> promptText(context, t("Bot username", "Юзернейм бота"), "@username", "", false, text -> {
+                    if (!FuckgramBotBlock.add(text)) {
+                        Toast.makeText(context, t("Wrong username", "Неверный юзернейм"), Toast.LENGTH_SHORT).show();
+                    }
+                    build(context);
+                }));
+                addHeader(context, t("Start the ban for", "Включить запрет на"));
+                final String[] labels = {t("15 minutes", "15 минут"), t("1 hour", "1 час"), t("6 hours", "6 часов"), t("1 day", "1 день"), t("7 days", "7 дней"), t("30 days", "30 дней")};
+                final long[] spans = {15L * 60000, 3600000L, 6 * 3600000L, 24 * 3600000L, 7 * 24 * 3600000L, 30 * 24 * 3600000L};
+                for (int a = 0; a < labels.length; a++) {
+                    final int index = a;
+                    addButton(context, labels[a], a < labels.length - 1, v -> {
+                        if (FuckgramBotBlock.names().isEmpty()) {
+                            Toast.makeText(context, t("Add at least one bot first", "Сначала добавьте хотя бы одного бота"), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle(t("Start the ban?", "Включить запрет?"));
+                        builder.setMessage(t("It cannot be switched off before the end: " + labels[index] + ".", "Снять его раньше нельзя: " + labels[index] + "."));
+                        builder.setPositiveButton(t("Start", "Включить"), (d, w) -> {
+                            FuckgramBotBlock.start(spans[index]);
+                            NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.dialogsNeedReload);
+                            build(context);
+                        });
+                        builder.setNegativeButton(t("Cancel", "Отмена"), null);
+                        showDialog(builder.create());
+                    });
+                }
+                addInfo(context, t("While it runs, the bots' chats are hidden and cannot be opened, their mini apps do not start and their notifications are silent. You can add more bots or extend the time, but not cancel. It follows the phone clock and only works inside fuckgram.",
+                        "Пока запрет идёт, чаты этих ботов скрыты и не открываются, их мини-приложения не запускаются, уведомления молчат. Можно добавлять ботов и продлевать срок, но не отменять. Время берётся с часов телефона, работает только внутри fuckgram."));
+                break;
+            }
+            case BROADCAST: {
+                addHeader(context, t("Broadcast to chosen chats", "Рассылка по выбранным чатам"));
+                addValue(context, t("Recipients", "Получатели"), String.valueOf(broadcastIds.size()), true, v -> pickRecipients(context));
+                addValue(context, t("Text", "Текст"), broadcastText.isEmpty() ? t("not set", "не задан") : broadcastText, true, v -> promptText(context, t("Text ({name} = first name)", "Текст ({имя} = имя)"), "", broadcastText, true, text -> {
+                    broadcastText = text;
+                    build(context);
+                }));
+                addButton(context, t("Send", "Отправить"), false, v -> startBroadcast(context));
+                addInfo(context, t("Only people from your chat list, up to 100 per run, one message every 2–4 seconds so Telegram does not take it for spam. «{name}» (or «{имя}») is replaced by the first name. Do not write to people who did not ask for it: Telegram may limit your account.",
+                        "Только люди из вашего списка чатов, до 100 за раз, одно сообщение раз в 2–4 секунды, чтобы Telegram не принял это за спам. «{имя}» (или «{name}») заменится на имя. Не пишите тем, кто об этом не просил: Telegram может ограничить аккаунт."));
+                break;
+            }
+            case PROFILES: {
+                addHeader(context, t("Your presets", "Ваши конфиги"));
+                for (final FuckgramProfiles.Preset preset : FuckgramProfiles.list()) {
+                    addValue(context, preset.title, preset.first + (preset.hasAvatar ? " · " + t("avatar", "аватар") : ""), true, v -> presetActions(context, preset));
+                }
+                addButton(context, t("New preset", "Новый конфиг"), false, v -> editPreset(context, null));
+                addInfo(context, t("A preset keeps a name, a description and an avatar. Tap one to apply it to your account in one go, change it or delete it.",
+                        "Конфиг хранит имя, описание и аватар. Нажмите на него, чтобы применить к аккаунту за один раз, изменить или удалить."));
+                break;
+            }
             case GHOSTPASS:
                 addHeader(context, t("Ghost password", "Пароль-призрак"));
                 addValue(context, t("Ghost password", "Пароль-призрак"), FuckgramDecoy.hasCode() ? t("set", "задан") : t("not set", "не задан"), true, v -> askGhostCode(context));
@@ -205,6 +280,9 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addButton(context, t("Messages & encryption", "Сообщения и шифрование"), true, v -> presentFragment(new FuckgramSettingsActivity(MESSAGES)));
                 addButton(context, t("Appearance & animations", "Оформление и анимации"), true, v -> presentFragment(new FuckgramSettingsActivity(LOOK)));
                 addButton(context, t("Ghost password & spaces", "Пароль-призрак и пространства"), true, v -> presentFragment(new FuckgramSettingsActivity(GHOSTPASS)));
+                addButton(context, t("Bot ban (timer)", "Запрет на ботов (таймер)"), true, v -> presentFragment(new FuckgramSettingsActivity(BOTBLOCK)));
+                addButton(context, t("Broadcast", "Рассылка"), true, v -> presentFragment(new FuckgramSettingsActivity(BROADCAST)));
+                addButton(context, t("Profile presets", "Конфиги профиля"), true, v -> presentFragment(new FuckgramSettingsActivity(PROFILES)));
                 addButton(context, t("Clean-up (hide ads, Premium…)", "Убрать лишнее (реклама, Premium…)"), true, v -> presentFragment(new FuckgramSettingsActivity(CLEAN)));
                 addButton(context, t("Badge", "Значок fuckgram"), true, v -> presentFragment(new FuckgramSettingsActivity(PROFILE)));
                 addButton(context, t("Settings packs", "Пакеты настроек"), true, v -> presentFragment(new FuckgramSettingsActivity(PACKS)));
@@ -215,6 +293,37 @@ public class FuckgramSettingsActivity extends BaseFragment {
 
     @Override
     public void onActivityResultFragment(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 9720) {
+            final String id = pendingAvatarPreset;
+            final Context avatarContext = getParentActivity();
+            if (resultCode == android.app.Activity.RESULT_OK && data != null && data.getData() != null && id != null && avatarContext != null) {
+                final android.net.Uri uri = data.getData();
+                org.telegram.messenger.Utilities.globalQueue.postRunnable(() -> {
+                    boolean ok = false;
+                    try {
+                        java.io.File temp = new java.io.File(avatarContext.getCacheDir(), "fg_avatar_tmp");
+                        try (java.io.InputStream in = avatarContext.getContentResolver().openInputStream(uri); java.io.FileOutputStream os = new java.io.FileOutputStream(temp)) {
+                            byte[] buf = new byte[64 * 1024];
+                            int n;
+                            while (in != null && (n = in.read(buf)) > 0) {
+                                os.write(buf, 0, n);
+                            }
+                        }
+                        ok = FuckgramProfiles.setAvatar(id, temp);
+                        temp.delete();
+                    } catch (Throwable ignore) {
+                    }
+                    final boolean done = ok;
+                    org.telegram.messenger.AndroidUtilities.runOnUIThread(() -> {
+                        Toast.makeText(avatarContext, done ? t("Avatar saved", "Аватар сохранён") : t("Could not read the picture", "Не удалось прочитать картинку"), Toast.LENGTH_SHORT).show();
+                        if (fragmentView != null) {
+                            build(avatarContext);
+                        }
+                    });
+                });
+            }
+            return;
+        }
         if (requestCode < 9701 || requestCode > 9703 || resultCode != android.app.Activity.RESULT_OK || data == null || data.getData() == null) {
             return;
         }
@@ -235,6 +344,207 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 }
             });
         });
+    }
+
+    private static java.util.ArrayList<Long> broadcastIds = new java.util.ArrayList<>();
+    private static String broadcastText = "";
+    private static String pendingAvatarPreset;
+
+    private void promptText(Context context, String title, String hint, String initial, boolean multiline, org.telegram.messenger.Utilities.Callback<String> done) {
+        final android.widget.EditText input = new android.widget.EditText(context);
+        input.setHint(hint);
+        input.setText(initial);
+        input.setTextColor(Theme.getColor(Theme.key_dialogTextBlack));
+        if (multiline) {
+            input.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+            input.setMinLines(3);
+        } else {
+            input.setSingleLine(true);
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);
+        builder.setView(input);
+        builder.setPositiveButton("OK", (d, w) -> done.run(input.getText().toString().trim()));
+        builder.setNegativeButton(t("Cancel", "Отмена"), null);
+        showDialog(builder.create());
+    }
+
+    private void pickRecipients(Context context) {
+        final java.util.ArrayList<org.telegram.tgnet.TLRPC.Dialog> all = getMessagesController().getAllDialogs();
+        final java.util.ArrayList<Long> ids = new java.util.ArrayList<>();
+        final java.util.ArrayList<String> names = new java.util.ArrayList<>();
+        for (int i = 0; i < all.size() && ids.size() < 300; i++) {
+            org.telegram.tgnet.TLRPC.Dialog dialog = all.get(i);
+            if (dialog == null || dialog.id <= 0 || dialog.id == getUserConfig().getClientUserId()) {
+                continue;
+            }
+            org.telegram.tgnet.TLRPC.User user = getMessagesController().getUser(dialog.id);
+            if (user == null || user.bot || user.deleted) {
+                continue;
+            }
+            ids.add(dialog.id);
+            names.add(org.telegram.messenger.UserObject.getUserName(user));
+        }
+        final LinearLayout box = new LinearLayout(context);
+        box.setOrientation(LinearLayout.VERTICAL);
+        final java.util.ArrayList<TextCheckCell> cells = new java.util.ArrayList<>();
+        TextCheckCell allCell = new TextCheckCell(context);
+        allCell.setTextAndCheck(t("All private chats (up to 100)", "Все личные чаты (до 100)"), false, true);
+        allCell.setOnClickListener(v -> {
+            boolean value = !allCell.isChecked();
+            allCell.setChecked(value);
+            broadcastIds.clear();
+            for (int i = 0; i < cells.size(); i++) {
+                boolean on = value && broadcastIds.size() < 100;
+                cells.get(i).setChecked(on);
+                if (on) {
+                    broadcastIds.add(ids.get(i));
+                }
+            }
+        });
+        box.addView(allCell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
+        for (int i = 0; i < ids.size(); i++) {
+            final long id = ids.get(i);
+            final TextCheckCell cell = new TextCheckCell(context);
+            cell.setTextAndCheck(names.get(i), broadcastIds.contains(id), true);
+            cell.setOnClickListener(v -> {
+                boolean value = !cell.isChecked();
+                if (value && broadcastIds.size() >= 100) {
+                    Toast.makeText(context, t("No more than 100", "Не больше 100"), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                cell.setChecked(value);
+                if (value) {
+                    broadcastIds.add(id);
+                } else {
+                    broadcastIds.remove(Long.valueOf(id));
+                }
+            });
+            cells.add(cell);
+            box.addView(cell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
+        }
+        ScrollView scroll = new ScrollView(context);
+        scroll.addView(box);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(t("Recipients", "Получатели"));
+        builder.setView(scroll);
+        builder.setPositiveButton("OK", (d, w) -> build(context));
+        builder.setOnDismissListener(d -> build(context));
+        showDialog(builder.create());
+    }
+
+    private void startBroadcast(Context context) {
+        if (broadcastIds.isEmpty() || broadcastText.isEmpty()) {
+            Toast.makeText(context, t("Choose recipients and write a text", "Выберите получателей и напишите текст"), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        final java.util.ArrayList<Long> queue = new java.util.ArrayList<>(broadcastIds);
+        final String text = broadcastText;
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(t("Send to " + queue.size() + " chats?", "Отправить в " + queue.size() + " чатов?"));
+        builder.setMessage(text);
+        builder.setPositiveButton(t("Send", "Отправить"), (d, w) -> {
+            final boolean[] stop = {false};
+            final AlertDialog.Builder progress = new AlertDialog.Builder(context);
+            progress.setTitle(t("Broadcast", "Рассылка"));
+            progress.setMessage("0 / " + queue.size());
+            progress.setNegativeButton(t("Stop", "Стоп"), (dd, ww) -> stop[0] = true);
+            final AlertDialog dialog = progress.create();
+            showDialog(dialog);
+            final java.util.Random random = new java.util.Random();
+            final int[] index = {0};
+            final Runnable[] step = new Runnable[1];
+            step[0] = () -> {
+                if (stop[0] || index[0] >= queue.size()) {
+                    try {
+                        dialog.dismiss();
+                    } catch (Throwable ignore) {
+                    }
+                    Toast.makeText(context, t("Sent: ", "Отправлено: ") + index[0], Toast.LENGTH_LONG).show();
+                    return;
+                }
+                long dialogId = queue.get(index[0]);
+                org.telegram.tgnet.TLRPC.User user = getMessagesController().getUser(dialogId);
+                String first = user == null || user.first_name == null ? "" : user.first_name;
+                String message = text.replace("{имя}", first).replace("{name}", first);
+                org.telegram.messenger.SendMessagesHelper.getInstance(currentAccount).sendMessage(org.telegram.messenger.SendMessagesHelper.SendMessageParams.of(message, dialogId, null, null, null, true, null, null, null, true, 0, 0, null, false));
+                index[0]++;
+                try {
+                    dialog.setMessage(index[0] + " / " + queue.size());
+                } catch (Throwable ignore) {
+                }
+                org.telegram.messenger.AndroidUtilities.runOnUIThread(step[0], 2000 + random.nextInt(2000));
+            };
+            step[0].run();
+        });
+        builder.setNegativeButton(t("Cancel", "Отмена"), null);
+        showDialog(builder.create());
+    }
+
+    private void presetActions(Context context, final FuckgramProfiles.Preset preset) {
+        String[] items = {t("Apply now", "Применить сейчас"), t("Edit", "Изменить"), t("Set avatar", "Выбрать аватар"), t("Delete", "Удалить")};
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(preset.title);
+        builder.setItems(items, (d, which) -> {
+            if (which == 0) {
+                FuckgramProfiles.apply(currentAccount, preset);
+                Toast.makeText(context, t("Applied", "Применено"), Toast.LENGTH_SHORT).show();
+            } else if (which == 1) {
+                editPreset(context, preset);
+            } else if (which == 2) {
+                pendingAvatarPreset = preset.id;
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                startActivityForResult(Intent.createChooser(intent, t("Choose a picture", "Выберите картинку")), 9720);
+            } else {
+                FuckgramProfiles.delete(preset.id);
+                build(context);
+            }
+        });
+        showDialog(builder.create());
+    }
+
+    private void editPreset(Context context, final FuckgramProfiles.Preset existing) {
+        final FuckgramProfiles.Preset preset = existing != null ? existing : new FuckgramProfiles.Preset();
+        org.telegram.tgnet.TLRPC.User me = getUserConfig().getCurrentUser();
+        if (existing == null && me != null) {
+            preset.first = me.first_name == null ? "" : me.first_name;
+            String last = me.last_name == null ? "" : me.last_name;
+            preset.last = last.replace(org.telegram.messenger.FuckgramMarker.MARK, "");
+            org.telegram.tgnet.TLRPC.UserFull full = getMessagesController().getUserFull(me.id);
+            preset.about = full != null && full.about != null ? full.about : "";
+        }
+        final android.widget.EditText[] fields = new android.widget.EditText[4];
+        String[] hints = {t("Preset name", "Название конфига"), t("First name", "Имя"), t("Last name", "Фамилия"), t("Description", "Описание")};
+        String[] values = {preset.title == null ? "" : preset.title, preset.first == null ? "" : preset.first, preset.last == null ? "" : preset.last, preset.about == null ? "" : preset.about};
+        LinearLayout box = new LinearLayout(context);
+        box.setOrientation(LinearLayout.VERTICAL);
+        for (int i = 0; i < 4; i++) {
+            fields[i] = new android.widget.EditText(context);
+            fields[i].setHint(hints[i]);
+            fields[i].setText(values[i]);
+            fields[i].setTextColor(Theme.getColor(Theme.key_dialogTextBlack));
+            box.addView(fields[i], LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
+        }
+        ScrollView scroll = new ScrollView(context);
+        scroll.addView(box);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(existing == null ? t("New preset", "Новый конфиг") : t("Edit preset", "Изменить конфиг"));
+        builder.setView(scroll);
+        builder.setPositiveButton(t("Save", "Сохранить"), (d, w) -> {
+            preset.title = fields[0].getText().toString().trim();
+            preset.first = fields[1].getText().toString().trim();
+            preset.last = fields[2].getText().toString().trim();
+            preset.about = fields[3].getText().toString().trim();
+            if (preset.title.isEmpty()) {
+                preset.title = preset.first.isEmpty() ? t("Preset", "Конфиг") : preset.first;
+            }
+            FuckgramProfiles.put(preset);
+            build(context);
+        });
+        builder.setNegativeButton(t("Cancel", "Отмена"), null);
+        showDialog(builder.create());
     }
 
     private void askGhostCode(Context context) {
