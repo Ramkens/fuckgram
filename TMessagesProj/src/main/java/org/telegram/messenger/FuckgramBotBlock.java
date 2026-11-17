@@ -135,4 +135,19 @@ public class FuckgramBotBlock {
         }
         return result;
     }
+
+    /** For notifications: the same list without the messages of banned bots. */
+    public static ArrayList<MessageObject> filterMessages(int account, ArrayList<MessageObject> source) {
+        if (source == null || !isActive()) {
+            return source;
+        }
+        ArrayList<MessageObject> result = new ArrayList<>(source.size());
+        for (int i = 0; i < source.size(); i++) {
+            MessageObject object = source.get(i);
+            if (object == null || !blocked(account, object.getDialogId())) {
+                result.add(object);
+            }
+        }
+        return result;
+    }
 }
