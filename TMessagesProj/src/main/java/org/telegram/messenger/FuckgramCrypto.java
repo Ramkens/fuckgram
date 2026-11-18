@@ -366,7 +366,12 @@ public class FuckgramCrypto {
         if (encryptedMessages.containsKey(message)) {
             object.fgEncrypted = true;
         }
-        if (!FuckgramConfig.isEncryptionEnabled() || !looksEncrypted(message.message)) {
+        if (!looksEncrypted(message.message)) {
+            return;
+        }
+        if (!FuckgramConfig.isEncryptionEnabled()) {
+            object.fgEncrypted = true;
+            object.fgLocked = true;
             return;
         }
         object.fgEncrypted = true;

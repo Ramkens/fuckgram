@@ -77,7 +77,7 @@ public class FuckgramDeleted {
             if (s.isEmpty()) {
                 return false;
             }
-            return s.contains("0_" + id) || s.contains(dialogId + "_" + id);
+            return (dialogId > -1000000000000L && s.contains("0_" + id)) || s.contains(dialogId + "_" + id);
         }
     }
 

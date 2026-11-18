@@ -53,7 +53,7 @@ public class FuckgramMarks {
             if (sb.length() > 0) {
                 sb.append(' ');
             }
-            sb.append(object.fgLocked ? "🔒" : "🔐");
+            sb.append(object.fgLocked ? FuckgramText.t("encrypted", "зашифровано") : FuckgramText.t("decrypted", "расшифровано"));
         }
         return sb;
     }
