@@ -28,8 +28,6 @@ android {
     buildToolsVersion '36.0.0'
 
     defaultConfig.applicationId = APP_PACKAGE
-    // fuckgram: only English, Russian and Ukrainian strings are shipped, other languages are downloaded by Telegram itself
-    defaultConfig.resConfigs "en", "ru", "uk"
 
 
     lintOptions {

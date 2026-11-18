@@ -6,7 +6,7 @@
 **Исправлено и ускорено**
 - **Интерфейс больше не «залипает».** При включённом запрете на ботов список чатов пересобирался на каждый элемент и тормозил весь экран. Теперь список кэшируется, а настройки читаются из памяти.
 - **Фон появляется сразу.** Свои обои (фото или первый кадр видео) подгружаются заранее и ставятся мгновенно, без задержки в секунду. Видео-фон не включается на слабых устройствах (вместо него — первый кадр).
-- **Облегчено приложение:** включено сжатие кода (R8) и ресурсов, оставлены только русский, английский и украинский (остальные языки Telegram скачивает сам).
+- **Облегчено приложение:** включено сжатие кода (R8) и ресурсов.
 - **Удалённые сообщения:** пометка «удалено» больше не появляется у сообщений канала, чей номер совпал с номером удалённого личного сообщения.
 - **Замок шифрования:** вместо эмодзи 🔒/🔐 (отображались криво) теперь слова «зашифровано» / «расшифровано» у времени; сообщение, которое не удалось расшифровать, всегда помечено «зашифровано».
 - **Тёмная тема:** серый текст (бывший синий акцент: заголовки, ссылки, имена в ответах, кнопки) стал белым.
@@ -24,7 +24,7 @@
 **Fixed and faster**
 - **The interface no longer freezes.** With the bot ban on, the chat list was rebuilt for every row and slowed the whole screen. The list is now cached and settings are read from memory.
 - **Backgrounds appear instantly.** Your wallpapers (a photo or the first frame of a video) are decoded ahead of time and shown at once, without the one second delay. Video backgrounds are not started on weak devices (the first frame is shown instead).
-- **Lighter app:** code and resource shrinking (R8) is on, only Russian, English and Ukrainian are bundled (Telegram downloads other languages itself).
+- **Lighter app:** code and resource shrinking (R8) is on.
 - **Deleted messages:** the «deleted» mark no longer appears on channel messages whose number matched a deleted private message.
 - **Encryption lock:** instead of the 🔒/🔐 emoji (drawn badly) the time now shows the words «encrypted» / «decrypted»; a message that could not be decrypted is always marked «encrypted».
 - **Dark theme:** gray text (the former blue accent: headers, links, reply names, buttons) is now white.
