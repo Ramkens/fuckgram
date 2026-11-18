@@ -15,8 +15,14 @@ import java.util.Locale;
  */
 public class FuckgramBotBlock {
 
+    private static SharedPreferences cached;
+
     private static SharedPreferences prefs() {
-        return ApplicationLoader.applicationContext.getSharedPreferences("fuckgram_botblock", Context.MODE_PRIVATE);
+        SharedPreferences p = cached;
+        if (p == null) {
+            p = cached = ApplicationLoader.applicationContext.getSharedPreferences("fuckgram_botblock", Context.MODE_PRIVATE);
+        }
+        return p;
     }
 
     public static long until() {
@@ -25,6 +31,17 @@ public class FuckgramBotBlock {
 
     public static boolean isActive() {
         return System.currentTimeMillis() < until();
+    }
+
+    private static java.util.HashSet<String> nameSet;
+
+    private static java.util.HashSet<String> nameSet() {
+        java.util.HashSet<String> set = nameSet;
+        if (set == null) {
+            set = new java.util.HashSet<>(names());
+            nameSet = set;
+        }
+        return set;
     }
 
     public static ArrayList<String> names() {
@@ -42,6 +59,7 @@ public class FuckgramBotBlock {
 
     private static void saveNames(ArrayList<String> list) {
         prefs().edit().putString("names", android.text.TextUtils.join(",", list)).apply();
+        nameSet = null;
     }
 
     public static String normalize(String name) {
@@ -88,16 +106,41 @@ public class FuckgramBotBlock {
         return true;
     }
 
+    public static final long CANCEL_WINDOW = 5 * 60000L;
+
     /** Starts or extends the ban. A shorter time than what is left changes nothing. */
     public static void start(long durationMs) {
-        long end = System.currentTimeMillis() + durationMs;
-        if (end > until()) {
-            prefs().edit().putLong("until", end).apply();
+        long now = System.currentTimeMillis();
+        long end = now + durationMs;
+        SharedPreferences.Editor e = prefs().edit();
+        if (!isActive()) {
+            e.putLong("started", now);
         }
+        if (end > until()) {
+            e.putLong("until", end);
+        }
+        e.apply();
     }
 
-    private static boolean matches(TLRPC.User user, ArrayList<String> names) {
-        if (user == null) {
+    /** Milliseconds left in which a freshly started ban can still be cancelled, 0 if it cannot. */
+    public static long cancelLeft() {
+        if (!isActive()) {
+            return 0;
+        }
+        long left = prefs().getLong("started", 0) + CANCEL_WINDOW - System.currentTimeMillis();
+        return left > 0 ? left : 0;
+    }
+
+    public static boolean cancel() {
+        if (cancelLeft() <= 0) {
+            return false;
+        }
+        prefs().edit().putLong("until", 0).putLong("started", 0).apply();
+        return true;
+    }
+
+    private static boolean matches(TLRPC.User user, java.util.Set<String> names) {
+        if (user == null || !user.bot) {
             return false;
         }
         if (user.username != null && names.contains(user.username.toLowerCase(Locale.ROOT))) {
@@ -118,7 +161,7 @@ public class FuckgramBotBlock {
         if (dialogId <= 0 || !isActive()) {
             return false;
         }
-        ArrayList<String> names = names();
+        java.util.Set<String> names = nameSet();
         if (names.isEmpty()) {
             return false;
         }

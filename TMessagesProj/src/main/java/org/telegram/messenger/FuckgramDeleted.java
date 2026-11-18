@@ -31,8 +31,17 @@ public class FuckgramDeleted {
         return cache[account];
     }
 
+    private static final SharedPreferences[] cachedPrefs = new SharedPreferences[16];
+
     private static SharedPreferences prefs(int account) {
-        return ApplicationLoader.applicationContext.getSharedPreferences("fuckgram_deleted_" + account, Context.MODE_PRIVATE);
+        SharedPreferences p = account >= 0 && account < 16 ? cachedPrefs[account] : null;
+        if (p == null) {
+            p = ApplicationLoader.applicationContext.getSharedPreferences("fuckgram_deleted_" + account, Context.MODE_PRIVATE);
+            if (account >= 0 && account < 16) {
+                cachedPrefs[account] = p;
+            }
+        }
+        return p;
     }
 
     /** key 0 = private chats and basic groups, otherwise the channel dialog id. */
@@ -65,6 +74,9 @@ public class FuckgramDeleted {
         }
         Set<String> s = set(account);
         synchronized (FuckgramDeleted.class) {
+            if (s.isEmpty()) {
+                return false;
+            }
             return s.contains("0_" + id) || s.contains(dialogId + "_" + id);
         }
     }

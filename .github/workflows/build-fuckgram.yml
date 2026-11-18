@@ -22,7 +22,7 @@ concurrency:
 
 env:
   FG_ABIS: ${{ github.event.inputs.abis || 'arm64-v8a' }}
-  FG_MINIFY: ${{ github.event.inputs.minify || 'false' }}
+  FG_MINIFY: ${{ github.event.inputs.minify || 'true' }}
 
 jobs:
   # Runs in parallel with the native build: fails fast on Java / resource errors.

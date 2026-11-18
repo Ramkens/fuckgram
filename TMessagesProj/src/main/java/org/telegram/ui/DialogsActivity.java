@@ -10930,15 +10930,38 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
     @NonNull
     public ArrayList<TLRPC.Dialog> getDialogsArray(int currentAccount, int dialogsType, int folderId, boolean frozen) {
-        ArrayList<TLRPC.Dialog> fgList = fgGetDialogsArray(currentAccount, dialogsType, folderId, frozen);
-        if (org.telegram.messenger.FuckgramDecoy.isActive()) {
+        ArrayList<TLRPC.Dialog> fgSource = fgGetDialogsArray(currentAccount, dialogsType, folderId, frozen);
+        boolean decoy = org.telegram.messenger.FuckgramDecoy.isActive();
+        boolean bots = org.telegram.messenger.FuckgramBotBlock.isActive();
+        if (!decoy && !bots) {
+            return fgSource;
+        }
+        // The adapter asks for the list on every item, so the filtered copy is reused for a moment instead of being rebuilt each time.
+        long now = android.os.SystemClock.uptimeMillis();
+        if (fgCacheSource == fgSource && fgCacheSize == fgSource.size() && fgCacheDecoy == decoy && fgCacheBots == bots && fgCacheAccount == currentAccount && now - fgCacheTime < 400) {
+            return fgCacheResult;
+        }
+        ArrayList<TLRPC.Dialog> fgList = fgSource;
+        if (decoy) {
             fgList = org.telegram.messenger.FuckgramDecoy.filter(currentAccount, fgList); // fuckgram: quiet mode shows only allowed chats
         }
-        if (org.telegram.messenger.FuckgramBotBlock.isActive()) {
+        if (bots) {
             fgList = org.telegram.messenger.FuckgramBotBlock.filter(currentAccount, fgList); // fuckgram: self-imposed ban on bots
         }
+        fgCacheSource = fgSource;
+        fgCacheSize = fgSource.size();
+        fgCacheDecoy = decoy;
+        fgCacheBots = bots;
+        fgCacheAccount = currentAccount;
+        fgCacheResult = fgList;
+        fgCacheTime = now;
         return fgList;
     }
+
+    private ArrayList<TLRPC.Dialog> fgCacheSource, fgCacheResult;
+    private int fgCacheSize = -1, fgCacheAccount;
+    private boolean fgCacheDecoy, fgCacheBots;
+    private long fgCacheTime;
 
     @NonNull
     private ArrayList<TLRPC.Dialog> fgGetDialogsArray(int currentAccount, int dialogsType, int folderId, boolean frozen) {

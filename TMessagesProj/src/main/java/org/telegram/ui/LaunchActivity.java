@@ -7214,7 +7214,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         PipCoordinator.getInstance().onActivityResume(this);
         for (int fgA = 0; fgA < UserConfig.MAX_ACCOUNT_COUNT; fgA++) {
             org.telegram.messenger.FuckgramMarker.ensure(fgA);
-            org.telegram.messenger.FuckgramVpn.autoRefreshIfNeeded(fgA);
+            FuckgramBackground.preload();
         }
         if (onResumeStaticCallback != null) {
             onResumeStaticCallback.run();

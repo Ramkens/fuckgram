@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.BuildVars;
+import org.telegram.messenger.FuckgramText;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
 import org.telegram.messenger.browser.Browser;
@@ -33,7 +34,7 @@ public class FuckgramAboutActivity extends BaseFragment {
     public View createView(Context context) {
         actionBar.setBackButtonImage(R.drawable.ic_ab_back);
         actionBar.setAllowOverlayTitle(true);
-        actionBar.setTitle(LocaleController.getString(R.string.FuckgramAbout));
+        actionBar.setTitle(FuckgramText.t("About", "О fuckgram"));
         actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
             @Override
             public void onItemClick(int id) {
@@ -73,30 +74,37 @@ public class FuckgramAboutActivity extends BaseFragment {
         }
         content.addView(title, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL, 0, 0, 0, 6));
 
-        // Tagline + version
         TextView tagline = new TextView(context);
-        tagline.setText(LocaleController.getString(R.string.FuckgramTagline) + " · v" + BuildVars.BUILD_VERSION_STRING);
+        tagline.setText("v" + BuildVars.FUCKGRAM_VERSION + " · Android");
         tagline.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
         tagline.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText2));
         tagline.setGravity(Gravity.CENTER);
-        content.addView(tagline, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL, 0, 0, 0, 32));
+        content.addView(tagline, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL, 0, 0, 0, 6));
 
-        // Section header
+        TextView about = new TextView(context);
+        about.setText(FuckgramText.t("A private Telegram client: ghost mode, encryption, second space, clean interface.",
+                "Приватный клиент Telegram: призрак, шифрование, второе пространство, чистый интерфейс."));
+        about.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+        about.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText3));
+        about.setGravity(Gravity.CENTER);
+        content.addView(about, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL, 16, 0, 16, 28));
+
         TextView header = new TextView(context);
-        header.setText(LocaleController.getString(R.string.FuckgramDevelopers));
+        header.setText(FuckgramText.t("DEVELOPER", "РАЗРАБОТЧИК"));
         header.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
         header.setTypeface(AndroidUtilities.bold());
         header.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlueHeader));
         content.addView(header, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.LEFT, 8, 0, 8, 8));
 
-        // Developer card
-        content.addView(createDeveloperRow(context, "@" + CREATOR_USERNAME, LocaleController.getString(R.string.FuckgramCreator)),
+        content.addView(createDeveloperRow(context, "@" + CREATOR_USERNAME, FuckgramText.t("Creator and developer · Telegram", "Создатель и разработчик · Telegram"), "https://t.me/" + CREATOR_USERNAME),
+                LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 0, 0, 10));
+        content.addView(createDeveloperRow(context, FuckgramText.t("Source code", "Исходный код"), "github.com/Ramkens/fuckgram · GPLv2", "https://github.com/Ramkens/fuckgram"),
                 LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 0, 0, 20));
 
-        // Legal note
         TextView legal = new TextView(context);
-        legal.setText(LocaleController.getString(R.string.FuckgramBasedOn));
-        legal.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
+        legal.setText(FuckgramText.t("Based on Telegram for Android 13.2.2 (GPLv2). An unofficial client, not affiliated with Telegram.",
+                "Основан на Telegram для Android 13.2.2 (GPLv2). Неофициальный клиент, не связан с Telegram."));
+        legal.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         legal.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText3));
         legal.setGravity(Gravity.CENTER);
         content.addView(legal, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL, 16, 8, 16, 0));
@@ -104,14 +112,14 @@ public class FuckgramAboutActivity extends BaseFragment {
         return fragmentView;
     }
 
-    private View createDeveloperRow(Context context, String name, String role) {
+    private View createDeveloperRow(Context context, String name, final String role, final String url) {
         FrameLayout card = new FrameLayout(context);
         card.setBackground(Theme.createRoundRectDrawable(AndroidUtilities.dp(14), Theme.getColor(Theme.key_windowBackgroundWhite)));
         card.setPadding(AndroidUtilities.dp(16), AndroidUtilities.dp(14), AndroidUtilities.dp(16), AndroidUtilities.dp(14));
 
         // Avatar: accent circle with the first letter of the nickname
         TextView avatar = new TextView(context);
-        String letter = name.length() > 1 ? name.substring(1, 2).toUpperCase() : "?";
+        String letter = name.startsWith("@") && name.length() > 1 ? name.substring(1, 2).toUpperCase() : name.substring(0, 1).toUpperCase();
         avatar.setText(letter);
         avatar.setGravity(Gravity.CENTER);
         avatar.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
@@ -141,7 +149,7 @@ public class FuckgramAboutActivity extends BaseFragment {
 
         card.setOnClickListener(v -> {
             if (getParentActivity() != null) {
-                Browser.openUrl(getParentActivity(), "https://t.me/" + CREATOR_USERNAME);
+                Browser.openUrl(getParentActivity(), url);
             }
         });
         return card;

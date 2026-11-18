@@ -68,6 +68,7 @@ public class FuckgramBackground {
             while ((n = in.read(buf)) > 0) {
                 out.write(buf, 0, n);
             }
+            forget(area);
             FuckgramConfig.setInt(kindKey(area), video ? VIDEO : PHOTO);
             return true;
         } catch (Throwable e) {
@@ -77,6 +78,7 @@ public class FuckgramBackground {
     }
 
     public static void remove(int area) {
+        forget(area);
         FuckgramConfig.setInt(kindKey(area), NONE);
         try {
             file(area).delete();
@@ -96,13 +98,16 @@ public class FuckgramBackground {
             }
             Context context = container.getContext();
             FrameLayout root = new FrameLayout(context);
-            if (kind(area) == VIDEO) {
+            root.setClickable(false);
+            root.setFocusable(false);
+            root.setWillNotDraw(true);
+            // a still picture (or the first frame of a video) is shown at once, the video starts on top of it later
+            ImageView image = new ImageView(context);
+            image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            image.setImageBitmap(still(area));
+            root.addView(image, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            if (kind(area) == VIDEO && org.telegram.messenger.SharedConfig.getDevicePerformanceClass() != org.telegram.messenger.SharedConfig.PERFORMANCE_CLASS_LOW) {
                 root.addView(new VideoView(context, area), new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            } else {
-                ImageView image = new ImageView(context);
-                image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                image.setImageBitmap(loadScaled(area));
-                root.addView(image, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             }
             View dim = new View(context);
             int level = FuckgramConfig.getInt(FuckgramConfig.BG_DIM);
@@ -113,6 +118,44 @@ public class FuckgramBackground {
         } catch (Throwable e) {
             FileLog.e(e);
         }
+    }
+
+    private static final Bitmap[] stills = new Bitmap[3];
+
+    /** Decodes the pictures ahead of time (worker thread) so that a chat opens with its background already in place. */
+    public static void preload() {
+        org.telegram.messenger.Utilities.globalQueue.postRunnable(() -> {
+            for (int a = 0; a < 3; a++) {
+                if (isActive(a)) {
+                    still(a);
+                }
+            }
+        });
+    }
+
+    private static synchronized Bitmap still(int area) {
+        if (stills[area] == null) {
+            try {
+                if (kind(area) == VIDEO) {
+                    android.media.MediaMetadataRetriever r = new android.media.MediaMetadataRetriever();
+                    try {
+                        r.setDataSource(file(area).getAbsolutePath());
+                        stills[area] = r.getFrameAtTime(0);
+                    } finally {
+                        r.release();
+                    }
+                } else {
+                    stills[area] = loadScaled(area);
+                }
+            } catch (Throwable e) {
+                FileLog.e(e);
+            }
+        }
+        return stills[area];
+    }
+
+    private static synchronized void forget(int area) {
+        stills[area] = null;
     }
 
     private static Bitmap loadScaled(int area) {

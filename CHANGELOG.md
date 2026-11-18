@@ -1,5 +1,39 @@
 # Changelog
 
+## 1.4.0
+
+### 🇷🇺 Русский
+**Исправлено и ускорено**
+- **Интерфейс больше не «залипает».** При включённом запрете на ботов список чатов пересобирался на каждый элемент и тормозил весь экран. Теперь список кэшируется, а настройки читаются из памяти.
+- **Фон появляется сразу.** Свои обои (фото или первый кадр видео) подгружаются заранее и ставятся мгновенно, без задержки в секунду. Видео-фон не включается на слабых устройствах (вместо него — первый кадр).
+- **Облегчено приложение:** включено сжатие кода (R8) и ресурсов, оставлены только русский, английский и украинский (остальные языки Telegram скачивает сам).
+- **Тёмная тема:** серый текст (бывший синий акцент: заголовки, ссылки, имена в ответах, кнопки) стал белым.
+
+**Изменено**
+- **Бан на ботов:** его можно отменить в первые 5 минут после включения (кнопка в настройках). Работает только на ботов: добавить можно лишь настоящего бота (юзернейм проверяется), людей и каналы функция не трогает.
+- **«Убрать лишнее»:** вместо скрытия текста в уведомлениях — переключатель «Спонсор прокси».
+- **Справочник** — все функции на одном экране, по нажатию открывается нужный раздел. Лишние тексты убраны, меню настроек упрощено, значки fuckgram перенесены в «Оформление».
+- **«О fuckgram»** переделан: логотип, версия, карточка разработчика @scamchrome, ссылка на исходный код, честная пометка про Telegram и GPLv2.
+
+**Удалено**
+- Встроенный VPN (прокси) и скрытие текста в уведомлениях.
+
+### 🇬🇧 English
+**Fixed and faster**
+- **The interface no longer freezes.** With the bot ban on, the chat list was rebuilt for every row and slowed the whole screen. The list is now cached and settings are read from memory.
+- **Backgrounds appear instantly.** Your wallpapers (a photo or the first frame of a video) are decoded ahead of time and shown at once, without the one second delay. Video backgrounds are not started on weak devices (the first frame is shown instead).
+- **Lighter app:** code and resource shrinking (R8) is on, only Russian, English and Ukrainian are bundled (Telegram downloads other languages itself).
+- **Dark theme:** gray text (the former blue accent: headers, links, reply names, buttons) is now white.
+
+**Changed**
+- **Bot ban:** it can be cancelled during the first 5 minutes after it starts (a button in settings). Bots only: you can add only a real bot (the username is checked), people and channels are never touched.
+- **Clean-up:** a «Proxy sponsor» switch instead of hiding the text in notifications.
+- **Handbook:** every feature on one screen, a tap opens the right section. Extra texts are gone, the settings menu is simpler, fuckgram badges moved to «Appearance».
+- **About** is redone: logo, version, developer card @scamchrome, source code link, an honest note about Telegram and GPLv2.
+
+**Removed**
+- The built-in VPN (proxies) and hiding the text in notifications.
+
 ## 1.3.4
 
 ### 🇷🇺 Русский

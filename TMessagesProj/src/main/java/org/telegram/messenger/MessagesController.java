@@ -10926,6 +10926,9 @@ public class MessagesController extends BaseController implements NotificationCe
                 noDialog = true;
             } else if (response instanceof TLRPC.TL_help_promoData) {
                 TLRPC.TL_help_promoData res = (TLRPC.TL_help_promoData) response;
+                if (res.proxy && FuckgramConfig.get(FuckgramConfig.HIDE_PROXY_SPONSOR)) { // fuckgram: proxy sponsor switch
+                    noDialog = true;
+                }
 
                 long did;
                 if (res.peer == null) {

@@ -17,8 +17,14 @@ public class FuckgramDecoy {
 
     private static volatile Boolean active;
 
+    private static SharedPreferences cached;
+
     private static SharedPreferences prefs() {
-        return ApplicationLoader.applicationContext.getSharedPreferences("fuckgram_decoy", Context.MODE_PRIVATE);
+        SharedPreferences p = cached;
+        if (p == null) {
+            p = cached = ApplicationLoader.applicationContext.getSharedPreferences("fuckgram_decoy", Context.MODE_PRIVATE);
+        }
+        return p;
     }
 
     public static boolean isActive() {
