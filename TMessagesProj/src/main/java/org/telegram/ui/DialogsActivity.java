@@ -4659,6 +4659,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
         floatingButton3 = new FragmentFloatingButton(context, resourceProvider);
         contentView.addView(floatingButton3, FragmentFloatingButton.createDefaultLayoutParams());
+        FuckgramSettingsActivity.placeFab(floatingButton3, floatingButtonStories);
         floatingButton3.setOnClickListener(v -> {
             if (parentLayout != null && parentLayout.isInPreviewMode()) {
                 finishPreviewFragment();

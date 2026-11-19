@@ -37,6 +37,8 @@ public class FuckgramConfig {
     public static final String HIDE_STORIES = "hide_stories";
     public static final String HIDE_WALLET = "hide_wallet";
     public static final String TG_ORIGINAL = "tg_original";        // not used any more
+    public static final String LITE = "lite";                      // weak-device mode
+    public static final String FAB_POS = "fab_pos";                // 0 right (Telegram), 1 left, 2 center
     public static final String HIDE_PROXY_SPONSOR = "hide_proxy_sponsor"; // sponsor channel that Telegram pins when a proxy is used
     public static final String SHOW_SECONDS = "show_seconds";      // seconds in the message time (like AyuGram)
     public static final String SHOW_MSG_ID = "show_msg_id";        // message id next to the time (like AyuGram)

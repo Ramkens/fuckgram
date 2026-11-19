@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.5.0
+
+### 🇷🇺 Русский
+- **Новый раздел «Расположение».** По умолчанию интерфейс как в Telegram, но можно изменить: строки списка чатов (2 или 3), углы сообщений (квадратные / мягкие / как в Telegram / круглые), размер текста сообщений (5 вариантов), место кнопки «Написать» (справа / слева / по центру). Кнопка «Вернуть как в Telegram» сбрасывает всё.
+- **Режим слабого телефона.** Один переключатель: выключает тяжёлые анимации, размытие и видео-фон, ставит лёгкий переход между экранами. На очень слабых устройствах включается сам при первом запуске (можно выключить).
+- **Без перезахода.** Настройки fuckgram (скрытие Premium, историй, подарков и т. д., расположение, тема) применяются сразу: экраны перестраиваются на лету. Исключение — шрифт Telegram: он меняется после перезапуска.
+
+### 🇬🇧 English
+- **New «Layout» section.** The interface is Telegram's by default, but you can change: chat list rows (2 or 3 lines), message corners (square / soft / Telegram / round), message text size (5 options), the place of the «Write» button (right / left / center). «Back to Telegram layout» resets everything.
+- **Weak phone mode.** One switch: turns off heavy animations, blur and video backgrounds and uses a light screen transition. On very weak devices it turns on by itself at the first start (you can turn it off).
+- **No restart needed.** fuckgram settings (hiding Premium, stories, gifts, etc., layout, theme) apply at once: screens are rebuilt on the fly. The exception is the Telegram font: it changes after a restart.
+
 ## 1.4.0
 
 ### 🇷🇺 Русский

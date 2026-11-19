@@ -13,6 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.ApplicationLoader;
+import org.telegram.messenger.MessagesController;
+import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.FuckgramColors;
 import org.telegram.messenger.FuckgramConfig;
 import org.telegram.messenger.FuckgramCrypto;
@@ -35,7 +38,7 @@ import org.telegram.ui.Components.LayoutHelper;
  */
 public class FuckgramSettingsActivity extends BaseFragment {
 
-    public static final int MENU = 0, PRIVACY = 1, MESSAGES = 2, LOOK = 3, PROFILE = 4, PACKS = 5, CLEAN = 6, COLORS = 7, ANIM = 8, GHOSTPASS = 9, BOTBLOCK = 10, BROADCAST = 11, PROFILES = 12, GUIDE = 13;
+    public static final int MENU = 0, PRIVACY = 1, MESSAGES = 2, LOOK = 3, PROFILE = 4, PACKS = 5, CLEAN = 6, COLORS = 7, ANIM = 8, GHOSTPASS = 9, BOTBLOCK = 10, BROADCAST = 11, PROFILES = 12, GUIDE = 13, LAYOUT = 14;
 
     private final int category;
     private LinearLayout list;
@@ -90,6 +93,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
             case BROADCAST: return t("Broadcast", "Рассылка");
             case PROFILES: return t("Profile presets", "Конфиги профиля");
             case GUIDE: return t("Handbook", "Справочник");
+            case LAYOUT: return t("Layout", "Расположение");
             case GHOSTPASS: return t("Second space", "Второе пространство");
             case COLORS: return t("My colors", "Свои цвета");
             case ANIM: return t("Animations", "Анимации");
@@ -143,7 +147,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addSwitch(context, FuckgramConfig.HIDE_STORIES, t("Stories", "Истории"), true);
                 addSwitch(context, FuckgramConfig.HIDE_WALLET, t("Wallet", "Кошелёк"), true);
                 addSwitch(context, FuckgramConfig.HIDE_PROXY_SPONSOR, t("Proxy sponsor", "Спонсор прокси"), false);
-                addInfo(context, t("On = hidden. Some screens update after a restart.", "Включено = скрыто. Часть экранов обновится после перезапуска."));
+                addInfo(context, t("On = hidden. Applies at once.", "Включено = скрыто. Всё применяется сразу."));
                 break;
             case BOTBLOCK: {
                 boolean active = FuckgramBotBlock.isActive();
@@ -258,6 +262,56 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addButton(context, t("Copy pack", "Скопировать пакет"), true, v -> exportPack(context));
                 addButton(context, t("Import pack from clipboard", "Импорт пакета из буфера"), false, v -> importPack(context));
                 break;
+            case LAYOUT: {
+                addHeader(context, t("Where things are", "Где что находится"));
+                addValue(context, t("Chat list rows", "Строки списка чатов"), SharedConfig.useThreeLinesLayout ? t("3 lines", "3 строки") : t("2 lines (Telegram)", "2 строки (как в Telegram)"), true,
+                        v -> choose(context, t("Chat list rows", "Строки списка чатов"), new String[]{t("2 lines (Telegram)", "2 строки (как в Telegram)"), t("3 lines", "3 строки")}, SharedConfig.useThreeLinesLayout ? 1 : 0, i -> SharedConfig.setUseThreeLinesLayout(i == 1)));
+                final int[] radii = {3, 10, 17, 30};
+                final String[] radiusNames = {t("Square", "Квадратные"), t("Soft", "Мягкие"), t("Telegram", "Как в Telegram"), t("Round", "Круглые")};
+                int radiusIndex = 2;
+                for (int a = 0; a < radii.length; a++) {
+                    if (radii[a] == SharedConfig.bubbleRadius) {
+                        radiusIndex = a;
+                    }
+                }
+                addValue(context, t("Message corners", "Углы сообщений"), radiusNames[radiusIndex], true,
+                        v -> choose(context, t("Message corners", "Углы сообщений"), radiusNames, -1, i -> {
+                            SharedConfig.bubbleRadius = radii[i];
+                            MessagesController.getGlobalMainSettings().edit().putInt("bubbleRadius", radii[i]).commit();
+                        }));
+                final int[] sizes = {14, 16, 18, 20, 23};
+                final String[] sizeNames = {t("Small", "Мелкий"), t("Telegram", "Как в Telegram"), t("Large", "Крупный"), t("Very large", "Очень крупный"), t("Huge", "Огромный")};
+                int sizeIndex = 1;
+                for (int a = 0; a < sizes.length; a++) {
+                    if (sizes[a] == SharedConfig.fontSize) {
+                        sizeIndex = a;
+                    }
+                }
+                addValue(context, t("Message text size", "Размер текста сообщений"), sizeNames[sizeIndex], true,
+                        v -> choose(context, t("Message text size", "Размер текста сообщений"), sizeNames, -1, i -> {
+                            SharedConfig.fontSize = sizes[i];
+                            SharedConfig.fontSizeIsDefault = false;
+                            ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Context.MODE_PRIVATE).edit().putInt("fons_size", sizes[i]).commit();
+                            Theme.createCommonMessageResources();
+                        }));
+                final String[] fabNames = {t("Right (Telegram)", "Справа (как в Telegram)"), t("Left", "Слева"), t("Center", "По центру")};
+                addValue(context, t("Write button", "Кнопка «Написать»"), fabNames[Math.min(2, FuckgramConfig.getInt(FuckgramConfig.FAB_POS))], true,
+                        v -> choose(context, t("Write button", "Кнопка «Написать»"), fabNames, -1, i -> FuckgramConfig.setInt(FuckgramConfig.FAB_POS, i)));
+                addHeader(context, t("Weak phone", "Слабый телефон"));
+                addSwitchLite(context);
+                addButton(context, t("Back to Telegram layout", "Вернуть как в Telegram"), false, v -> {
+                    SharedConfig.setUseThreeLinesLayout(false);
+                    SharedConfig.bubbleRadius = 17;
+                    MessagesController.getGlobalMainSettings().edit().putInt("bubbleRadius", 17).commit();
+                    SharedConfig.fontSize = AndroidUtilities.isTablet() ? 18 : 16;
+                    ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Context.MODE_PRIVATE).edit().putInt("fons_size", SharedConfig.fontSize).commit();
+                    Theme.createCommonMessageResources();
+                    FuckgramConfig.setInt(FuckgramConfig.FAB_POS, 0);
+                    refreshAll();
+                    build(context);
+                });
+                break;
+            }
             case GUIDE:
                 addHeader(context, t("Everything fuckgram can do", "Всё, что умеет fuckgram"));
                 addGuide(context, t("Ghost mode", "Режим призрака"), t("No read receipts, no «typing…», always offline.", "Не читать, не печатать, всегда не в сети."), PRIVACY);
@@ -266,6 +320,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addGuide(context, t("Text in a picture", "Текст в картинке"), t("Hold the send button → hide text; friend reveals it.", "Зажмите отправку → спрятать; друг проявит."), GHOSTPASS);
                 addGuide(context, t("Second space", "Второе пространство"), t("Two taps on the logo or a second passcode.", "Два тапа по логотипу или второй код."), GHOSTPASS);
                 addGuide(context, t("Look: theme, colors, animations", "Вид: тема, цвета, анимации"), t("Black or white theme, your colors, backgrounds.", "Чёрная/белая тема, свои цвета, фоны."), LOOK);
+                addGuide(context, t("Layout", "Расположение"), t("Rows, corners, text size, button place, weak-phone mode.", "Строки, углы, размер текста, место кнопки, режим слабого телефона."), LAYOUT);
                 addGuide(context, t("Clean-up", "Убрать лишнее"), t("Hide ads, Premium, Stars, gifts, stories, proxy sponsor.", "Реклама, Premium, звёзды, подарки, истории, спонсор прокси."), CLEAN);
                 addGuide(context, t("Bot ban", "Запрет на ботов"), t("Lock chosen bots for a time. Cancel in 5 minutes.", "Заблокировать ботов на время. Отмена 5 минут."), BOTBLOCK);
                 addGuide(context, t("Broadcast", "Рассылка"), t("One text to several chats.", "Один текст в несколько чатов."), BROADCAST);
@@ -277,6 +332,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
                 addButton(context, t("Handbook", "Справочник"), true, v -> presentFragment(new FuckgramSettingsActivity(GUIDE)));
                 addButton(context, t("Privacy & ghost mode", "Приватность и призрак"), true, v -> presentFragment(new FuckgramSettingsActivity(PRIVACY)));
                 addButton(context, t("Messages & encryption", "Сообщения и шифрование"), true, v -> presentFragment(new FuckgramSettingsActivity(MESSAGES)));
+                addButton(context, t("Layout", "Расположение"), true, v -> presentFragment(new FuckgramSettingsActivity(LAYOUT)));
                 addButton(context, t("Appearance", "Оформление"), true, v -> presentFragment(new FuckgramSettingsActivity(LOOK)));
                 addButton(context, t("Second space", "Второе пространство"), true, v -> presentFragment(new FuckgramSettingsActivity(GHOSTPASS)));
                 addButton(context, t("Bot ban", "Запрет на ботов"), true, v -> presentFragment(new FuckgramSettingsActivity(BOTBLOCK)));
@@ -707,6 +763,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
             if (after != null) {
                 after.run();
             }
+            refreshAll();
             if (fragmentView != null) {
                 build(context);
             }
@@ -737,6 +794,62 @@ public class FuckgramSettingsActivity extends BaseFragment {
         info.setGravity(Gravity.LEFT);
         info.setPadding(AndroidUtilities.dp(21), AndroidUtilities.dp(8), AndroidUtilities.dp(21), AndroidUtilities.dp(16));
         list.addView(info, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
+    }
+
+    private void choose(Context context, String title, String[] items, int current, final java.util.function.IntConsumer action) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);
+        builder.setItems(items, (d, which) -> {
+            action.accept(which);
+            refreshAll();
+            if (fragmentView != null) {
+                build(context);
+            }
+        });
+        builder.setNegativeButton(t("Cancel", "Отмена"), null);
+        showDialog(builder.create());
+    }
+
+    private void addSwitchLite(Context context) {
+        TextCheckCell cell = new TextCheckCell(context);
+        cell.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite));
+        cell.setTextAndCheck(t("Weak phone mode (no heavy effects)", "Режим слабого телефона (без тяжёлых эффектов)"), org.telegram.messenger.FuckgramLite.isOn(), false);
+        cell.setOnClickListener(v -> {
+            boolean value = !cell.isChecked();
+            org.telegram.messenger.FuckgramLite.apply(value);
+            cell.setChecked(value);
+            refreshAll();
+        });
+        list.addView(cell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
+    }
+
+    private static final Runnable refreshTask = () -> {
+        LaunchActivity launch = LaunchActivity.instance;
+        if (launch != null) {
+            launch.rebuildAllFragments(true);
+        }
+        NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.dialogsNeedReload, true);
+    };
+
+    /** Applies a changed setting at once: every screen is rebuilt, nothing has to be restarted. */
+    public static void refreshAll() {
+        AndroidUtilities.cancelRunOnUIThread(refreshTask);
+        AndroidUtilities.runOnUIThread(refreshTask, 120);
+    }
+
+    /** Moves the round «write» button (and the story button above it) to the chosen side. */
+    public static void placeFab(View... views) {
+        int pos = FuckgramConfig.getInt(FuckgramConfig.FAB_POS);
+        if (pos != 1 && pos != 2) {
+            return;
+        }
+        for (View view : views) {
+            if (view != null && view.getLayoutParams() instanceof android.widget.FrameLayout.LayoutParams) {
+                android.widget.FrameLayout.LayoutParams lp = (android.widget.FrameLayout.LayoutParams) view.getLayoutParams();
+                lp.gravity = (lp.gravity & Gravity.VERTICAL_GRAVITY_MASK) | (pos == 1 ? Gravity.LEFT : Gravity.CENTER_HORIZONTAL);
+                view.setLayoutParams(lp);
+            }
+        }
     }
 
     private void addGuide(Context context, String title, String desc, final int target) {
@@ -798,6 +911,7 @@ public class FuckgramSettingsActivity extends BaseFragment {
             boolean value = !cell.isChecked();
             FuckgramConfig.set(key, value);
             cell.setChecked(value);
+            refreshAll();
         });
         list.addView(cell, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
     }

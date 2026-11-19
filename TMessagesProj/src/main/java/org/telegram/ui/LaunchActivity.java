@@ -7215,6 +7215,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
         for (int fgA = 0; fgA < UserConfig.MAX_ACCOUNT_COUNT; fgA++) {
             org.telegram.messenger.FuckgramMarker.ensure(fgA);
             FuckgramBackground.preload();
+            org.telegram.messenger.FuckgramLite.autoOnce();
         }
         if (onResumeStaticCallback != null) {
             onResumeStaticCallback.run();

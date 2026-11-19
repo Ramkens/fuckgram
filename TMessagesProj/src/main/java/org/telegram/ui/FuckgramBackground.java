@@ -106,7 +106,7 @@ public class FuckgramBackground {
             image.setScaleType(ImageView.ScaleType.CENTER_CROP);
             image.setImageBitmap(still(area));
             root.addView(image, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            if (kind(area) == VIDEO && org.telegram.messenger.SharedConfig.getDevicePerformanceClass() != org.telegram.messenger.SharedConfig.PERFORMANCE_CLASS_LOW) {
+            if (kind(area) == VIDEO && !org.telegram.messenger.FuckgramLite.isOn() && org.telegram.messenger.SharedConfig.getDevicePerformanceClass() != org.telegram.messenger.SharedConfig.PERFORMANCE_CLASS_LOW) {
                 root.addView(new VideoView(context, area), new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             }
             View dim = new View(context);
